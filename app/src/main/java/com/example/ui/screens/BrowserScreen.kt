@@ -381,6 +381,7 @@ fun BrowserScreen(
                                     if (activeTab.isDesktopMode) {
                                         JavaScriptEngine.injectDesktopViewport(this@apply, settings.desktopWidth)
                                     }
+                                    JavaScriptEngine.disableAutoZoomOnInputs(this@apply)
                                 }
 
                                 override fun onReceivedError(

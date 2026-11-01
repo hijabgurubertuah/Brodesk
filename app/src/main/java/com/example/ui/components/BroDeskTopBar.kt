@@ -1,15 +1,19 @@
 package com.example.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -36,8 +40,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -88,7 +91,7 @@ fun BroDeskTopBar(
     Column {
         Surface(
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 3.dp,
+            tonalElevation = 2.dp,
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag("brodesk_top_bar")
@@ -97,82 +100,117 @@ fun BroDeskTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(horizontal = 6.dp, vertical = 2.dp)
             ) {
-                // Spacious Address Field with 100% visible text
-                OutlinedTextField(
-                    value = urlText,
-                    onValueChange = { urlText = it },
-                    placeholder = { Text("Ketik URL atau kata kunci...", fontSize = 14.sp) },
-                    singleLine = true,
-                    textStyle = TextStyle(
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface
-                    ),
-                    leadingIcon = {
+                // Slim, spacious Address Field
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(34.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            shape = RoundedCornerShape(17.dp)
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = if (isEditing) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            shape = RoundedCornerShape(17.dp)
+                        )
+                        .padding(horizontal = 8.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        // Leading Icon
                         if (isEditing) {
-                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                         } else if (isHttps) {
-                            Icon(Icons.Default.Lock, contentDescription = "Aman (HTTPS)", tint = Color(0xFF10B981), modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Lock, contentDescription = "Aman (HTTPS)", tint = Color(0xFF10B981), modifier = Modifier.size(16.dp))
                         } else if (isHttp) {
-                            Icon(Icons.Default.Warning, contentDescription = "Tidak Aman (HTTP)", tint = Color(0xFFF59E0B), modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Warning, contentDescription = "Tidak Aman (HTTP)", tint = Color(0xFFF59E0B), modifier = Modifier.size(16.dp))
                         } else {
-                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(16.dp))
                         }
-                    },
-                    trailingIcon = {
+
+                        Spacer(modifier = Modifier.width(6.dp))
+
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (urlText.isEmpty()) {
+                                Text(
+                                    text = "Ketik URL atau kata kunci...",
+                                    fontSize = 13.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                                    maxLines = 1
+                                )
+                            }
+                            BasicTextField(
+                                value = urlText,
+                                onValueChange = { urlText = it },
+                                singleLine = true,
+                                textStyle = TextStyle(
+                                    fontSize = 13.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                ),
+                                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
+                                keyboardActions = KeyboardActions(
+                                    onGo = {
+                                        isEditing = false
+                                        onNavigateUrl(urlText)
+                                    }
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .onFocusChanged { isEditing = it.isFocused }
+                                    .testTag("url_address_input")
+                            )
+                        }
+
                         if (urlText.isNotEmpty()) {
                             IconButton(
                                 onClick = { urlText = "" },
-                                modifier = Modifier.size(32.dp).testTag("clear_url_button")
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .testTag("clear_url_button")
                             ) {
-                                Icon(Icons.Default.Close, contentDescription = "Hapus teks", modifier = Modifier.size(18.dp))
+                                Icon(Icons.Default.Close, contentDescription = "Hapus teks", modifier = Modifier.size(14.dp))
                             }
                         }
-                    },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
-                    keyboardActions = KeyboardActions(
-                        onGo = {
-                            isEditing = false
-                            onNavigateUrl(urlText)
-                        }
-                    ),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = Color.Transparent,
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    modifier = Modifier
-                        .weight(1f)
-                        .onFocusChanged { isEditing = it.isFocused }
-                        .testTag("url_address_input")
-                )
+                    }
+                }
 
                 Spacer(modifier = Modifier.width(2.dp))
 
                 // Reload / Stop Button
                 IconButton(
                     onClick = { if (isLoading) onStop() else onReload() },
-                    modifier = Modifier.size(36.dp).testTag("reload_stop_button")
+                    modifier = Modifier
+                        .size(32.dp)
+                        .testTag("reload_stop_button")
                 ) {
                     if (isLoading) {
-                        Icon(Icons.Default.Close, contentDescription = "Henti", modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Close, contentDescription = "Henti", modifier = Modifier.size(18.dp))
                     } else {
-                        Icon(Icons.Default.Refresh, contentDescription = "Muat ulang", modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Refresh, contentDescription = "Muat ulang", modifier = Modifier.size(18.dp))
                     }
                 }
 
                 // Bookmark Star Button
                 IconButton(
                     onClick = onToggleBookmark,
-                    modifier = Modifier.size(36.dp).testTag("bookmark_star_button")
+                    modifier = Modifier
+                        .size(32.dp)
+                        .testTag("bookmark_star_button")
                 ) {
                     if (isBookmarked) {
-                        Icon(Icons.Default.Star, contentDescription = "Hapus Bookmark", tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Star, contentDescription = "Hapus Bookmark", tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(18.dp))
                     } else {
-                        Icon(Icons.Default.StarBorder, contentDescription = "Tambah Bookmark", modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.StarBorder, contentDescription = "Tambah Bookmark", modifier = Modifier.size(18.dp))
                     }
                 }
 
@@ -180,9 +218,11 @@ fun BroDeskTopBar(
                 Box {
                     IconButton(
                         onClick = { showMenu = true },
-                        modifier = Modifier.size(36.dp).testTag("overflow_menu_button")
+                        modifier = Modifier
+                            .size(32.dp)
+                            .testTag("overflow_menu_button")
                     ) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menu Utama", modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.MoreVert, contentDescription = "Menu Utama", modifier = Modifier.size(18.dp))
                     }
 
                     DropdownMenu(
@@ -286,7 +326,7 @@ fun BroDeskTopBar(
                 trackColor = Color.Transparent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(3.dp)
+                    .height(2.5.dp)
                     .testTag("loading_progress_bar")
             )
         }

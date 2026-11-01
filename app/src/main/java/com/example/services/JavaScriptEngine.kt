@@ -11,9 +11,46 @@ object JavaScriptEngine {
                 if (!meta) {
                     meta = document.createElement('meta');
                     meta.name = 'viewport';
-                    document.head.appendChild(meta);
+                    (document.head || document.documentElement).appendChild(meta);
                 }
-                meta.content = 'width=$width, initial-scale=0.5, maximum-scale=3.0, user-scalable=yes';
+                meta.content = 'width=$width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes';
+
+                // Prevent mobile auto-zoom on inputs & Monaco code editor in Google Apps Script
+                var styleId = 'brodesk-prevent-autozoom-css';
+                if (!document.getElementById(styleId)) {
+                    var style = document.createElement('style');
+                    style.id = styleId;
+                    style.textContent = 'input, textarea, select, [contenteditable], .monaco-editor textarea, .inputarea, .monaco-mouse-cursor-text { font-size: 16px !important; touch-action: manipulation !important; } html, body { touch-action: pan-x pan-y !important; -webkit-text-size-adjust: 100% !important; text-size-adjust: 100% !important; }';
+                    (document.head || document.documentElement).appendChild(style);
+                }
+            })();
+        """.trimIndent()
+        webView.evaluateJavascript(js, null)
+    }
+
+    fun disableAutoZoomOnInputs(webView: WebView) {
+        val js = """
+            (function() {
+                var styleId = 'brodesk-prevent-autozoom-css';
+                if (!document.getElementById(styleId)) {
+                    var style = document.createElement('style');
+                    style.id = styleId;
+                    style.textContent = 'input, textarea, select, [contenteditable], .monaco-editor textarea, .inputarea, .monaco-mouse-cursor-text { font-size: 16px !important; touch-action: manipulation !important; } html, body { touch-action: pan-x pan-y !important; -webkit-text-size-adjust: 100% !important; text-size-adjust: 100% !important; }';
+                    (document.head || document.documentElement).appendChild(style);
+                }
+
+                if (!window.__brodeskFocusZoomGuarded) {
+                    window.__brodeskFocusZoomGuarded = true;
+                    window.addEventListener('focusin', function(e) {
+                        var meta = document.querySelector('meta[name="viewport"]');
+                        if (meta) {
+                            var content = meta.getAttribute('content') || '';
+                            if (!content.includes('maximum-scale')) {
+                                meta.setAttribute('content', content + ', maximum-scale=5.0');
+                            }
+                        }
+                    }, true);
+                }
             })();
         """.trimIndent()
         webView.evaluateJavascript(js, null)

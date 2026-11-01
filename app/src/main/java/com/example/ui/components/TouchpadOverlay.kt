@@ -11,11 +11,16 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,12 +32,16 @@ import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.SelectAll
+import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -52,7 +61,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.services.JavaScriptEngine
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -103,18 +115,94 @@ fun TouchpadOverlay(
     val toolbarWidthPx = with(density) { 340.dp.toPx() }
     val toolbarHeightPx = with(density) { 64.dp.toPx() }
 
-    Box(
+    // Helper functions for native mouse dispatch (No auto-zoom, true desktop mouse behavior)
+    fun dispatchNativeMouseClick(wv: WebView, x: Float, y: Float, button: Int) {
+        val downTime = SystemClock.uptimeMillis()
+        val props = arrayOf(MotionEvent.PointerProperties().apply {
+            id = 0
+            toolType = MotionEvent.TOOL_TYPE_MOUSE
+        })
+        val coords = arrayOf(MotionEvent.PointerCoords().apply {
+            this.x = x
+            this.y = y
+            pressure = 1f
+            size = 1f
+        })
+        val down = MotionEvent.obtain(
+            downTime, downTime,
+            MotionEvent.ACTION_DOWN,
+            1, props, coords,
+            0, button,
+            1f, 1f, 0, 0,
+            InputDevice.SOURCE_MOUSE, 0
+        )
+        val up = MotionEvent.obtain(
+            downTime, downTime + 35,
+            MotionEvent.ACTION_UP,
+            1, props, coords,
+            0, 0,
+            1f, 1f, 0, 0,
+            InputDevice.SOURCE_MOUSE, 0
+        )
+        wv.dispatchGenericMotionEvent(down)
+        wv.dispatchTouchEvent(down)
+        wv.dispatchTouchEvent(up)
+        down.recycle()
+        up.recycle()
+    }
+
+    fun triggerLeftClick() {
+        onVibrateShort()
+        webView?.let { wv ->
+            dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_PRIMARY)
+            JavaScriptEngine.dispatchMouseClick(wv, cursorX, cursorY)
+        }
+    }
+
+    fun triggerRightClick() {
+        onVibrateMedium()
+        isMouseDown = true
+        webView?.let { wv ->
+            dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_SECONDARY)
+            JavaScriptEngine.dispatchContextMenu(wv, cursorX, cursorY)
+        }
+    }
+
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .testTag("virtual_touchpad_overlay")
     ) {
-        // 1. Touchpad gesture detection layer
-        var isInteractingWithToolbar by remember { mutableStateOf(false) }
+        val screenWidthPx = constraints.maxWidth.toFloat()
+        val screenHeightPx = constraints.maxHeight.toFloat()
 
+        val btnWidthPx = with(density) { 56.dp.toPx() }
+        val btnHeightPx = with(density) { 30.dp.toPx() }
+
+        // Button positions that travel with the cursor:
+        // Left button: directly to the left of the cursor tip
+        val leftBtnXPx = (cursorX - btnWidthPx - with(density) { 8.dp.toPx() }).coerceIn(
+            with(density) { 4.dp.toPx() },
+            screenWidthPx - btnWidthPx - with(density) { 4.dp.toPx() }
+        )
+        // Right button: directly to the right of the cursor arrow
+        val rightBtnXPx = (cursorX + with(density) { 24.dp.toPx() }).coerceIn(
+            with(density) { 4.dp.toPx() },
+            screenWidthPx - btnWidthPx - with(density) { 4.dp.toPx() }
+        )
+        val cursorBtnYPx = (cursorY - with(density) { 6.dp.toPx() }).coerceIn(
+            with(density) { 4.dp.toPx() },
+            screenHeightPx - btnHeightPx - with(density) { 4.dp.toPx() }
+        )
+
+        var isInteractingWithToolbar by remember { mutableStateOf(false) }
+        var isInteractingWithCursorButton by remember { mutableStateOf(false) }
+
+        // 1. Touchpad gesture detection layer
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .pointerInput(sensitivity, scrollSpeed, isScreenLocked, longPressDurationMs) {
+                .pointerInput(sensitivity, scrollSpeed, isScreenLocked, longPressDurationMs, cursorX, cursorY) {
                     awaitPointerEventScope {
                         while (true) {
                             val event = awaitPointerEvent(PointerEventPass.Main)
@@ -122,16 +210,36 @@ fun TouchpadOverlay(
 
                             if (changes.size == 1) {
                                 val change = changes[0]
-                                val inToolbarArea = change.position.x >= (size.width - toolbarWidthPx) && change.position.y <= toolbarHeightPx
+                                val pos = change.position
+
+                                val inToolbarArea = pos.x >= (size.width - toolbarWidthPx) && pos.y <= toolbarHeightPx
+                                val inLeftBtn = pos.x in leftBtnXPx..(leftBtnXPx + btnWidthPx) &&
+                                                pos.y in cursorBtnYPx..(cursorBtnYPx + btnHeightPx)
+                                val inRightBtn = pos.x in rightBtnXPx..(rightBtnXPx + btnWidthPx) &&
+                                                 pos.y in cursorBtnYPx..(cursorBtnYPx + btnHeightPx)
 
                                 if (change.pressed && !change.previousPressed) {
                                     if (inToolbarArea) {
                                         isInteractingWithToolbar = true
                                         continue
                                     }
-                                    isInteractingWithToolbar = false
+                                    if (inLeftBtn) {
+                                        isInteractingWithCursorButton = true
+                                        triggerLeftClick()
+                                        change.consume()
+                                        continue
+                                    }
+                                    if (inRightBtn) {
+                                        isInteractingWithCursorButton = true
+                                        triggerRightClick()
+                                        change.consume()
+                                        continue
+                                    }
 
-                                    // Touch Down with 1 finger
+                                    isInteractingWithToolbar = false
+                                    isInteractingWithCursorButton = false
+
+                                    // Touch Down on touchpad
                                     touchDownTime = System.currentTimeMillis()
                                     touchDownPos = change.position
                                     hasMovedSinceDown = false
@@ -140,51 +248,12 @@ fun TouchpadOverlay(
                                     longPressJob = scope.launch {
                                         delay(longPressDurationMs)
                                         if (!hasMovedSinceDown) {
-                                            // Trigger Desktop Right Click
-                                            onVibrateMedium()
-                                            isMouseDown = true
-                                            webView?.let { wv ->
-                                                // 1. Dispatch JS contextmenu
-                                                JavaScriptEngine.dispatchContextMenu(wv, cursorX, cursorY)
-
-                                                // 2. Dispatch native mouse right click (BUTTON_SECONDARY) for Chromium / Android WebView
-                                                val downTime = SystemClock.uptimeMillis()
-                                                val props = arrayOf(MotionEvent.PointerProperties().apply {
-                                                    id = 0
-                                                    toolType = MotionEvent.TOOL_TYPE_MOUSE
-                                                })
-                                                val coords = arrayOf(MotionEvent.PointerCoords().apply {
-                                                    x = cursorX
-                                                    y = cursorY
-                                                    pressure = 1f
-                                                    size = 1f
-                                                })
-                                                val down = MotionEvent.obtain(
-                                                    downTime, downTime,
-                                                    MotionEvent.ACTION_DOWN,
-                                                    1, props, coords,
-                                                    0, MotionEvent.BUTTON_SECONDARY,
-                                                    1f, 1f, 0, 0,
-                                                    InputDevice.SOURCE_MOUSE, 0
-                                                )
-                                                val up = MotionEvent.obtain(
-                                                    downTime, downTime + 40,
-                                                    MotionEvent.ACTION_UP,
-                                                    1, props, coords,
-                                                    0, 0,
-                                                    1f, 1f, 0, 0,
-                                                    InputDevice.SOURCE_MOUSE, 0
-                                                )
-                                                wv.dispatchGenericMotionEvent(down)
-                                                wv.dispatchTouchEvent(down)
-                                                wv.dispatchTouchEvent(up)
-                                                down.recycle()
-                                                up.recycle()
-                                            }
+                                            // Trigger Desktop Right Click on long press
+                                            triggerRightClick()
                                         }
                                     }
                                 } else if (change.pressed && change.previousPressed) {
-                                    if (isInteractingWithToolbar) continue
+                                    if (isInteractingWithToolbar || isInteractingWithCursorButton) continue
 
                                     // Check if user has moved past the touch slop
                                     val distFromDown = (change.position - touchDownPos).getDistance()
@@ -219,8 +288,13 @@ fun TouchpadOverlay(
                                         isInteractingWithToolbar = false
                                         continue
                                     }
+                                    if (isInteractingWithCursorButton) {
+                                        isInteractingWithCursorButton = false
+                                        change.consume()
+                                        continue
+                                    }
 
-                                    // Touch Up with 1 finger
+                                    // Touch Up with 1 finger on touchpad
                                     longPressJob?.cancel()
                                     val pressDuration = System.currentTimeMillis() - touchDownTime
 
@@ -230,39 +304,13 @@ fun TouchpadOverlay(
                                             // Double Click
                                             onVibrateShort()
                                             webView?.let { wv ->
-                                                val downTime = SystemClock.uptimeMillis()
-                                                val d1 = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0)
-                                                val u1 = MotionEvent.obtain(downTime, downTime + 25, MotionEvent.ACTION_UP, cursorX, cursorY, 0)
-                                                wv.dispatchTouchEvent(d1)
-                                                wv.dispatchTouchEvent(u1)
-                                                d1.recycle()
-                                                u1.recycle()
-
-                                                val d2 = MotionEvent.obtain(downTime + 60, downTime + 60, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0)
-                                                val u2 = MotionEvent.obtain(downTime + 60, downTime + 85, MotionEvent.ACTION_UP, cursorX, cursorY, 0)
-                                                wv.dispatchTouchEvent(d2)
-                                                wv.dispatchTouchEvent(u2)
-                                                d2.recycle()
-                                                u2.recycle()
-
+                                                dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_PRIMARY)
+                                                dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_PRIMARY)
                                                 JavaScriptEngine.dispatchMouseEvent(wv, "dblclick", cursorX, cursorY)
                                             }
                                         } else {
-                                            // Single Click (Tapped on touchpad)
-                                            onVibrateShort()
-                                            webView?.let { wv ->
-                                                // 1. Native MotionEvent for Chromium touch handling, link navigation, and outside-popup dismissal
-                                                val downTime = SystemClock.uptimeMillis()
-                                                val down = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0)
-                                                val up = MotionEvent.obtain(downTime, downTime + 35, MotionEvent.ACTION_UP, cursorX, cursorY, 0)
-                                                wv.dispatchTouchEvent(down)
-                                                wv.dispatchTouchEvent(up)
-                                                down.recycle()
-                                                up.recycle()
-
-                                                // 2. JavaScript DOM click with DPR conversion, menuitem activation, and outside-menu dismissal
-                                                JavaScriptEngine.dispatchMouseClick(wv, cursorX, cursorY)
-                                            }
+                                            // Single Tap on Touchpad -> Left Click
+                                            triggerLeftClick()
                                         }
                                         lastTapTime = now
                                     }
@@ -310,7 +358,81 @@ fun TouchpadOverlay(
             )
         }
 
-        // 3. Floating Mouse Action Toolbar (Select All, Copy, Paste, Screen Lock) - "Icon Saja"
+        // 3. Traveling Left Button (Kiri: Klik Biasa) - moves with cursor
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = Color(0xFF0F172A).copy(alpha = 0.94f),
+            border = BorderStroke(1.5.dp, Color(0xFF1F6FEB)),
+            shadowElevation = 6.dp,
+            modifier = Modifier
+                .offset { IntOffset(leftBtnXPx.toInt(), cursorBtnYPx.toInt()) }
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(bounded = true, color = Color(0xFF38BDF8))
+                ) {
+                    triggerLeftClick()
+                }
+                .testTag("cursor_button_left_click")
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.TouchApp,
+                    contentDescription = "Klik Biasa",
+                    tint = Color(0xFF38BDF8),
+                    modifier = Modifier.size(15.dp)
+                )
+                Spacer(modifier = Modifier.width(3.dp))
+                Text(
+                    text = "Klik",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
+
+        // 4. Traveling Right Button (Kanan: Klik Kanan) - moves with cursor
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = Color(0xFF0F172A).copy(alpha = 0.94f),
+            border = BorderStroke(1.5.dp, Color(0xFFF5A524)),
+            shadowElevation = 6.dp,
+            modifier = Modifier
+                .offset { IntOffset(rightBtnXPx.toInt(), cursorBtnYPx.toInt()) }
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(bounded = true, color = Color(0xFFF5A524))
+                ) {
+                    triggerRightClick()
+                }
+                .testTag("cursor_button_right_click")
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = "Kanan",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.width(3.dp))
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Klik Kanan",
+                    tint = Color(0xFFF5A524),
+                    modifier = Modifier.size(15.dp)
+                )
+            }
+        }
+
+        // 5. Floating Mouse Action Toolbar (Select All, Copy, Paste, Delete, Zoom In, Zoom Out, Screen Lock)
         Surface(
             shape = RoundedCornerShape(24.dp),
             color = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
@@ -327,7 +449,7 @@ fun TouchpadOverlay(
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
             ) {
-                // Select All (Ctrl+A) - Icon Saja
+                // Select All (Ctrl+A)
                 IconButton(
                     onClick = {
                         onVibrateShort()
@@ -348,7 +470,7 @@ fun TouchpadOverlay(
                     )
                 }
 
-                // Copy (Ctrl+C) - Icon Saja
+                // Copy (Ctrl+C)
                 IconButton(
                     onClick = {
                         onVibrateShort()
@@ -374,7 +496,7 @@ fun TouchpadOverlay(
                     )
                 }
 
-                // Paste (Ctrl+V) - Icon Saja
+                // Paste (Ctrl+V)
                 IconButton(
                     onClick = {
                         onVibrateShort()
@@ -401,7 +523,7 @@ fun TouchpadOverlay(
                     )
                 }
 
-                // Delete (Hapus seleksi / teks) - Icon Saja
+                // Delete (Hapus seleksi / teks)
                 IconButton(
                     onClick = {
                         onVibrateShort()
@@ -430,7 +552,7 @@ fun TouchpadOverlay(
                         .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
                 )
 
-                // Zoom In (+) - Icon Saja
+                // Zoom In (+)
                 IconButton(
                     onClick = {
                         onVibrateShort()
@@ -451,7 +573,7 @@ fun TouchpadOverlay(
                     )
                 }
 
-                // Zoom Out (-) - Icon Saja
+                // Zoom Out (-)
                 IconButton(
                     onClick = {
                         onVibrateShort()
@@ -480,7 +602,7 @@ fun TouchpadOverlay(
                         .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
                 )
 
-                // Lock / Unlock Screen - Icon Saja
+                // Lock / Unlock Screen
                 IconButton(
                     onClick = {
                         isScreenLocked = !isScreenLocked
