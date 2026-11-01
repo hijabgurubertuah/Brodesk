@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BroDesk - Browser Android Versi Desktop</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0F172A;
+      color: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 24px;
+      background: #1F6FEB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 25px rgba(31, 111, 235, 0.4);
+    }
+    .logo svg { width: 56px; height: 56px; fill: #FFFFFF; }
+    h1 { font-size: 2.2rem; font-weight: 800; color: #FFFFFF; margin-bottom: 8px; }
+    p.subtitle { font-size: 1.1rem; color: #94A3B8; margin-bottom: 28px; line-height: 1.5; }
+    
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background-color: #1F6FEB;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 50px;
+      box-shadow: 0 8px 20px rgba(31, 111, 235, 0.4);
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 340px;
+    }
+    .download-btn:hover { background-color: #388BFD; transform: translateY(-2px); }
+    
+    .features {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      text-align: left;
+    }
+    .feature-card {
+      background: #1E293B;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #334155;
+    }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: #388BFD; margin-bottom: 6px; }
+    .feature-card p { font-size: 0.9rem; color: #94A3B8; line-height: 1.4; }
+    
+    .guide {
+      margin-top: 40px;
+      background: #1E293B;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #334155;
+      text-align: left;
+    }
+    .guide h2 { font-size: 1.3rem; margin-bottom: 16px; color: #FFFFFF; text-align: center; }
+    .guide ol { padding-left: 20px; color: #CBD5E1; line-height: 1.8; }
+    
+    footer { margin-top: 48px; color: #64748B; font-size: 0.85rem; }
+    
+    @media (max-width: 480px) {
+      .features { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <svg viewBox="0 0 24 24">
+        <path d="M20,18c1.1,0,2-0.9,2-2V6c0-1.1-0.9-2-2-2H4C2.9,4,2,4.9,2,6v10c0,1.1,0.9,2,2,2H0v2h24v-2H20z M4,6h16v10H4V6z"/>
+      </svg>
+    </div>
+    
+    <h1>BroDesk</h1>
+    <p class="subtitle">Browser Android versi desktop lengkap dengan Touchpad Virtual, Kursor Mouse, Tab, Bookmark, dan Riwayat.</p>
+    
+    <a href="BroDesk.apk" download="BroDesk.apk" class="download-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Unduh APK BroDesk
+    </a>
+
+    <div class="features">
+      <div class="feature-card">
+        <h3>🖱️ Touchpad Virtual</h3>
+        <p>Gunakan layar sentuh seperti mouse komputer: ketuk klik kiri, tekan lama klik kanan & drag.</p>
+      </div>
+      <div class="feature-card">
+        <h3>💻 Tampilan Desktop</h3>
+        <p>Buka situs web komputer, dashboard, dan aplikasi web berat dengan nyaman di HP.</p>
+      </div>
+      <div class="feature-card">
+        <h3>⚡ Cepat & Ringan</h3>
+        <p>Penyimpanan lokal penuh tanpa akun atau pelacakan cloud.</p>
+      </div>
+      <div class="feature-card">
+        <h3>⌨️ Keyboard Desktop</h3>
+        <p>Pintasan tombol Esc, Tab, Ctrl, Alt, Shift, F5, Ctrl+C, Ctrl+V langsung dari HP.</p>
+      </div>
+    </div>
+
+    <div class="guide">
+      <h2>Panduan Pemasangan APK (4 Langkah)</h2>
+      <ol>
+        <li>Ketuk tombol <strong>Unduh APK BroDesk</strong> di atas.</li>
+        <li>Buka berkas <code>BroDesk.apk</code> yang telah diunduh di HP Anda.</li>
+        <li>Bila muncul peringatan, izinkan <em>Pemasangan dari Sumber Tak Dikenal</em>.</li>
+        <li>Tekan <strong>Pasang</strong> lalu buka aplikasi BroDesk!</li>
+      </ol>
+    </div>
+
+    <footer>
+      &copy; BroDesk App - Browser Android Versi Desktop. All Rights Reserved.
+    </footer>
+  </div>
+</body>
+</html>

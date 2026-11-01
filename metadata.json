@@ -1,0 +1,6 @@
+{
+  "name": "BroDesk",
+  "description": "Browser Android versi desktop dengan touchpad virtual, kontrol sentuh mouse lengkap, tab, bookmark, riwayat, dan pengaturan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
