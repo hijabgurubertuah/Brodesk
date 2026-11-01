@@ -201,6 +201,18 @@ fun BrowserScreen(
         onWebNavStateChanged(canGoBack, canGoForward, webViewRef)
     }
 
+    var lastLoadedTabId by remember { mutableStateOf(activeTab.id) }
+    LaunchedEffect(activeTab.id) {
+        if (activeTab.id != lastLoadedTabId) {
+            lastLoadedTabId = activeTab.id
+            currentUrl = activeTab.url
+            currentTitle = activeTab.title
+            if (activeTab.url.isNotBlank()) {
+                webViewRef?.loadUrl(activeTab.url)
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -321,8 +333,8 @@ fun BrowserScreen(
                             ws.allowFileAccess = true
                             ws.allowContentAccess = true
                             ws.mediaPlaybackRequiresUserGesture = false
-                            ws.setSupportMultipleWindows(true)
-                            ws.javaScriptCanOpenWindowsAutomatically = !settings.blockPopups
+                            ws.setSupportMultipleWindows(false)
+                            ws.javaScriptCanOpenWindowsAutomatically = true
                             ws.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
                             CookieManager.getInstance().setAcceptCookie(true)
@@ -334,6 +346,19 @@ fun BrowserScreen(
                             }
 
                             webViewClient = object : WebViewClient() {
+                                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                                    val uri = request?.url ?: return false
+                                    val scheme = uri.scheme?.lowercase() ?: ""
+                                    if (scheme == "http" || scheme == "https") {
+                                        return false
+                                    }
+                                    try {
+                                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                                        view?.context?.startActivity(intent)
+                                    } catch (_: Exception) {}
+                                    return true
+                                }
+
                                 override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
                                     super.onPageStarted(view, url, favicon)
                                     isLoading = true
@@ -455,10 +480,6 @@ fun BrowserScreen(
                         if (view.settings.userAgentString != targetUA) {
                             view.settings.userAgentString = targetUA
                         }
-                        // GUARANTEED: Always load currentUrl if view.url is different or empty
-                        if (currentUrl.isNotBlank() && (view.url == null || view.url != currentUrl)) {
-                            view.loadUrl(currentUrl)
-                        }
                     },
                     modifier = Modifier.fillMaxSize()
                 )
@@ -471,10 +492,6 @@ fun BrowserScreen(
                     scrollSpeed = settings.scrollSpeed,
                     cursorSizeStr = settings.cursorSize,
                     longPressDurationMs = settings.longPressDurationMs,
-                    onLongPressRightClick = { _, _ ->
-                        onVibrateMedium()
-                        contextMenuTarget = ContextMenuTarget.PageTarget(currentUrl, canGoBack)
-                    },
                     onVibrateShort = onVibrateShort,
                     onVibrateMedium = onVibrateMedium
                 )

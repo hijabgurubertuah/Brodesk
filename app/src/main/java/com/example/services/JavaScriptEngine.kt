@@ -41,13 +41,16 @@ object JavaScriptEngine {
                     shiftKey: false,
                     metaKey: false,
                     button: ${if (eventType == "contextmenu") 2 else 0},
-                    buttons: ${if (eventType == "mousedown") 1 else 0},
+                    buttons: ${if (eventType == "mousedown") 1 else if (eventType == "contextmenu") 2 else 0},
                     relatedTarget: null
                 });
                 el.dispatchEvent(evt);
 
                 if ('$eventType' === 'click') {
                     if (typeof el.focus === 'function') el.focus();
+                    if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.getAttribute('role') === 'button') {
+                        el.click();
+                    }
                 }
             })();
         """.trimIndent()
