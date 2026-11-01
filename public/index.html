@@ -86,59 +86,67 @@
     }
 
     html, body {
-      min-height: 100vh;
+      height: 100%;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
       background: var(--bg-gradient);
       background-attachment: fixed;
       font-family: var(--font-stack);
       color: var(--text-primary);
-      line-height: 1.45;
-      font-size: 14px;
-      overflow-x: hidden;
+      line-height: 1.35;
+      font-size: 13.5px;
+      overflow: hidden; /* Pastikan fit 1 layar tanpa scroll vertikal */
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Layout Wrapper: Fits tightly in a single screen view */
+    /* Layout Wrapper: Fit tepat di satu layar (zero vertical scroll) */
     .app-viewport-wrapper {
       width: 100%;
-      max-width: 840px;
+      max-width: 680px;
+      height: 100%;
+      max-height: 100%;
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: 8px 12px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      justify-content: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     @media (min-width: 640px) {
       .app-viewport-wrapper {
-        padding: 24px 20px;
-        gap: 14px;
+        padding: 12px 16px;
       }
     }
 
-    /* Main Showcase Hero Card (Compact Single-Page Fit) */
+    /* Main Showcase Hero Card (Fit 1 Halaman Tanpa Area Kosong) */
     .main-showcase-card {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-card);
-      border-radius: var(--radius-xl);
-      padding: 18px;
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
       box-shadow: var(--shadow-md);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      justify-content: space-between;
+      gap: 6px;
       position: relative;
       overflow: hidden;
+      flex: 1;
     }
 
     @media (min-width: 640px) {
       .main-showcase-card {
-        padding: 24px;
-        gap: 16px;
+        padding: 16px 20px;
+        gap: 10px;
       }
     }
 
@@ -168,67 +176,82 @@
     /* Hero Header: Identity + Download CTA */
     .hero-header-row {
       display: flex;
-      flex-direction: column;
-      gap: 14px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       position: relative;
       z-index: 1;
-    }
-
-    @media (min-width: 640px) {
-      .hero-header-row {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
     }
 
     .hero-identity {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
     }
 
     .app-icon-hero {
-      width: 68px;
-      height: 68px;
-      border-radius: 16px;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
       object-fit: cover;
-      box-shadow: 0 8px 20px rgba(31, 111, 235, 0.22);
-      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 6px 14px rgba(31, 111, 235, 0.2);
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
       flex-shrink: 0;
     }
 
+    @media (min-width: 640px) {
+      .app-icon-hero {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+      }
+    }
+
+    .app-title-group {
+      min-width: 0;
+    }
+
     .app-title-group h1 {
-      font-size: 22px;
+      font-size: 19px;
       font-weight: 800;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.3px;
       line-height: 1.15;
       background: var(--primary-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .app-dev-sub {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 600;
       color: #6366F1;
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 2px;
+      gap: 5px;
+      margin-top: 1px;
     }
 
     .app-tagline {
-      font-size: 12px;
+      font-size: 10.5px;
       color: var(--text-secondary);
-      margin-top: 2px;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* CTA Area */
     .hero-cta-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
+      flex-shrink: 0;
     }
 
     @media (min-width: 640px) {
@@ -241,33 +264,33 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      height: 48px;
-      padding: 0 24px;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
       background: var(--btn-gradient);
       color: #FFFFFF;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 13.5px;
       border-radius: var(--radius-pill);
       text-decoration: none;
       box-shadow: var(--shadow-glow);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       border: none;
-      width: 100%;
+      white-space: nowrap;
     }
 
     @media (min-width: 640px) {
       .btn-download-glow {
-        width: auto;
-        min-width: 220px;
+        min-width: 170px;
+        height: 42px;
       }
     }
 
     .btn-download-glow:hover {
       background: var(--btn-gradient-hover);
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.42);
+      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.4);
     }
 
     .btn-download-glow:active {
@@ -284,7 +307,7 @@
     .compact-stats-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
       position: relative;
       z-index: 1;
     }
@@ -292,8 +315,8 @@
     .stat-pill {
       background: var(--bg-card-subtle);
       border: 1px solid var(--border-card);
-      border-radius: var(--radius-md);
-      padding: 8px 4px;
+      border-radius: var(--radius-sm);
+      padding: 5px 2px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -307,7 +330,7 @@
     }
 
     .stat-pill-val {
-      font-size: 14px;
+      font-size: 12.5px;
       font-weight: 800;
       line-height: 1.1;
     }
@@ -318,9 +341,9 @@
     .stat-pill-val.color-amber { color: #F59E0B; }
 
     .stat-pill-label {
-      font-size: 10.5px;
+      font-size: 9.5px;
       color: var(--text-tertiary);
-      margin-top: 2px;
+      margin-top: 1px;
       font-weight: 500;
     }
 
@@ -328,48 +351,56 @@
     .screenshots-compact-container {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       position: relative;
       z-index: 1;
+      width: 100%;
     }
 
     .screenshots-compact-row {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       width: 100%;
     }
 
     @media (min-width: 640px) {
       .screenshots-compact-row {
-        gap: 18px;
+        gap: 14px;
       }
     }
 
     /* Compact Phone Mockup */
     .mini-mockup-item {
       flex: 1;
-      max-width: 130px;
+      max-width: 86px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 3px;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
     }
 
+    @media (min-width: 640px) {
+      .mini-mockup-item {
+        max-width: 108px;
+        gap: 4px;
+      }
+    }
+
     .mini-mockup-item:hover {
-      transform: translateY(-3px) scale(1.02);
+      transform: translateY(-2px) scale(1.02);
     }
 
     .mini-phone {
       width: 100%;
-      aspect-ratio: 9 / 18.5;
+      aspect-ratio: 9 / 16.5;
       background: #0F172A;
-      border-radius: 17px;
-      border: 3.5px solid #1E293B;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+      border-radius: 13px;
+      border: 2.5px solid #1E293B;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -512,45 +543,30 @@
       margin-top: 2px;
     }
 
-    /* Colorful Feature Pills */
-    .feature-pills-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
+    /* Deskripsi Singkat Aplikasi di Bawah Screenshot */
+    .app-brief-description {
+      font-size: 11px;
+      line-height: 1.35;
+      color: var(--text-secondary);
+      text-align: center;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 6px 10px;
+      margin: 0;
       position: relative;
       z-index: 1;
     }
-
-    .feature-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      font-size: 11px;
-      font-weight: 600;
-      background: var(--bg-card-subtle);
-      border: 1px solid var(--border-card);
-      transition: all 0.15s ease;
-    }
-
-    .feature-pill.blue { color: #2563EB; border-color: rgba(37, 99, 235, 0.25); background: rgba(37, 99, 235, 0.08); }
-    .feature-pill.purple { color: #8B5CF6; border-color: rgba(139, 92, 246, 0.25); background: rgba(139, 92, 246, 0.08); }
-    .feature-pill.pink { color: #EC4899; border-color: rgba(236, 72, 153, 0.25); background: rgba(236, 72, 153, 0.08); }
-    .feature-pill.emerald { color: #10B981; border-color: rgba(16, 185, 129, 0.25); background: rgba(16, 185, 129, 0.08); }
-    .feature-pill.amber { color: #F59E0B; border-color: rgba(245, 158, 11, 0.25); background: rgba(245, 158, 11, 0.08); }
 
     /* Desktop QR Code Mini Floating Box */
     .qr-mini-badge {
       display: none;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
-      padding: 6px 10px;
-      margin-top: 4px;
+      padding: 4px 8px;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -566,11 +582,11 @@
     }
 
     .qr-canvas-box {
-      width: 46px;
-      height: 46px;
+      width: 36px;
+      height: 36px;
       background: #FFF;
       padding: 2px;
-      border-radius: 6px;
+      border-radius: 5px;
       border: 1px solid #E2E8F0;
       display: flex;
       align-items: center;
@@ -584,14 +600,14 @@
     }
 
     .qr-text-mini h5 {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
     }
 
     .qr-text-mini p {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-tertiary);
-      line-height: 1.25;
+      line-height: 1.15;
     }
 
     /* Footer Compact */
@@ -599,7 +615,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 8px;
+      padding: 3px 6px;
+      font-size: 10px;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
       font-size: 11px;
       color: var(--text-tertiary);
     }
@@ -975,13 +995,9 @@
         </div>
       </div>
 
-      <!-- Baris 4: Deretan Chips Fitur Warna-warni -->
-      <div class="feature-pills-row" id="featurePills">
-        <span class="feature-pill blue">&#128187; Mode Desktop</span>
-        <span class="feature-pill purple">&#128433;&#65039; Kursor Virtual</span>
-        <span class="feature-pill pink">&#128070; Klik Kanan Instan</span>
-        <span class="feature-pill emerald">&#128218; Multi Tab &amp; Bookmark</span>
-        <span class="feature-pill amber">&#9889; Pintasan Ctrl+A, C, V, Del</span>
+      <!-- Deskripsi Singkat Aplikasi Tepat di Bawah Tangkapan Layar -->
+      <div class="app-brief-description">
+        <strong>BroDesk</strong> adalah browser Android dengan tampilan desktop nyata, touchpad kursor presisi, klik kanan instan, multi-tab, dan shortcut keyboard untuk kenyamanan browsing dan editing maksimal.
       </div>
 
     </main>
@@ -1120,26 +1136,27 @@
         });
       }
 
+      let isDownloading = false;
       if (mainDownloadBtn) {
         mainDownloadBtn.addEventListener('click', function(e) {
           if (isApple) {
             e.preventDefault();
             return;
           }
+          if (isDownloading) {
+            e.preventDefault();
+            return;
+          }
+          isDownloading = true;
+
           const lbl = this.querySelector('.btn-label');
           if (lbl) lbl.textContent = 'Mengunduh…';
 
-          // Trigger download
-          const link = document.createElement('a');
-          link.href = apkName;
-          link.download = apkName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
+          // Unduhan ditangani langsung satu kali oleh atribut href & download bawaan browser.
           setTimeout(() => {
             if (lbl) lbl.textContent = 'Unduh APK';
             openInstallModal();
+            setTimeout(() => { isDownloading = false; }, 1500);
           }, 600);
         });
       }

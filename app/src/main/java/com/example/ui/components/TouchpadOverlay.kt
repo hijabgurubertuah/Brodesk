@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -115,46 +116,32 @@ fun TouchpadOverlay(
     val toolbarWidthPx = with(density) { 340.dp.toPx() }
     val toolbarHeightPx = with(density) { 64.dp.toPx() }
 
-    // Helper functions for native mouse dispatch (No auto-zoom, true desktop mouse behavior)
-    fun dispatchNativeMouseClick(wv: WebView, x: Float, y: Float, button: Int) {
-        val downTime = SystemClock.uptimeMillis()
-        val props = arrayOf(MotionEvent.PointerProperties().apply {
-            id = 0
-            toolType = MotionEvent.TOOL_TYPE_MOUSE
-        })
-        val coords = arrayOf(MotionEvent.PointerCoords().apply {
-            this.x = x
-            this.y = y
-            pressure = 1f
-            size = 1f
-        })
-        val down = MotionEvent.obtain(
-            downTime, downTime,
-            MotionEvent.ACTION_DOWN,
-            1, props, coords,
-            0, button,
-            1f, 1f, 0, 0,
-            InputDevice.SOURCE_MOUSE, 0
-        )
-        val up = MotionEvent.obtain(
-            downTime, downTime + 35,
-            MotionEvent.ACTION_UP,
-            1, props, coords,
-            0, 0,
-            1f, 1f, 0, 0,
-            InputDevice.SOURCE_MOUSE, 0
-        )
-        wv.dispatchGenericMotionEvent(down)
-        wv.dispatchTouchEvent(down)
-        wv.dispatchTouchEvent(up)
-        down.recycle()
-        up.recycle()
-    }
+    var isLeftPressed by remember { mutableStateOf(false) }
+    var isRightPressed by remember { mutableStateOf(false) }
 
     fun triggerLeftClick() {
         onVibrateShort()
+        isLeftPressed = true
+        scope.launch {
+            delay(200)
+            isLeftPressed = false
+        }
         webView?.let { wv ->
-            dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_PRIMARY)
+            wv.post {
+                wv.requestFocus()
+                wv.requestFocusFromTouch()
+                val now = SystemClock.uptimeMillis()
+                val down = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0).apply {
+                    source = InputDevice.SOURCE_TOUCHSCREEN
+                }
+                val up = MotionEvent.obtain(now, now + 35, MotionEvent.ACTION_UP, cursorX, cursorY, 0).apply {
+                    source = InputDevice.SOURCE_TOUCHSCREEN
+                }
+                wv.dispatchTouchEvent(down)
+                wv.dispatchTouchEvent(up)
+                down.recycle()
+                up.recycle()
+            }
             JavaScriptEngine.dispatchMouseClick(wv, cursorX, cursorY)
         }
     }
@@ -162,9 +149,30 @@ fun TouchpadOverlay(
     fun triggerRightClick() {
         onVibrateMedium()
         isMouseDown = true
+        isRightPressed = true
+        scope.launch {
+            delay(200)
+            isRightPressed = false
+        }
         webView?.let { wv ->
-            dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_SECONDARY)
-            JavaScriptEngine.dispatchContextMenu(wv, cursorX, cursorY)
+            wv.post {
+                wv.requestFocus()
+                wv.requestFocusFromTouch()
+                val now = SystemClock.uptimeMillis()
+                val down = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0).apply {
+                    source = InputDevice.SOURCE_TOUCHSCREEN
+                }
+                wv.dispatchTouchEvent(down)
+                JavaScriptEngine.dispatchContextMenu(wv, cursorX, cursorY)
+                wv.postDelayed({
+                    val up = MotionEvent.obtain(now, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, cursorX, cursorY, 0).apply {
+                        source = InputDevice.SOURCE_TOUCHSCREEN
+                    }
+                    wv.dispatchTouchEvent(up)
+                    down.recycle()
+                    up.recycle()
+                }, 60)
+            }
         }
     }
 
@@ -176,23 +184,23 @@ fun TouchpadOverlay(
         val screenWidthPx = constraints.maxWidth.toFloat()
         val screenHeightPx = constraints.maxHeight.toFloat()
 
-        val btnWidthPx = with(density) { 56.dp.toPx() }
-        val btnHeightPx = with(density) { 30.dp.toPx() }
+        val btnDiameterDp = 34.dp
+        val btnDiameterPx = with(density) { btnDiameterDp.toPx() }
 
-        // Button positions that travel with the cursor:
+        // Circular button positions that travel with the cursor:
         // Left button: directly to the left of the cursor tip
-        val leftBtnXPx = (cursorX - btnWidthPx - with(density) { 8.dp.toPx() }).coerceIn(
+        val leftBtnXPx = (cursorX - btnDiameterPx - with(density) { 10.dp.toPx() }).coerceIn(
             with(density) { 4.dp.toPx() },
-            screenWidthPx - btnWidthPx - with(density) { 4.dp.toPx() }
+            screenWidthPx - btnDiameterPx - with(density) { 4.dp.toPx() }
         )
         // Right button: directly to the right of the cursor arrow
-        val rightBtnXPx = (cursorX + with(density) { 24.dp.toPx() }).coerceIn(
+        val rightBtnXPx = (cursorX + with(density) { 26.dp.toPx() }).coerceIn(
             with(density) { 4.dp.toPx() },
-            screenWidthPx - btnWidthPx - with(density) { 4.dp.toPx() }
+            screenWidthPx - btnDiameterPx - with(density) { 4.dp.toPx() }
         )
-        val cursorBtnYPx = (cursorY - with(density) { 6.dp.toPx() }).coerceIn(
+        val cursorBtnYPx = (cursorY - with(density) { 8.dp.toPx() }).coerceIn(
             with(density) { 4.dp.toPx() },
-            screenHeightPx - btnHeightPx - with(density) { 4.dp.toPx() }
+            screenHeightPx - btnDiameterPx - with(density) { 4.dp.toPx() }
         )
 
         var isInteractingWithToolbar by remember { mutableStateOf(false) }
@@ -213,10 +221,10 @@ fun TouchpadOverlay(
                                 val pos = change.position
 
                                 val inToolbarArea = pos.x >= (size.width - toolbarWidthPx) && pos.y <= toolbarHeightPx
-                                val inLeftBtn = pos.x in leftBtnXPx..(leftBtnXPx + btnWidthPx) &&
-                                                pos.y in cursorBtnYPx..(cursorBtnYPx + btnHeightPx)
-                                val inRightBtn = pos.x in rightBtnXPx..(rightBtnXPx + btnWidthPx) &&
-                                                 pos.y in cursorBtnYPx..(cursorBtnYPx + btnHeightPx)
+                                val inLeftBtn = pos.x in leftBtnXPx..(leftBtnXPx + btnDiameterPx) &&
+                                                pos.y in cursorBtnYPx..(cursorBtnYPx + btnDiameterPx)
+                                val inRightBtn = pos.x in rightBtnXPx..(rightBtnXPx + btnDiameterPx) &&
+                                                 pos.y in cursorBtnYPx..(cursorBtnYPx + btnDiameterPx)
 
                                 if (change.pressed && !change.previousPressed) {
                                     if (inToolbarArea) {
@@ -302,10 +310,9 @@ fun TouchpadOverlay(
                                         val now = System.currentTimeMillis()
                                         if (now - lastTapTime < 300L) {
                                             // Double Click
-                                            onVibrateShort()
+                                            triggerLeftClick()
+                                            triggerLeftClick()
                                             webView?.let { wv ->
-                                                dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_PRIMARY)
-                                                dispatchNativeMouseClick(wv, cursorX, cursorY, MotionEvent.BUTTON_PRIMARY)
                                                 JavaScriptEngine.dispatchMouseEvent(wv, "dblclick", cursorX, cursorY)
                                             }
                                         } else {
@@ -358,76 +365,72 @@ fun TouchpadOverlay(
             )
         }
 
-        // 3. Traveling Left Button (Kiri: Klik Biasa) - moves with cursor
+        // 3. Traveling Left Button (Kiri: Bulat Murni, Tanpa Tulisan, Berubah Warna Saat Ditekan)
         Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = Color(0xFF0F172A).copy(alpha = 0.94f),
-            border = BorderStroke(1.5.dp, Color(0xFF1F6FEB)),
-            shadowElevation = 6.dp,
+            shape = CircleShape,
+            color = if (isLeftPressed) Color(0xFF38BDF8) else Color(0xFF0F172A).copy(alpha = 0.92f),
+            border = BorderStroke(
+                width = 2.dp,
+                color = if (isLeftPressed) Color.White else Color(0xFF38BDF8)
+            ),
+            shadowElevation = if (isLeftPressed) 8.dp else 4.dp,
             modifier = Modifier
                 .offset { IntOffset(leftBtnXPx.toInt(), cursorBtnYPx.toInt()) }
+                .size(btnDiameterDp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = ripple(bounded = true, color = Color(0xFF38BDF8))
+                    indication = ripple(bounded = true, radius = 18.dp, color = Color(0xFF38BDF8))
                 ) {
                     triggerLeftClick()
                 }
                 .testTag("cursor_button_left_click")
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp)
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
             ) {
-                Icon(
-                    imageVector = Icons.Default.TouchApp,
-                    contentDescription = "Klik Biasa",
-                    tint = Color(0xFF38BDF8),
-                    modifier = Modifier.size(15.dp)
-                )
-                Spacer(modifier = Modifier.width(3.dp))
-                Text(
-                    text = "Klik",
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                Box(
+                    modifier = Modifier
+                        .size(if (isLeftPressed) 12.dp else 10.dp)
+                        .background(
+                            color = if (isLeftPressed) Color.White else Color(0xFF38BDF8),
+                            shape = CircleShape
+                        )
                 )
             }
         }
 
-        // 4. Traveling Right Button (Kanan: Klik Kanan) - moves with cursor
+        // 4. Traveling Right Button (Kanan: Bulat Murni, Tanpa Tulisan, Berubah Warna Saat Ditekan)
         Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = Color(0xFF0F172A).copy(alpha = 0.94f),
-            border = BorderStroke(1.5.dp, Color(0xFFF5A524)),
-            shadowElevation = 6.dp,
+            shape = CircleShape,
+            color = if (isRightPressed) Color(0xFFF5A524) else Color(0xFF0F172A).copy(alpha = 0.92f),
+            border = BorderStroke(
+                width = 2.dp,
+                color = if (isRightPressed) Color.White else Color(0xFFF5A524)
+            ),
+            shadowElevation = if (isRightPressed) 8.dp else 4.dp,
             modifier = Modifier
                 .offset { IntOffset(rightBtnXPx.toInt(), cursorBtnYPx.toInt()) }
+                .size(btnDiameterDp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = ripple(bounded = true, color = Color(0xFFF5A524))
+                    indication = ripple(bounded = true, radius = 18.dp, color = Color(0xFFF5A524))
                 ) {
                     triggerRightClick()
                 }
                 .testTag("cursor_button_right_click")
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp)
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    text = "Kanan",
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                Spacer(modifier = Modifier.width(3.dp))
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Klik Kanan",
-                    tint = Color(0xFFF5A524),
-                    modifier = Modifier.size(15.dp)
+                Box(
+                    modifier = Modifier
+                        .size(if (isRightPressed) 12.dp else 10.dp)
+                        .background(
+                            color = if (isRightPressed) Color.White else Color(0xFFF5A524),
+                            shape = CircleShape
+                        )
                 )
             }
         }

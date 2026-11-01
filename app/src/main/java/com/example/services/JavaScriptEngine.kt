@@ -69,6 +69,35 @@ object JavaScriptEngine {
                     try { el.focus(); } catch(e){}
                 }
 
+                // Monaco Editor Caret positioning on right-click
+                function findMonaco(win) {
+                    try {
+                        if (win.monaco && win.monaco.editor) {
+                            var eds = win.monaco.editor.getEditors();
+                            if (eds && eds.length > 0) {
+                                var ed = eds.find(function(e) { return e.hasTextFocus(); }) || eds[0];
+                                return { win: win, ed: ed };
+                            }
+                        }
+                        for (var f = 0; f < win.frames.length; f++) {
+                            var res = findMonaco(win.frames[f]);
+                            if (res) return res;
+                        }
+                    } catch(e) {}
+                    return null;
+                }
+
+                var m = findMonaco(window);
+                if (m && m.ed) {
+                    try {
+                        var target = m.ed.getTargetAtClientPoint(x, y);
+                        if (target && target.position) {
+                            m.ed.setPosition(target.position);
+                            m.ed.focus();
+                        }
+                    } catch(e) {}
+                }
+
                 var init = {
                     bubbles: true,
                     cancelable: true,
@@ -110,7 +139,7 @@ object JavaScriptEngine {
                     return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0' && (elem.offsetWidth > 0 || elem.offsetHeight > 0 || elem.getClientRects().length > 0);
                 }
 
-                // Check for ACTUALLY VISIBLE context menus or dropdowns (Monaco, web apps, standard menus)
+                // 1. Check for ACTUALLY VISIBLE context menus or dropdowns
                 var candidateMenus = document.querySelectorAll('.monaco-menu-container, .context-view, [role="menu"], .dropdown-menu, .context-menu');
                 var visibleMenus = [];
                 for (var i = 0; i < candidateMenus.length; i++) {
@@ -150,7 +179,75 @@ object JavaScriptEngine {
                     return;
                 }
 
-                var init = {
+                // If user is clicking an item inside a visible context menu / dropdown menu:
+                if (isInsideMenu) {
+                    var menuTarget = el.closest('[role="menuitem"], .action-item, .action-label, [role="button"], button, a');
+                    if (menuTarget && typeof menuTarget.click === 'function') {
+                        menuTarget.click();
+                        return;
+                    }
+                }
+
+                // 2. Monaco Editor Caret & Focus (Google Apps Script / VS Code Web)
+                function findMonaco(win) {
+                    try {
+                        if (win.monaco && win.monaco.editor) {
+                            var eds = win.monaco.editor.getEditors();
+                            if (eds && eds.length > 0) {
+                                var ed = eds.find(function(e) { return e.hasTextFocus(); }) || eds[0];
+                                return { win: win, ed: ed };
+                            }
+                        }
+                        for (var f = 0; f < win.frames.length; f++) {
+                            var res = findMonaco(win.frames[f]);
+                            if (res) return res;
+                        }
+                    } catch(e) {}
+                    return null;
+                }
+
+                var m = findMonaco(window);
+                if (m && m.ed) {
+                    try {
+                        var target = m.ed.getTargetAtClientPoint(x, y);
+                        if (target && target.position) {
+                            m.ed.setPosition(target.position);
+                            m.ed.focus();
+                        }
+                    } catch(e) {}
+                }
+
+                // 3. Move Caret in ContentEditable or Text Elements
+                if (document.caretRangeFromPoint) {
+                    try {
+                        var range = document.caretRangeFromPoint(x, y);
+                        if (range) {
+                            var sel = window.getSelection();
+                            if (sel) {
+                                sel.removeAllRanges();
+                                sel.addRange(range);
+                            }
+                        }
+                    } catch(e) {}
+                } else if (document.caretPositionFromPoint) {
+                    try {
+                        var pos = document.caretPositionFromPoint(x, y);
+                        if (pos && pos.offsetNode) {
+                            var sel = window.getSelection();
+                            if (sel) {
+                                sel.collapse(pos.offsetNode, pos.offset);
+                            }
+                        }
+                    } catch(e) {}
+                }
+
+                // 4. Focus on text/input fields
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) {
+                    try { el.focus(); } catch(e){}
+                }
+
+                // 5. Dispatch Mouse & Pointer Events to make buttons, links, tabs, and controls work
+                var pInit = {
                     bubbles: true,
                     cancelable: true,
                     view: window,
@@ -161,28 +258,25 @@ object JavaScriptEngine {
                     clientY: y,
                     button: 0,
                     buttons: 1,
-                    which: 1,
                     pointerId: 1,
                     pointerType: 'mouse',
                     isPrimary: true
                 };
 
-                try { el.dispatchEvent(new PointerEvent('pointerdown', init)); } catch(e){}
-                try { el.dispatchEvent(new MouseEvent('mousedown', init)); } catch(e){}
-                try { el.dispatchEvent(new PointerEvent('pointerup', init)); } catch(e){}
-                try { el.dispatchEvent(new MouseEvent('mouseup', init)); } catch(e){}
-                try { el.dispatchEvent(new MouseEvent('click', init)); } catch(e){}
+                try { el.dispatchEvent(new PointerEvent('pointerdown', pInit)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('mousedown', pInit)); } catch(e){}
 
-                if (typeof el.focus === 'function') {
-                    try { el.focus(); } catch(e){}
-                }
+                pInit.buttons = 0;
+                try { el.dispatchEvent(new PointerEvent('pointerup', pInit)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('mouseup', pInit)); } catch(e){}
 
-                // Trigger click on closest clickable target (menuitem, button, link, action-item)
-                var clickable = el.closest('[role="menuitem"], .action-item, .action-label, button, a, input, select, textarea, [role="button"]');
-                if (clickable && typeof clickable.click === 'function') {
-                    clickable.click();
-                } else if (typeof el.click === 'function') {
-                    el.click();
+                var clickEvt = new MouseEvent('click', pInit);
+                var notCanceled = el.dispatchEvent(clickEvt);
+
+                // If not already handled and element is an anchor or button
+                var clickable = el.closest('button, a, [role="button"], input[type="button"], input[type="submit"], input[type="checkbox"], input[type="radio"]');
+                if (clickable && clickable !== el && typeof clickable.click === 'function') {
+                    try { clickable.click(); } catch(e){}
                 }
             })();
         """.trimIndent()
@@ -219,12 +313,6 @@ object JavaScriptEngine {
 
                 if ('$eventType' === 'click') {
                     if (typeof el.focus === 'function') el.focus();
-                    var clickable = el.closest('[role="menuitem"], .action-item, a, button, [role="button"]');
-                    if (clickable && typeof clickable.click === 'function') {
-                        clickable.click();
-                    } else if (typeof el.click === 'function') {
-                        el.click();
-                    }
                 }
             })();
         """.trimIndent()

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import android.os.SystemClock
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.GeolocationPermissions
@@ -64,6 +65,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -177,7 +179,18 @@ fun BrowserScreen(
         Toast.makeText(context, "Teks disalin ke papan klip", Toast.LENGTH_SHORT).show()
     }
 
+    var lastDownloadTimestamp by remember { mutableLongStateOf(0L) }
+    var lastDownloadUrl by remember { mutableStateOf("") }
+
     fun downloadFile(url: String, mimeType: String = "", filename: String = "") {
+        val now = SystemClock.elapsedRealtime()
+        // Cegah unduhan ganda: abaikan bila url sama dalam 2000ms atau unduhan apapun dalam 800ms
+        if ((url == lastDownloadUrl && now - lastDownloadTimestamp < 2000L) || (now - lastDownloadTimestamp < 800L)) {
+            return
+        }
+        lastDownloadTimestamp = now
+        lastDownloadUrl = url
+
         try {
             val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             val actualFilename = if (filename.isNotBlank()) filename else URLUtil.guessFileName(url, null, mimeType)
