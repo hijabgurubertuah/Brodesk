@@ -83,6 +83,7 @@ fun DesktopKeyboardBar(
             // Keys
             KeyChip(label = "Esc", onClick = { sendKey("Escape", "Escape") }, tag = "key_esc")
             KeyChip(label = "Tab", onClick = { sendKey("Tab", "Tab") }, tag = "key_tab")
+            KeyChip(label = "Del", onClick = { sendKey("Delete", "Delete") }, tag = "key_del")
             KeyChip(label = "F5", onClick = { sendKey("F5", "F5") }, tag = "key_f5")
 
             // Directional Arrows

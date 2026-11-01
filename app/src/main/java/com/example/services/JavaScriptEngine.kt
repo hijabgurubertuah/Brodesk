@@ -335,6 +335,140 @@ object JavaScriptEngine {
         webView.evaluateJavascript(js, null)
     }
 
+    fun executeDelete(webView: WebView, clientX: Float = 0f, clientY: Float = 0f) {
+        val js = """
+            (function() {
+                function findMonaco(win) {
+                    try {
+                        if (win.monaco && win.monaco.editor) {
+                            var eds = win.monaco.editor.getEditors();
+                            if (eds && eds.length > 0) {
+                                var ed = eds.find(function(e) { return e.hasTextFocus(); }) || eds[0];
+                                return { win: win, ed: ed };
+                            }
+                        }
+                        for (var i = 0; i < win.frames.length; i++) {
+                            var res = findMonaco(win.frames[i]);
+                            if (res) return res;
+                        }
+                    } catch(e) {}
+                    return null;
+                }
+
+                // 1. Monaco Editor (Google Apps Script)
+                var m = findMonaco(window);
+                if (m && m.ed) {
+                    var sel = m.ed.getSelection();
+                    m.ed.executeEdits('brodesk-delete', [{
+                        range: sel,
+                        text: '',
+                        forceMoveMarkers: true
+                    }]);
+                    m.ed.focus();
+                    return;
+                }
+
+                var cx = $clientX;
+                var cy = $clientY;
+                var pointEl = (cx > 0 && cy > 0) ? document.elementFromPoint(cx, cy) : null;
+                var target = document.activeElement || pointEl || document.body;
+
+                // 2. Input / Textarea
+                if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+                    var start = target.selectionStart || 0;
+                    var end = target.selectionEnd || 0;
+                    var val = target.value || '';
+                    if (start !== end) {
+                        target.value = val.substring(0, start) + val.substring(end);
+                        target.selectionStart = target.selectionEnd = start;
+                    } else if (start > 0) {
+                        target.value = val.substring(0, start - 1) + val.substring(start);
+                        target.selectionStart = target.selectionEnd = start - 1;
+                    }
+                    target.dispatchEvent(new Event('input', { bubbles: true }));
+                    target.dispatchEvent(new Event('change', { bubbles: true }));
+                    return;
+                }
+
+                // 3. Selection API
+                if (window.getSelection && !window.getSelection().isCollapsed) {
+                    window.getSelection().deleteFromDocument();
+                }
+
+                // 4. ContentEditable / execCommand
+                try {
+                    document.execCommand('delete');
+                } catch(e) {}
+
+                // 5. Dispatch Delete and Backspace keyboard events
+                var delDown = new KeyboardEvent('keydown', {
+                    key: 'Delete',
+                    code: 'Delete',
+                    keyCode: 46,
+                    which: 46,
+                    bubbles: true,
+                    cancelable: true
+                });
+                target.dispatchEvent(delDown);
+                target.dispatchEvent(new KeyboardEvent('keyup', {
+                    key: 'Delete',
+                    code: 'Delete',
+                    keyCode: 46,
+                    which: 46,
+                    bubbles: true,
+                    cancelable: true
+                }));
+
+                var bsDown = new KeyboardEvent('keydown', {
+                    key: 'Backspace',
+                    code: 'Backspace',
+                    keyCode: 8,
+                    which: 8,
+                    bubbles: true,
+                    cancelable: true
+                });
+                target.dispatchEvent(bsDown);
+                target.dispatchEvent(new KeyboardEvent('keyup', {
+                    key: 'Backspace',
+                    code: 'Backspace',
+                    keyCode: 8,
+                    which: 8,
+                    bubbles: true,
+                    cancelable: true
+                }));
+            })();
+        """.trimIndent()
+        webView.evaluateJavascript(js, null)
+    }
+
+    fun zoomIn(webView: WebView) {
+        val nativeZoomed = webView.zoomIn()
+        if (!nativeZoomed) {
+            val js = """
+                (function() {
+                    var cur = parseFloat(document.body.style.zoom || '1.0');
+                    document.body.style.zoom = (cur + 0.15).toFixed(2);
+                })();
+            """.trimIndent()
+            webView.evaluateJavascript(js, null)
+        }
+    }
+
+    fun zoomOut(webView: WebView) {
+        val nativeZoomed = webView.zoomOut()
+        if (!nativeZoomed) {
+            val js = """
+                (function() {
+                    var cur = parseFloat(document.body.style.zoom || '1.0');
+                    if (cur > 0.35) {
+                        document.body.style.zoom = (cur - 0.15).toFixed(2);
+                    }
+                })();
+            """.trimIndent()
+            webView.evaluateJavascript(js, null)
+        }
+    }
+
     fun dispatchKeyboardEvent(
         webView: WebView,
         key: String,
@@ -349,6 +483,10 @@ object JavaScriptEngine {
         }
         if (ctrlKey && key.lowercase() == "c") {
             executeCopy(webView)
+            return
+        }
+        if (key == "Delete" || key == "Backspace") {
+            executeDelete(webView)
             return
         }
 

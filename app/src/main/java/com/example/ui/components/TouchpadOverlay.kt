@@ -18,10 +18,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -90,7 +93,7 @@ fun TouchpadOverlay(
         else -> 1.0f
     }
 
-    val toolbarWidthPx = with(density) { 210.dp.toPx() }
+    val toolbarWidthPx = with(density) { 340.dp.toPx() }
     val toolbarHeightPx = with(density) { 64.dp.toPx() }
 
     Box(
@@ -253,7 +256,7 @@ fun TouchpadOverlay(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
-                modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
             ) {
                 // Select All (Ctrl+A) - Icon Saja
                 IconButton(
@@ -265,14 +268,14 @@ fun TouchpadOverlay(
                         Toast.makeText(context, "Pilih Semua (Ctrl+A)", Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier
-                        .size(38.dp)
+                        .size(36.dp)
                         .testTag("mouse_action_select_all")
                 ) {
                     Icon(
                         imageVector = Icons.Default.SelectAll,
                         contentDescription = "Pilih Semua (Ctrl+A)",
                         tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(19.dp)
                     )
                 }
 
@@ -291,14 +294,14 @@ fun TouchpadOverlay(
                         Toast.makeText(context, "Salin (Ctrl+C)", Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier
-                        .size(38.dp)
+                        .size(36.dp)
                         .testTag("mouse_action_copy")
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = "Salin (Ctrl+C)",
                         tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(19.dp)
                     )
                 }
 
@@ -318,22 +321,93 @@ fun TouchpadOverlay(
                         ).show()
                     },
                     modifier = Modifier
-                        .size(38.dp)
+                        .size(36.dp)
                         .testTag("mouse_action_paste")
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentPaste,
                         contentDescription = "Tempel (Ctrl+V)",
                         tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(19.dp)
+                    )
+                }
+
+                // Delete (Hapus seleksi / teks) - Icon Saja
+                IconButton(
+                    onClick = {
+                        onVibrateShort()
+                        webView?.let { wv ->
+                            JavaScriptEngine.executeDelete(wv, cursorX, cursorY)
+                        }
+                        Toast.makeText(context, "Hapus (Delete)", Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = Modifier
+                        .size(36.dp)
+                        .testTag("mouse_action_delete")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Hapus (Delete)",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(19.dp)
+                    )
+                }
+
+                // Subtle vertical divider between edit tools and zoom
+                Box(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(18.dp)
+                        .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
+                )
+
+                // Zoom In (+) - Icon Saja
+                IconButton(
+                    onClick = {
+                        onVibrateShort()
+                        webView?.let { wv ->
+                            JavaScriptEngine.zoomIn(wv)
+                        }
+                        Toast.makeText(context, "Perbesar (+)", Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = Modifier
+                        .size(36.dp)
+                        .testTag("mouse_action_zoom_in")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Perbesar (+)",
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(20.dp)
                     )
                 }
 
-                // Subtle vertical divider between clipboard tools and lock
+                // Zoom Out (-) - Icon Saja
+                IconButton(
+                    onClick = {
+                        onVibrateShort()
+                        webView?.let { wv ->
+                            JavaScriptEngine.zoomOut(wv)
+                        }
+                        Toast.makeText(context, "Perkecil (-)", Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = Modifier
+                        .size(36.dp)
+                        .testTag("mouse_action_zoom_out")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Remove,
+                        contentDescription = "Perkecil (-)",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+
+                // Subtle vertical divider between zoom and lock
                 Box(
                     modifier = Modifier
                         .width(1.dp)
-                        .height(20.dp)
+                        .height(18.dp)
                         .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
                 )
 
@@ -349,14 +423,14 @@ fun TouchpadOverlay(
                         ).show()
                     },
                     modifier = Modifier
-                        .size(38.dp)
+                        .size(36.dp)
                         .testTag("touchpad_screen_lock_button")
                 ) {
                     Icon(
                         imageVector = if (isScreenLocked) Icons.Default.Lock else Icons.Default.LockOpen,
                         contentDescription = if (isScreenLocked) "Layar Terkunci" else "Gulir Aktif",
                         tint = if (isScreenLocked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(19.dp)
                     )
                 }
             }
