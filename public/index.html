@@ -33,14 +33,14 @@
       --accent-cyan: #06B6D4;
       
       --bg-page: #F0F4FF;
-      --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                         radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
-                         radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
-                         radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+      --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.16) 0px, transparent 50%),
+                         radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.16) 0px, transparent 50%),
+                         radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.14) 0px, transparent 50%),
+                         radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.14) 0px, transparent 50%),
                          #F8FAFC;
-      --bg-card: rgba(255, 255, 255, 0.85);
-      --bg-card-subtle: rgba(255, 255, 255, 0.65);
-      --border-card: rgba(226, 232, 240, 0.8);
+      --bg-card: rgba(255, 255, 255, 0.88);
+      --bg-card-subtle: rgba(255, 255, 255, 0.7);
+      --border-card: rgba(226, 232, 240, 0.85);
       --border-glow: rgba(99, 102, 241, 0.25);
       --text-primary: #0F172A;
       --text-secondary: #475569;
@@ -48,10 +48,10 @@
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --radius-xl: 20px;
+      --radius-xl: 22px;
       --radius-pill: 9999px;
       --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
-      --shadow-md: 0 8px 24px rgba(31, 111, 235, 0.08);
+      --shadow-md: 0 10px 28px rgba(31, 111, 235, 0.1);
       --shadow-glow: 0 10px 25px rgba(99, 102, 241, 0.28);
       --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
@@ -59,21 +59,21 @@
     @media (prefers-color-scheme: dark) {
       :root {
         --bg-page: #0B0F19;
-        --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.22) 0px, transparent 50%),
-                           radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.18) 0px, transparent 50%),
-                           radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.16) 0px, transparent 50%),
-                           radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.14) 0px, transparent 50%),
+        --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.24) 0px, transparent 50%),
+                           radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.2) 0px, transparent 50%),
+                           radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.18) 0px, transparent 50%),
+                           radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.16) 0px, transparent 50%),
                            #0B0F19;
-        --bg-card: rgba(17, 24, 39, 0.82);
-        --bg-card-subtle: rgba(30, 41, 59, 0.65);
-        --border-card: rgba(51, 65, 85, 0.65);
+        --bg-card: rgba(17, 24, 39, 0.85);
+        --bg-card-subtle: rgba(30, 41, 59, 0.7);
+        --border-card: rgba(51, 65, 85, 0.7);
         --border-glow: rgba(99, 102, 241, 0.4);
         --text-primary: #F8FAFC;
         --text-secondary: #CBD5E1;
         --text-tertiary: #94A3B8;
         --shadow-sm: 0 2px 6px rgba(0,0,0,0.4);
-        --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
-        --shadow-glow: 0 10px 28px rgba(99, 102, 241, 0.38);
+        --shadow-md: 0 10px 28px rgba(0,0,0,0.55);
+        --shadow-glow: 0 10px 28px rgba(99, 102, 241, 0.4);
       }
     }
 
@@ -94,69 +94,29 @@
       line-height: 1.45;
       font-size: 14px;
       overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* Compact Layout Container */
+    /* Layout Wrapper: Fits tightly in a single screen view */
     .app-viewport-wrapper {
-      max-width: 860px;
+      width: 100%;
+      max-width: 840px;
       margin: 0 auto;
-      padding: 12px 14px 20px;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      justify-content: center;
     }
 
     @media (min-width: 640px) {
       .app-viewport-wrapper {
-        padding: 16px 20px 24px;
+        padding: 24px 20px;
         gap: 14px;
       }
-    }
-
-    /* Compact Top Bar */
-    .compact-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 14px;
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-pill);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-logo {
-      width: 26px;
-      height: 26px;
-      border-radius: 7px;
-      object-fit: cover;
-    }
-
-    .brand-title {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      background: var(--primary-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .badge-dev {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: var(--radius-pill);
-      background: rgba(99, 102, 241, 0.12);
-      color: #6366F1;
-      border: 1px solid rgba(99, 102, 241, 0.25);
     }
 
     /* Main Showcase Hero Card (Compact Single-Page Fit) */
@@ -166,7 +126,7 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-xl);
-      padding: 16px;
+      padding: 18px;
       box-shadow: var(--shadow-md);
       display: flex;
       flex-direction: column;
@@ -177,42 +137,44 @@
 
     @media (min-width: 640px) {
       .main-showcase-card {
-        padding: 20px;
+        padding: 24px;
         gap: 16px;
       }
     }
 
-    /* Decorative Color Glow Orbs */
+    /* Decorative Color Glow Orbs inside card */
     .glow-orb-top {
       position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, transparent 70%);
       pointer-events: none;
+      z-index: 0;
     }
 
     .glow-orb-bottom {
       position: absolute;
-      bottom: -30px;
-      left: -30px;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+      bottom: -60px;
+      left: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.24) 0%, transparent 70%);
       pointer-events: none;
+      z-index: 0;
     }
 
-    /* Header Row: Icon + Meta + CTA Button */
+    /* Hero Header: Identity + Download CTA */
     .hero-header-row {
       display: flex;
       flex-direction: column;
       gap: 14px;
+      position: relative;
+      z-index: 1;
     }
 
-    @media (min-width: 680px) {
+    @media (min-width: 640px) {
       .hero-header-row {
         flex-direction: row;
         align-items: center;
@@ -227,47 +189,38 @@
     }
 
     .app-icon-hero {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
       object-fit: cover;
-      box-shadow: 0 6px 16px rgba(31, 111, 235, 0.25);
-      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 20px rgba(31, 111, 235, 0.22);
+      border: 2px solid rgba(255, 255, 255, 0.8);
       flex-shrink: 0;
-    }
-
-    @media (min-width: 640px) {
-      .app-icon-hero {
-        width: 72px;
-        height: 72px;
-      }
     }
 
     .app-title-group h1 {
       font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.4px;
-      line-height: 1.2;
-    }
-
-    @media (min-width: 640px) {
-      .app-title-group h1 {
-        font-size: 25px;
-      }
+      line-height: 1.15;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .app-dev-sub {
       font-size: 13px;
       font-weight: 600;
-      color: #3B82F6;
+      color: #6366F1;
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-top: 2px;
     }
 
     .app-tagline {
-      font-size: 11.5px;
-      color: var(--text-tertiary);
+      font-size: 12px;
+      color: var(--text-secondary);
       margin-top: 2px;
     }
 
@@ -276,39 +229,45 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      width: 100%;
     }
 
-    @media (min-width: 680px) {
+    @media (min-width: 640px) {
       .hero-cta-group {
-        width: 260px;
-        flex-shrink: 0;
+        align-items: flex-end;
       }
     }
 
     .btn-download-glow {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      width: 100%;
-      height: 46px;
+      gap: 10px;
+      height: 48px;
+      padding: 0 24px;
       background: var(--btn-gradient);
       color: #FFFFFF;
       font-weight: 700;
       font-size: 15px;
       border-radius: var(--radius-pill);
-      box-shadow: var(--shadow-glow);
-      transition: all 0.2s ease;
       text-decoration: none;
+      box-shadow: var(--shadow-glow);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       border: none;
+      width: 100%;
+    }
+
+    @media (min-width: 640px) {
+      .btn-download-glow {
+        width: auto;
+        min-width: 220px;
+      }
     }
 
     .btn-download-glow:hover {
       background: var(--btn-gradient-hover);
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.45);
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.42);
     }
 
     .btn-download-glow:active {
@@ -316,113 +275,82 @@
     }
 
     .btn-download-glow.disabled {
-      background: #64748B;
-      box-shadow: none;
+      opacity: 0.6;
       cursor: not-allowed;
+      pointer-events: none;
     }
 
-    .cta-hint {
-      font-size: 11px;
-      text-align: center;
-      color: var(--text-tertiary);
-    }
-
-    /* 4-Stat Compact Row */
+    /* Compact 4-Column Stats Pill Bar */
     .compact-stats-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-pill {
       background: var(--bg-card-subtle);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
       padding: 8px 4px;
-    }
-
-    .stat-pill {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-align: center;
-      flex: 1;
-      position: relative;
+      transition: transform 0.15s ease;
     }
 
-    .stat-pill:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 15%;
-      height: 70%;
-      width: 1px;
-      background: var(--border-card);
+    .stat-pill:hover {
+      transform: translateY(-1px);
     }
 
     .stat-pill-val {
       font-size: 14px;
       font-weight: 800;
-      letter-spacing: -0.2px;
+      line-height: 1.1;
     }
 
-    .stat-pill-val.color-blue { color: #3B82F6; }
+    .stat-pill-val.color-blue { color: #2563EB; }
     .stat-pill-val.color-purple { color: #8B5CF6; }
     .stat-pill-val.color-emerald { color: #10B981; }
     .stat-pill-val.color-amber { color: #F59E0B; }
 
     .stat-pill-label {
-      font-size: 10px;
+      font-size: 10.5px;
       color: var(--text-tertiary);
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.4px;
-      margin-top: 1px;
+      margin-top: 2px;
+      font-weight: 500;
     }
 
-    /* 3 Small Screenshots (Tangkapan Layar 3 Saja Kecil-Kecil) */
+    /* 3 Small Screenshots (Tangkapan Layar 3 Saja Kecil-Kecil Side-by-Side) */
     .screenshots-compact-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-    }
-
-    .screenshots-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .screenshots-title {
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
       gap: 6px;
-      color: var(--text-secondary);
-    }
-
-    .screenshots-hint {
-      font-size: 11px;
-      color: #6366F1;
-      font-weight: 600;
+      position: relative;
+      z-index: 1;
     }
 
     .screenshots-compact-row {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       width: 100%;
     }
 
     @media (min-width: 640px) {
       .screenshots-compact-row {
-        gap: 16px;
+        gap: 18px;
       }
     }
 
     /* Compact Phone Mockup */
     .mini-mockup-item {
       flex: 1;
-      max-width: 135px;
+      max-width: 130px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -432,14 +360,14 @@
     }
 
     .mini-mockup-item:hover {
-      transform: translateY(-4px) scale(1.02);
+      transform: translateY(-3px) scale(1.02);
     }
 
     .mini-phone {
       width: 100%;
       aspect-ratio: 9 / 18.5;
       background: #0F172A;
-      border-radius: 18px;
+      border-radius: 17px;
       border: 3.5px solid #1E293B;
       box-shadow: 0 8px 18px rgba(0,0,0,0.14);
       position: relative;
@@ -450,8 +378,8 @@
 
     @media (min-width: 640px) {
       .mini-phone {
-        border-width: 4.5px;
-        border-radius: 20px;
+        border-width: 4px;
+        border-radius: 19px;
       }
     }
 
@@ -460,7 +388,7 @@
       top: 3px;
       left: 50%;
       transform: translateX(-50%);
-      width: 28px;
+      width: 26px;
       height: 4px;
       background: #000;
       border-radius: 2px;
@@ -479,7 +407,6 @@
       overflow: hidden;
     }
 
-    /* Mini Internal Screen Elements */
     .mini-status-bar {
       height: 13px;
       background: #F8FAFC;
@@ -534,7 +461,7 @@
     }
 
     .mini-nav-bar {
-      height: 18px;
+      height: 17px;
       background: #FFFFFF;
       border-top: 1px solid #E2E8F0;
       display: flex;
@@ -555,7 +482,6 @@
       background: #1F6FEB;
     }
 
-    /* Mini Cursor in Screen 1 */
     .mini-cursor {
       position: absolute;
       top: 50%;
@@ -578,17 +504,12 @@
       border-radius: 2px;
     }
 
-    .mockup-sublabel {
+    .mockup-brief-desc {
       font-size: 11px;
       font-weight: 700;
       color: var(--text-primary);
       text-align: center;
-    }
-
-    .mockup-subdesc {
-      font-size: 9.5px;
-      color: var(--text-tertiary);
-      text-align: center;
+      margin-top: 2px;
     }
 
     /* Colorful Feature Pills */
@@ -597,6 +518,8 @@
       flex-wrap: wrap;
       gap: 6px;
       justify-content: center;
+      position: relative;
+      z-index: 1;
     }
 
     .feature-pill {
@@ -618,64 +541,6 @@
     .feature-pill.emerald { color: #10B981; border-color: rgba(16, 185, 129, 0.25); background: rgba(16, 185, 129, 0.08); }
     .feature-pill.amber { color: #F59E0B; border-color: rgba(245, 158, 11, 0.25); background: rgba(245, 158, 11, 0.08); }
 
-    /* Compact Collapsible Card (About, What's New, FAQ) */
-    .compact-details-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 12px 16px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .accordion-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      cursor: pointer;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .accordion-icon {
-      color: var(--text-tertiary);
-      transition: transform 0.2s ease;
-    }
-
-    .accordion-card.open .accordion-icon {
-      transform: rotate(180deg);
-    }
-
-    .accordion-content {
-      display: none;
-      padding-top: 10px;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .accordion-card.open .accordion-content {
-      display: block;
-    }
-
-    .bullet-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-
-    .bullet-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #6366F1;
-      margin-top: 6px;
-      flex-shrink: 0;
-    }
-
     /* Desktop QR Code Mini Floating Box */
     .qr-mini-badge {
       display: none;
@@ -684,7 +549,7 @@
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
-      padding: 8px 12px;
+      padding: 6px 10px;
       margin-top: 4px;
     }
 
@@ -701,10 +566,10 @@
     }
 
     .qr-canvas-box {
-      width: 54px;
-      height: 54px;
+      width: 46px;
+      height: 46px;
       background: #FFF;
-      padding: 3px;
+      padding: 2px;
       border-radius: 6px;
       border: 1px solid #E2E8F0;
       display: flex;
@@ -719,14 +584,14 @@
     }
 
     .qr-text-mini h5 {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
     }
 
     .qr-text-mini p {
-      font-size: 10.5px;
+      font-size: 10px;
       color: var(--text-tertiary);
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
     /* Footer Compact */
@@ -734,7 +599,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 10px;
+      padding: 6px 8px;
       font-size: 11px;
       color: var(--text-tertiary);
     }
@@ -767,7 +632,7 @@
 
     .install-sheet {
       width: 100%;
-      max-width: 460px;
+      max-width: 440px;
       background: var(--bg-card);
       backdrop-filter: blur(24px);
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -806,7 +671,7 @@
     }
 
     .sheet-title-row h3 {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
     }
 
@@ -839,8 +704,8 @@
     }
 
     .btn-sheet-close {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: var(--bg-card-subtle);
       border: 1px solid var(--border-card);
@@ -877,7 +742,7 @@
     }
 
     .lightbox-box {
-      max-width: 320px;
+      max-width: 300px;
       width: 100%;
       position: relative;
       display: flex;
@@ -927,15 +792,6 @@
 
   <div class="app-viewport-wrapper">
     
-    <!-- Bilah Atas Mini (Compact Topbar) -->
-    <header class="compact-topbar">
-      <div class="brand-wrap">
-        <img src="logo.png" alt="Logo BroDesk" class="brand-logo" width="26" height="26">
-        <span class="brand-title cfg-app-name">BroDesk</span>
-      </div>
-      <div class="badge-dev cfg-dev-name">Guber Smart</div>
-    </header>
-
     <!-- Notifikasi Khusus Apple iOS/iPad -->
     <div class="ios-box" id="iosNotice">
       Aplikasi ini khusus perangkat Android.
@@ -950,7 +806,7 @@
       <div class="hero-header-row">
         
         <div class="hero-identity">
-          <img src="logo.png" alt="Ikon BroDesk" class="app-icon-hero" width="72" height="72">
+          <img src="logo.png" alt="Ikon BroDesk" class="app-icon-hero" width="68" height="68">
           <div class="app-title-group">
             <h1 class="cfg-app-name">BroDesk</h1>
             <div class="app-dev-sub">
@@ -971,16 +827,15 @@
             </svg>
             <span class="btn-label">Unduh APK</span>
           </a>
-          <span class="cta-hint">Berkas APK langsung &middot; Bebas Iklan</span>
 
           <!-- Kode QR Mini Khusus Desktop -->
           <div class="qr-mini-badge" id="desktopQrBox">
             <div class="qr-canvas-box">
-              <canvas id="qrCanvas" width="48" height="48"></canvas>
+              <canvas id="qrCanvas" width="46" height="46"></canvas>
             </div>
             <div class="qr-text-mini">
               <h5>Pindai di HP</h5>
-              <p>Arahkan kamera HP ke kode QR untuk unduh langsung.</p>
+              <p>Arahkan kamera HP ke QR untuk unduh langsung.</p>
             </div>
           </div>
         </div>
@@ -1009,14 +864,6 @@
 
       <!-- Baris 3: Tangkapan Layar 3 Saja Kecil-Kecil (Side-by-Side) -->
       <div class="screenshots-compact-container">
-        <div class="screenshots-title-row">
-          <div class="screenshots-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-            <span>Tangkapan Layar (3 Layar)</span>
-          </div>
-          <span class="screenshots-hint">Ketuk untuk memperbesar</span>
-        </div>
-
         <div class="screenshots-compact-row">
           
           <!-- Mockup 1: Browser (Layar Utama & Kursor) -->
@@ -1035,13 +882,11 @@
                     <div class="mini-line" style="width:80%; background:#93C5FD;"></div>
                     <div class="mini-line" style="width:50%;"></div>
                   </div>
-                  <!-- Quick actions row -->
                   <div style="display:flex; gap:2px; margin-top:auto;">
                     <span style="background:#2563EB; color:#fff; font-size:5.5px; padding:1px 3px; border-radius:2px;">Ctrl+A</span>
                     <span style="background:#2563EB; color:#fff; font-size:5.5px; padding:1px 3px; border-radius:2px;">Ctrl+C</span>
                     <span style="background:#EF4444; color:#fff; font-size:5.5px; padding:1px 3px; border-radius:2px;">DEL</span>
                   </div>
-                  <!-- Mini Cursor -->
                   <div class="mini-cursor">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="#2563EB" stroke="#FFFFFF" stroke-width="2">
                       <polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon>
@@ -1056,8 +901,7 @@
                 </div>
               </div>
             </div>
-            <div class="mockup-sublabel">1. Browser</div>
-            <div class="mockup-subdesc">Kursor & Touchpad</div>
+            <div class="mockup-brief-desc">Browser &amp; Kursor</div>
           </div>
 
           <!-- Mockup 2: Tab -->
@@ -1090,8 +934,7 @@
                 </div>
               </div>
             </div>
-            <div class="mockup-sublabel">2. Multi Tab</div>
-            <div class="mockup-subdesc">Banyak Halaman</div>
+            <div class="mockup-brief-desc">Banyak Tab</div>
           </div>
 
           <!-- Mockup 3: Bookmark -->
@@ -1126,8 +969,7 @@
                 </div>
               </div>
             </div>
-            <div class="mockup-sublabel">3. Bookmark</div>
-            <div class="mockup-subdesc">Situs Favorit</div>
+            <div class="mockup-brief-desc">Bookmark Cepat</div>
           </div>
 
         </div>
@@ -1143,34 +985,6 @@
       </div>
 
     </main>
-
-    <!-- Kartu Informasi Tambahan Ringkas (Akordeon) -->
-    <section class="compact-details-card accordion-card" id="accordionAbout">
-      <div class="accordion-header" role="button" tabindex="0">
-        <span style="display:flex; align-items:center; gap:6px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-          <span>Tentang &amp; Yang Baru</span>
-        </span>
-        <svg class="accordion-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-      <div class="accordion-content">
-        <p style="margin-bottom:8px;" id="aboutText">BroDesk adalah browser Android berantarmuka desktop nyata dengan touchpad kursor presisi, klik kanan lewat tekan lama, multi-tab, dan pintasan cepat.</p>
-        <div style="font-weight:700; margin-bottom:4px; color:var(--text-primary);">Pembaruan Terbaru:</div>
-        <div id="whatsNewContainer"></div>
-      </div>
-    </section>
-
-    <!-- Kartu FAQ Ringkas (Akordeon) -->
-    <section class="compact-details-card accordion-card" id="accordionFaq">
-      <div class="accordion-header" role="button" tabindex="0">
-        <span style="display:flex; align-items:center; gap:6px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-          <span>Pertanyaan Umum (FAQ)</span>
-        </span>
-        <svg class="accordion-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-      <div class="accordion-content" id="faqContentContainer"></div>
-    </section>
 
     <!-- Footer Ringkas -->
     <footer class="compact-footer">
@@ -1245,33 +1059,6 @@
 
       const yrEl = document.getElementById('currentYear');
       if (yrEl) yrEl.textContent = new Date().getFullYear();
-
-      if (cfg.aboutFull) {
-        const abEl = document.getElementById('aboutText');
-        if (abEl) abEl.textContent = cfg.aboutFull;
-      }
-
-      // Yang baru list
-      const whatsNewContainer = document.getElementById('whatsNewContainer');
-      if (whatsNewContainer && Array.isArray(cfg.whatsNew)) {
-        whatsNewContainer.innerHTML = cfg.whatsNew.map(item => `
-          <div class="bullet-item">
-            <span class="bullet-dot"></span>
-            <span>${item}</span>
-          </div>
-        `).join('');
-      }
-
-      // FAQ list
-      const faqContainer = document.getElementById('faqContentContainer');
-      if (faqContainer && Array.isArray(cfg.faqs)) {
-        faqContainer.innerHTML = cfg.faqs.map(f => `
-          <div style="margin-bottom:8px;">
-            <div style="font-weight:700; color:var(--text-primary);">&#10004; ${f.q}</div>
-            <div style="margin-top:2px;">${f.a}</div>
-          </div>
-        `).join('');
-      }
 
       // HEAD request untuk ukuran dinamis APK
       const apkName = cfg.apkFileName || 'BroDesk.apk';
@@ -1357,22 +1144,6 @@
         });
       }
 
-      // Akordeon Toggle
-      document.querySelectorAll('.accordion-card').forEach(card => {
-        const header = card.querySelector('.accordion-header');
-        if (header) {
-          header.addEventListener('click', () => {
-            card.classList.toggle('open');
-          });
-          header.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              card.classList.toggle('open');
-            }
-          });
-        }
-      });
-
       // Lightbox 3 Mockup
       const lightboxModal = document.getElementById('lightboxModal');
       const lightboxTargetPhone = document.getElementById('lightboxTargetPhone');
@@ -1382,11 +1153,10 @@
       document.querySelectorAll('.mini-mockup-item').forEach(item => {
         item.addEventListener('click', () => {
           const phoneHtml = item.querySelector('.mini-phone').outerHTML;
-          const label = item.querySelector('.mockup-sublabel').textContent;
-          const desc = item.querySelector('.mockup-subdesc').textContent;
+          const desc = item.querySelector('.mockup-brief-desc').textContent;
 
           lightboxTargetPhone.innerHTML = phoneHtml;
-          lightboxCaption.textContent = `${label} - ${desc}`;
+          lightboxCaption.textContent = desc;
           lightboxModal.classList.add('open');
           document.body.style.overflow = 'hidden';
         });
@@ -1413,7 +1183,7 @@
         }
       });
 
-      // Generator Kode QR Canvas
+      // Generator Kode QR Canvas untuk Desktop
       function drawSimpleQR(canvas, text) {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');

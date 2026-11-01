@@ -28,6 +28,10 @@ object JavaScriptEngine {
                 var el = document.elementFromPoint(x, y) || document.activeElement || document.body;
                 if (!el) return;
 
+                if (typeof el.focus === 'function') {
+                    try { el.focus(); } catch(e){}
+                }
+
                 var init = {
                     bubbles: true,
                     cancelable: true,
@@ -38,11 +42,16 @@ object JavaScriptEngine {
                     clientX: x,
                     clientY: y,
                     button: 2,
-                    buttons: 2
+                    buttons: 2,
+                    which: 3,
+                    pointerId: 1,
+                    pointerType: 'mouse',
+                    isPrimary: true
                 };
 
                 try { el.dispatchEvent(new PointerEvent('pointerdown', init)); } catch(e){}
                 try { el.dispatchEvent(new MouseEvent('mousedown', init)); } catch(e){}
+                try { el.dispatchEvent(new PointerEvent('contextmenu', init)); } catch(e){}
                 try { el.dispatchEvent(new MouseEvent('contextmenu', init)); } catch(e){}
             })();
         """.trimIndent()
@@ -58,20 +67,33 @@ object JavaScriptEngine {
                 var el = document.elementFromPoint(x, y) || document.body;
                 if (!el) return;
 
-                // Check for open context menus or dropdowns (Monaco, web apps, standard menus)
-                var openMenus = document.querySelectorAll('.monaco-menu-container, .context-view, [role="menu"], .dropdown-menu');
+                function isElementVisible(elem) {
+                    if (!elem) return false;
+                    var style = window.getComputedStyle(elem);
+                    return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0' && (elem.offsetWidth > 0 || elem.offsetHeight > 0 || elem.getClientRects().length > 0);
+                }
+
+                // Check for ACTUALLY VISIBLE context menus or dropdowns (Monaco, web apps, standard menus)
+                var candidateMenus = document.querySelectorAll('.monaco-menu-container, .context-view, [role="menu"], .dropdown-menu, .context-menu');
+                var visibleMenus = [];
+                for (var i = 0; i < candidateMenus.length; i++) {
+                    if (isElementVisible(candidateMenus[i])) {
+                        visibleMenus.push(candidateMenus[i]);
+                    }
+                }
+
                 var isInsideMenu = false;
-                if (openMenus && openMenus.length > 0) {
-                    for (var i = 0; i < openMenus.length; i++) {
-                        if (openMenus[i].contains(el)) {
+                if (visibleMenus.length > 0) {
+                    for (var j = 0; j < visibleMenus.length; j++) {
+                        if (visibleMenus[j].contains(el)) {
                             isInsideMenu = true;
                             break;
                         }
                     }
                 }
 
-                // If a menu is open and tap is OUTSIDE the menu, immediately dismiss it
-                if (openMenus && openMenus.length > 0 && !isInsideMenu) {
+                // If a menu is VISIBLE and tap is OUTSIDE the menu, dismiss it immediately
+                if (visibleMenus.length > 0 && !isInsideMenu) {
                     var dismissMdown = new MouseEvent('mousedown', {
                         bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0, buttons: 1
                     });
@@ -101,7 +123,11 @@ object JavaScriptEngine {
                     clientX: x,
                     clientY: y,
                     button: 0,
-                    buttons: 1
+                    buttons: 1,
+                    which: 1,
+                    pointerId: 1,
+                    pointerType: 'mouse',
+                    isPrimary: true
                 };
 
                 try { el.dispatchEvent(new PointerEvent('pointerdown', init)); } catch(e){}
@@ -111,7 +137,7 @@ object JavaScriptEngine {
                 try { el.dispatchEvent(new MouseEvent('click', init)); } catch(e){}
 
                 if (typeof el.focus === 'function') {
-                    el.focus();
+                    try { el.focus(); } catch(e){}
                 }
 
                 // Trigger click on closest clickable target (menuitem, button, link, action-item)
