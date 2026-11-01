@@ -305,6 +305,10 @@ fun BrowserScreen(
                                 ViewGroup.LayoutParams.MATCH_PARENT
                             )
 
+                            try {
+                                setLayerType(android.view.View.LAYER_TYPE_NONE, null)
+                            } catch (_: Exception) {}
+
                             val ws = this.settings
                             ws.javaScriptEnabled = true
                             ws.domStorageEnabled = true

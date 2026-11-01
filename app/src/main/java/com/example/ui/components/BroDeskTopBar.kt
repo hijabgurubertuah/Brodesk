@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -96,14 +97,18 @@ fun BroDeskTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 6.dp)
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
-                // Address Field with Lock/Search Icon & trailing buttons
+                // Spacious Address Field with 100% visible text
                 OutlinedTextField(
                     value = urlText,
                     onValueChange = { urlText = it },
                     placeholder = { Text("Ketik URL atau kata kunci...", fontSize = 14.sp) },
                     singleLine = true,
+                    textStyle = TextStyle(
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    ),
                     leadingIcon = {
                         if (isEditing) {
                             Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
@@ -116,33 +121,12 @@ fun BroDeskTopBar(
                         }
                     },
                     trailingIcon = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            if (isEditing && urlText.isNotEmpty()) {
-                                IconButton(onClick = { urlText = "" }, modifier = Modifier.size(32.dp).testTag("clear_url_button")) {
-                                    Icon(Icons.Default.Close, contentDescription = "Hapus teks", modifier = Modifier.size(18.dp))
-                                }
-                            }
-                            if (!isEditing && currentUrl.isNotEmpty()) {
-                                IconButton(
-                                    onClick = { if (isLoading) onStop() else onReload() },
-                                    modifier = Modifier.size(32.dp).testTag("reload_stop_button")
-                                ) {
-                                    if (isLoading) {
-                                        Icon(Icons.Default.Close, contentDescription = "Henti", modifier = Modifier.size(18.dp))
-                                    } else {
-                                        Icon(Icons.Default.Refresh, contentDescription = "Muat ulang", modifier = Modifier.size(18.dp))
-                                    }
-                                }
-                                IconButton(
-                                    onClick = onToggleBookmark,
-                                    modifier = Modifier.size(32.dp).testTag("bookmark_star_button")
-                                ) {
-                                    if (isBookmarked) {
-                                        Icon(Icons.Default.Star, contentDescription = "Hapus Bookmark", tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(18.dp))
-                                    } else {
-                                        Icon(Icons.Default.StarBorder, contentDescription = "Tambah Bookmark", modifier = Modifier.size(18.dp))
-                                    }
-                                }
+                        if (urlText.isNotEmpty()) {
+                            IconButton(
+                                onClick = { urlText = "" },
+                                modifier = Modifier.size(32.dp).testTag("clear_url_button")
+                            ) {
+                                Icon(Icons.Default.Close, contentDescription = "Hapus teks", modifier = Modifier.size(18.dp))
                             }
                         }
                     },
@@ -162,20 +146,43 @@ fun BroDeskTopBar(
                     ),
                     modifier = Modifier
                         .weight(1f)
-                        .height(48.dp)
                         .onFocusChanged { isEditing = it.isFocused }
                         .testTag("url_address_input")
                 )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(2.dp))
+
+                // Reload / Stop Button
+                IconButton(
+                    onClick = { if (isLoading) onStop() else onReload() },
+                    modifier = Modifier.size(36.dp).testTag("reload_stop_button")
+                ) {
+                    if (isLoading) {
+                        Icon(Icons.Default.Close, contentDescription = "Henti", modifier = Modifier.size(20.dp))
+                    } else {
+                        Icon(Icons.Default.Refresh, contentDescription = "Muat ulang", modifier = Modifier.size(20.dp))
+                    }
+                }
+
+                // Bookmark Star Button
+                IconButton(
+                    onClick = onToggleBookmark,
+                    modifier = Modifier.size(36.dp).testTag("bookmark_star_button")
+                ) {
+                    if (isBookmarked) {
+                        Icon(Icons.Default.Star, contentDescription = "Hapus Bookmark", tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(20.dp))
+                    } else {
+                        Icon(Icons.Default.StarBorder, contentDescription = "Tambah Bookmark", modifier = Modifier.size(20.dp))
+                    }
+                }
 
                 // 3-Dots Overflow Menu
                 Box {
                     IconButton(
                         onClick = { showMenu = true },
-                        modifier = Modifier.size(38.dp).testTag("overflow_menu_button")
+                        modifier = Modifier.size(36.dp).testTag("overflow_menu_button")
                     ) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menu Utama")
+                        Icon(Icons.Default.MoreVert, contentDescription = "Menu Utama", modifier = Modifier.size(20.dp))
                     }
 
                     DropdownMenu(
