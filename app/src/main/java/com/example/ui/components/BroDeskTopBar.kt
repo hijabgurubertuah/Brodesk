@@ -258,7 +258,7 @@ fun BroDeskTopBar(
                             modifier = Modifier.testTag("menu_desktop_mode")
                         )
                         DropdownMenuItem(
-                            text = { Text("Muat versi HP") },
+                            text = { Text(if (!isDesktopMode) "Muat versi HP (Aktif)" else "Muat versi HP") },
                             leadingIcon = { Icon(Icons.Default.PhoneAndroid, contentDescription = null) },
                             onClick = {
                                 showMenu = false

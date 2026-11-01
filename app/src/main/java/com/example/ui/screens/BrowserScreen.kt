@@ -257,13 +257,28 @@ fun BrowserScreen(
                 onNewTab = { onNewTab("") },
                 onFindInPage = { showFindInPage = true },
                 onToggleDesktopMode = {
-                    val newMode = !activeTab.isDesktopMode
+                    val newMode = true
                     onUpdateTab(currentUrl, currentTitle, null, newMode)
-                    Toast.makeText(context, if (newMode) "Mode desktop aktif" else "Mode HP aktif", Toast.LENGTH_SHORT).show()
+                    webViewRef?.let { wv ->
+                        val ua = UrlUtils.getUserAgent(settings.browserIdentity, newMode)
+                        wv.settings.userAgentString = ua
+                        if (currentUrl.isNotBlank()) {
+                            wv.loadUrl(currentUrl)
+                        }
+                    }
+                    Toast.makeText(context, "Mode desktop aktif", Toast.LENGTH_SHORT).show()
                 },
                 onLoadMobileVersion = {
-                    onUpdateTab(currentUrl, currentTitle, null, false)
-                    Toast.makeText(context, "Memuat versi HP", Toast.LENGTH_SHORT).show()
+                    val newMode = false
+                    onUpdateTab(currentUrl, currentTitle, null, newMode)
+                    webViewRef?.let { wv ->
+                        val ua = UrlUtils.getUserAgent(settings.browserIdentity, newMode)
+                        wv.settings.userAgentString = ua
+                        if (currentUrl.isNotBlank()) {
+                            wv.loadUrl(currentUrl)
+                        }
+                    }
+                    Toast.makeText(context, "Mode versi HP aktif", Toast.LENGTH_SHORT).show()
                 },
                 onToggleFullScreen = { isFullScreen = !isFullScreen },
                 onToggleKeyboardBar = { showKeyboardBar = !showKeyboardBar },
