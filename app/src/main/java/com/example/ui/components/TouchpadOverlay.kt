@@ -81,7 +81,8 @@ fun TouchpadOverlay(
     cursorSizeStr: String,
     longPressDurationMs: Long,
     onVibrateShort: () -> Unit,
-    onVibrateMedium: () -> Unit
+    onVibrateMedium: () -> Unit,
+    onTriggerRightClick: (() -> Unit)? = null
 ) {
     if (!isEnabled) return
 
@@ -158,20 +159,8 @@ fun TouchpadOverlay(
             wv.post {
                 wv.requestFocus()
                 wv.requestFocusFromTouch()
-                val now = SystemClock.uptimeMillis()
-                val down = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0).apply {
-                    source = InputDevice.SOURCE_TOUCHSCREEN
-                }
-                wv.dispatchTouchEvent(down)
                 JavaScriptEngine.dispatchContextMenu(wv, cursorX, cursorY)
-                wv.postDelayed({
-                    val up = MotionEvent.obtain(now, SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, cursorX, cursorY, 0).apply {
-                        source = InputDevice.SOURCE_TOUCHSCREEN
-                    }
-                    wv.dispatchTouchEvent(up)
-                    down.recycle()
-                    up.recycle()
-                }, 60)
+                onTriggerRightClick?.invoke()
             }
         }
     }

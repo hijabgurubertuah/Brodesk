@@ -507,7 +507,28 @@ fun BrowserScreen(
                     cursorSizeStr = settings.cursorSize,
                     longPressDurationMs = settings.longPressDurationMs,
                     onVibrateShort = onVibrateShort,
-                    onVibrateMedium = onVibrateMedium
+                    onVibrateMedium = onVibrateMedium,
+                    onTriggerRightClick = {
+                        webViewRef?.let { wv ->
+                            val result = wv.hitTestResult
+                            val extra = result.extra
+                            when (result.type) {
+                                WebView.HitTestResult.SRC_ANCHOR_TYPE, WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE -> {
+                                    if (extra != null) {
+                                        contextMenuTarget = ContextMenuTarget.LinkTarget(extra)
+                                    }
+                                }
+                                WebView.HitTestResult.IMAGE_TYPE -> {
+                                    if (extra != null) {
+                                        contextMenuTarget = ContextMenuTarget.ImageTarget(extra)
+                                    }
+                                }
+                                else -> {
+                                    // Hit test result for generic elements
+                                }
+                            }
+                        }
+                    }
                 )
             }
 

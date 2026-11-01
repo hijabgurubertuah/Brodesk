@@ -176,37 +176,44 @@
     /* Hero Header: Identity + Download CTA */
     .hero-header-row {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      flex-direction: column;
+      gap: 12px;
       position: relative;
       z-index: 1;
+    }
+
+    @media (min-width: 600px) {
+      .hero-header-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
     }
 
     .hero-identity {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex: 1;
       min-width: 0;
     }
 
     .app-icon-hero {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
       object-fit: cover;
-      box-shadow: 0 6px 14px rgba(31, 111, 235, 0.2);
-      border: 1.5px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 18px rgba(31, 111, 235, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.9);
       flex-shrink: 0;
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 600px) {
       .app-icon-hero {
-        width: 58px;
-        height: 58px;
-        border-radius: 14px;
+        width: 66px;
+        height: 66px;
+        border-radius: 16px;
       }
     }
 
@@ -215,9 +222,9 @@
     }
 
     .app-title-group h1 {
-      font-size: 19px;
+      font-size: 22px;
       font-weight: 800;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
       line-height: 1.15;
       background: var(--primary-gradient);
       -webkit-background-clip: text;
@@ -228,34 +235,35 @@
     }
 
     .app-dev-sub {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: #6366F1;
       display: flex;
       align-items: center;
       gap: 5px;
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
     .app-tagline {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-secondary);
-      margin-top: 1px;
+      margin-top: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* CTA Area */
+    /* CTA Area - Prominent Large Download Button */
     .hero-cta-group {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      flex-shrink: 0;
+      gap: 6px;
+      width: 100%;
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 600px) {
       .hero-cta-group {
+        width: auto;
         align-items: flex-end;
       }
     }
@@ -264,33 +272,37 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      height: 38px;
-      padding: 0 16px;
+      gap: 10px;
+      height: 48px;
+      padding: 0 24px;
       background: var(--btn-gradient);
       color: #FFFFFF;
-      font-weight: 700;
-      font-size: 13.5px;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.2px;
       border-radius: var(--radius-pill);
       text-decoration: none;
       box-shadow: var(--shadow-glow);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       border: none;
-      white-space: nowrap;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 600px) {
       .btn-download-glow {
-        min-width: 170px;
-        height: 42px;
+        min-width: 210px;
+        height: 52px;
+        font-size: 16px;
+        padding: 0 28px;
       }
     }
 
     .btn-download-glow:hover {
       background: var(--btn-gradient-hover);
       transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 12px 28px rgba(99, 102, 241, 0.45);
     }
 
     .btn-download-glow:active {
@@ -315,8 +327,8 @@
     .stat-pill {
       background: var(--bg-card-subtle);
       border: 1px solid var(--border-card);
-      border-radius: var(--radius-sm);
-      padding: 5px 2px;
+      border-radius: var(--radius-md);
+      padding: 6px 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -545,18 +557,42 @@
 
     /* Deskripsi Singkat Aplikasi di Bawah Screenshot */
     .app-brief-description {
-      font-size: 11px;
-      line-height: 1.35;
+      font-size: 11.5px;
+      line-height: 1.4;
       color: var(--text-secondary);
       text-align: center;
       background: var(--bg-card-subtle);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
-      padding: 6px 10px;
+      padding: 10px 14px;
       margin: 0;
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
+
+    .app-feature-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .badge-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+    }
+
+    .badge-tag.blue { color: #2563EB; background: rgba(37, 99, 235, 0.1); border-color: rgba(37, 99, 235, 0.2); }
+    .badge-tag.purple { color: #8B5CF6; background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.2); }
+    .badge-tag.emerald { color: #10B981; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); }
+    .badge-tag.amber { color: #D97706; background: rgba(217, 119, 6, 0.1); border-color: rgba(217, 119, 6, 0.2); }
 
     /* Desktop QR Code Mini Floating Box */
     .qr-mini-badge {
@@ -997,7 +1033,13 @@
 
       <!-- Deskripsi Singkat Aplikasi Tepat di Bawah Tangkapan Layar -->
       <div class="app-brief-description">
-        <strong>BroDesk</strong> adalah browser Android dengan tampilan desktop nyata, touchpad kursor presisi, klik kanan instan, multi-tab, dan shortcut keyboard untuk kenyamanan browsing dan editing maksimal.
+        <p><strong>BroDesk</strong> menghadirkan pengalaman berselancar web mode desktop sesungguhnya di Android. Dilengkapi touchpad kursor virtual presisi, menu klik kanan instan, multi-tab, bookmark, dan pintasan keyboard (Select All, Copy, Paste, Delete & Zoom).</p>
+        <div class="app-feature-badges">
+          <span class="badge-tag blue">&#128187; Mode Desktop PC</span>
+          <span class="badge-tag purple">&#128433;&#65039; Touchpad Presisi</span>
+          <span class="badge-tag emerald">&#128070; Klik Kanan Instan</span>
+          <span class="badge-tag amber">&#9889; Pintasan Keyboard</span>
+        </div>
       </div>
 
     </main>
