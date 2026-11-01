@@ -97,6 +97,7 @@ fun TouchpadOverlay(
     var cursorY by remember { mutableFloatStateOf(600f) }
 
     var isMouseDown by remember { mutableStateOf(false) }
+    var isDoubleTapDragging by remember { mutableStateOf(false) }
     var lastTapTime by remember { mutableLongStateOf(0L) }
     var longPressJob by remember { mutableStateOf<Job?>(null) }
     var touchDownTime by remember { mutableLongStateOf(0L) }
@@ -241,10 +242,33 @@ fun TouchpadOverlay(
                                     touchDownPos = change.position
                                     hasMovedSinceDown = false
 
+                                    // Check for Double-Tap & Drag (2nd tap down within 350ms)
+                                    val now = System.currentTimeMillis()
+                                    if (now - lastTapTime < 350L) {
+                                        isDoubleTapDragging = true
+                                        isMouseDown = true
+                                        onVibrateShort()
+                                        webView?.let { wv ->
+                                            wv.post {
+                                                wv.requestFocus()
+                                                wv.requestFocusFromTouch()
+                                                val downTime = SystemClock.uptimeMillis()
+                                                val down = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0).apply {
+                                                    source = InputDevice.SOURCE_TOUCHSCREEN
+                                                }
+                                                wv.dispatchTouchEvent(down)
+                                                down.recycle()
+                                            }
+                                            JavaScriptEngine.dispatchMouseEvent(wv, "mousedown", cursorX, cursorY)
+                                        }
+                                    } else {
+                                        isDoubleTapDragging = false
+                                    }
+
                                     longPressJob?.cancel()
                                     longPressJob = scope.launch {
                                         delay(longPressDurationMs)
-                                        if (!hasMovedSinceDown) {
+                                        if (!hasMovedSinceDown && !isDoubleTapDragging) {
                                             // Trigger Desktop Right Click on long press
                                             triggerRightClick()
                                         }
@@ -259,7 +283,7 @@ fun TouchpadOverlay(
                                         longPressJob?.cancel()
                                     }
 
-                                    // Touch Move with 1 finger -> ONLY MOVE CURSOR, NEVER SWIPE PAGE!
+                                    // Touch Move with 1 finger -> Move cursor & select text if double-tap dragging!
                                     val delta = change.position - change.previousPosition
                                     if (abs(delta.x) > 0.1f || abs(delta.y) > 0.1f) {
                                         cursorX = (cursorX + delta.x * sensitivity).coerceIn(0f, size.width.toFloat())
@@ -276,8 +300,22 @@ fun TouchpadOverlay(
                                             }
                                         }
 
-                                        webView?.let { wv ->
-                                            JavaScriptEngine.dispatchMouseEvent(wv, "mousemove", cursorX, cursorY)
+                                        if (isDoubleTapDragging) {
+                                            webView?.let { wv ->
+                                                wv.post {
+                                                    val moveTime = SystemClock.uptimeMillis()
+                                                    val move = MotionEvent.obtain(moveTime, moveTime, MotionEvent.ACTION_MOVE, cursorX, cursorY, 0).apply {
+                                                        source = InputDevice.SOURCE_TOUCHSCREEN
+                                                    }
+                                                    wv.dispatchTouchEvent(move)
+                                                    move.recycle()
+                                                }
+                                                JavaScriptEngine.dispatchMouseEvent(wv, "mousemove", cursorX, cursorY)
+                                            }
+                                        } else {
+                                            webView?.let { wv ->
+                                                JavaScriptEngine.dispatchMouseEvent(wv, "mousemove", cursorX, cursorY)
+                                            }
                                         }
                                     }
                                 } else if (!change.pressed && change.previousPressed) {
@@ -295,9 +333,23 @@ fun TouchpadOverlay(
                                     longPressJob?.cancel()
                                     val pressDuration = System.currentTimeMillis() - touchDownTime
 
-                                    if (!hasMovedSinceDown && pressDuration < longPressDurationMs) {
+                                    if (isDoubleTapDragging) {
+                                        isDoubleTapDragging = false
+                                        isMouseDown = false
+                                        webView?.let { wv ->
+                                            wv.post {
+                                                val upTime = SystemClock.uptimeMillis()
+                                                val up = MotionEvent.obtain(upTime, upTime, MotionEvent.ACTION_UP, cursorX, cursorY, 0).apply {
+                                                    source = InputDevice.SOURCE_TOUCHSCREEN
+                                                }
+                                                wv.dispatchTouchEvent(up)
+                                                up.recycle()
+                                            }
+                                            JavaScriptEngine.dispatchMouseEvent(wv, "mouseup", cursorX, cursorY)
+                                        }
+                                    } else if (!hasMovedSinceDown && pressDuration < longPressDurationMs) {
                                         val now = System.currentTimeMillis()
-                                        if (now - lastTapTime < 300L) {
+                                        if (now - lastTapTime < 350L) {
                                             // Double Click
                                             triggerLeftClick()
                                             triggerLeftClick()
@@ -311,7 +363,7 @@ fun TouchpadOverlay(
                                         lastTapTime = now
                                     }
 
-                                    if (isMouseDown) {
+                                    if (isMouseDown && !isDoubleTapDragging) {
                                         isMouseDown = false
                                         webView?.let { wv ->
                                             JavaScriptEngine.dispatchMouseEvent(wv, "mouseup", cursorX, cursorY)

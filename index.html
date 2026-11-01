@@ -86,67 +86,62 @@
     }
 
     html, body {
-      height: 100%;
-      height: 100vh;
-      height: 100dvh;
-      max-height: 100vh;
-      max-height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
       background: var(--bg-gradient);
       background-attachment: fixed;
       font-family: var(--font-stack);
       color: var(--text-primary);
       line-height: 1.35;
       font-size: 13.5px;
-      overflow: hidden; /* Pastikan fit 1 layar tanpa scroll vertikal */
+      overflow-x: hidden;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       margin: 0;
       padding: 0;
     }
 
-    /* Layout Wrapper: Fit tepat di satu layar (zero vertical scroll) */
+    /* Layout Wrapper: Fit & proportional without clipping */
     .app-viewport-wrapper {
       width: 100%;
       max-width: 680px;
-      height: 100%;
-      max-height: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
       margin: 0 auto;
-      padding: 8px 12px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
       box-sizing: border-box;
-      overflow: hidden;
+      gap: 10px;
     }
 
     @media (min-width: 640px) {
       .app-viewport-wrapper {
-        padding: 12px 16px;
+        padding: 18px 20px;
       }
     }
 
-    /* Main Showcase Hero Card (Fit 1 Halaman Tanpa Area Kosong) */
+    /* Main Showcase Hero Card */
     .main-showcase-card {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 12px 14px;
+      border-radius: var(--radius-xl);
+      padding: 16px;
       box-shadow: var(--shadow-md);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 6px;
+      gap: 12px;
       position: relative;
-      overflow: hidden;
-      flex: 1;
     }
 
     @media (min-width: 640px) {
       .main-showcase-card {
-        padding: 16px 20px;
-        gap: 10px;
+        padding: 20px;
+        gap: 14px;
       }
     }
 
@@ -651,13 +646,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 3px 6px;
-      font-size: 10px;
-      color: var(--text-tertiary);
-      flex-shrink: 0;
-    }
+      padding: 6px 8px;
       font-size: 11px;
       color: var(--text-tertiary);
+      margin-top: 2px;
     }
 
     /* Modal / Bottom Sheet Panduan */
