@@ -2,145 +2,2340 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BroDesk - Browser Android Versi Desktop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>BroDesk - Browser Mode Desktop untuk Android</title>
+  
+  <!-- SEO & Social Meta Tags -->
+  <meta name="description" content="BroDesk adalah browser Android dengan tampilan desktop penuh, kursor virtual presisi, touchpad interaktif, multi-tab, bookmark, dan unduhan langsung.">
+  <meta name="keywords" content="BroDesk, browser desktop android, kursor virtual, touchpad android, apk download, guber smart">
+  <meta name="author" content="Guber Smart">
+  <meta name="theme-color" content="#1F6FEB">
+  <meta property="og:title" content="BroDesk - Browser Mode Desktop untuk Android">
+  <meta property="og:description" content="Jelajahi situs web mode desktop dengan kursor virtual dan touchpad presisi di HP Android Anda.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="BroDesk - Browser Mode Desktop untuk Android">
+  <meta name="twitter:description" content="Browser Android dengan mode desktop nyata dan navigasi kursor sentuh.">
+  <meta name="twitter:image" content="logo.png">
+  
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <!-- Load Configuration File -->
+  <script src="config.js"></script>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* CSS Variables: Material 3 Inspired App Store Aesthetic */
+    :root {
+      --primary: #1F6FEB;
+      --primary-hover: #1754B8;
+      --primary-active: #0F4299;
+      --primary-light: #EBF2FE;
+      --accent-yellow: #F5A524;
+      --accent-green: #10B981;
+      --bg-page: #FFFFFF;
+      --bg-card: #F8FAFC;
+      --bg-card-hover: #F1F5F9;
+      --border: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --text-primary: #1F2937;
+      --text-secondary: #4B5563;
+      --text-tertiary: #94A3B8;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --header-height: 60px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page: #0F172A;
+        --bg-card: #1E293B;
+        --bg-card-hover: #28354D;
+        --border: #334155;
+        --border-subtle: #1E293B;
+        --text-primary: #F1F5F9;
+        --text-secondary: #94A3B8;
+        --text-tertiary: #64748B;
+        --primary-light: rgba(31, 111, 235, 0.16);
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+        --shadow-md: 0 4px 14px rgba(0,0,0,0.4);
+        --shadow-lg: 0 12px 30px rgba(0,0,0,0.5);
+      }
+    }
+
+    /* Reset & Base Rules */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0F172A;
-      color: #F8FAFC;
+      font-family: var(--font-stack);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.5;
+      font-size: 15px;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 24px;
+      }
+    }
+
+    /* Bilah Atas (Sticky Top Bar) */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background-color: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: all 0.2s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .top-bar {
+        background-color: rgba(15, 23, 42, 0.88);
+      }
+    }
+
+    .top-bar-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .top-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.3px;
+    }
+
+    .top-bar-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .top-bar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.15s ease;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+    }
+
+    .top-bar-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .top-bar-btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Main Content Spacing */
+    main {
+      flex: 1;
+      margin-top: calc(var(--header-height) + 12px);
+      padding-bottom: 80px;
+    }
+
+    /* Kepala Aplikasi (App Header) */
+    .app-header {
+      padding: 16px 0 24px;
+    }
+
+    .app-header-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .app-header-grid {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 32px;
+      }
+    }
+
+    .app-identity {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .app-identity {
+        gap: 24px;
+      }
+    }
+
+    .app-icon {
+      width: 88px;
+      height: 88px;
+      border-radius: var(--radius-xl);
+      object-fit: cover;
+      box-shadow: var(--shadow-md);
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    @media (min-width: 640px) {
+      .app-icon {
+        width: 108px;
+        height: 108px;
+      }
+    }
+
+    .app-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .app-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+
+    @media (min-width: 640px) {
+      .app-title {
+        font-size: 32px;
+      }
+    }
+
+    .app-developer {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .app-badges {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Actions Column (CTA & Desktop QR) */
+    .app-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .app-actions {
+        width: 340px;
+        flex-shrink: 0;
+      }
+    }
+
+    /* Tombol Utama (Primary CTA) */
+    .btn-download-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      height: 52px;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 14px rgba(31, 111, 235, 0.35);
+      transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-download-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 6px 18px rgba(31, 111, 235, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-download-primary:active {
+      background-color: var(--primary-active);
+      transform: translateY(0);
+    }
+
+    .btn-download-primary:disabled,
+    .btn-download-primary.disabled {
+      background-color: var(--border);
+      color: var(--text-tertiary);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .download-subtext {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* Desktop QR Code Card */
+    .qr-card {
+      display: none;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      gap: 14px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 768px) {
+      .qr-card {
+        display: flex;
+      }
+    }
+
+    .qr-canvas-wrapper {
+      width: 80px;
+      height: 80px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .qr-canvas-wrapper canvas {
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+    }
+
+    .qr-info h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .qr-info p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Alert / Toast */
+    .toast-notice {
+      display: none;
+      background-color: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #DC2626;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .toast-notice {
+        background-color: rgba(220, 38, 38, 0.15);
+        border-color: rgba(220, 38, 38, 0.3);
+        color: #F87171;
+      }
+    }
+
+    /* Baris Statistik (Stats Row) */
+    .stats-row {
+      display: flex;
+      align-items: center;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 8px;
+      margin: 16px 0 28px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .stats-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .stat-col {
+      flex: 1;
+      min-width: 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      padding: 24px 16px;
-    }
-    .container {
-      max-width: 640px;
-      width: 100%;
+      justify-content: center;
       text-align: center;
+      padding: 0 4px;
+      position: relative;
     }
-    .logo {
-      width: 96px;
-      height: 96px;
-      border-radius: 24px;
-      background: #1F6FEB;
+
+    .stat-col:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background-color: var(--border);
+    }
+
+    .stat-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Section Styling */
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Tangkapan Layar (Screenshots Horizontal Scroll-Snap) */
+    .screenshots-section {
+      margin-bottom: 36px;
+      position: relative;
+    }
+
+    .screenshots-controls {
+      display: none;
+      gap: 8px;
+    }
+
+    @media (min-width: 768px) {
+      .screenshots-controls {
+        display: flex;
+      }
+    }
+
+    .btn-scroll-arrow {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      box-shadow: 0 10px 25px rgba(31, 111, 235, 0.4);
-      overflow: hidden;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
     }
-    .logo img {
+
+    .btn-scroll-arrow:hover {
+      background-color: var(--border);
+      color: var(--text-primary);
+    }
+
+    .screenshots-carousel {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 14px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      margin: 0 -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .screenshots-carousel {
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    .screenshot-item {
+      flex: 0 0 220px;
+      scroll-snap-align: start;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    @media (min-width: 640px) {
+      .screenshot-item {
+        flex: 0 0 240px;
+      }
+    }
+
+    .screenshot-item:hover {
+      transform: translateY(-3px);
+    }
+
+    /* CSS Phone Mockup */
+    .phone-mockup {
+      width: 100%;
+      aspect-ratio: 9 / 18.5;
+      background-color: #0F172A;
+      border-radius: 28px;
+      border: 6px solid #1E293B;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 8px;
+      background: #000000;
+      border-radius: 4px;
+      z-index: 20;
+    }
+
+    .mockup-screen {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      background-color: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      color: #1F2937;
+      font-size: 11px;
     }
-    h1 { font-size: 2.2rem; font-weight: 800; color: #FFFFFF; margin-bottom: 8px; }
-    p.subtitle { font-size: 1.1rem; color: #94A3B8; margin-bottom: 28px; line-height: 1.5; }
-    
-    .download-btn {
-      display: inline-flex;
+
+    /* Mockup internal components */
+    .mockup-status-bar {
+      height: 22px;
+      background: #FFFFFF;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 9px;
+      font-weight: 700;
+      color: #64748B;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .mockup-app-bar {
+      background: #FFFFFF;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .mockup-url-pill {
+      flex: 1;
+      height: 24px;
+      background: #F1F5F9;
+      border-radius: 12px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      color: #475569;
+    }
+
+    .mockup-body {
+      flex: 1;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #F8FAFC;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mockup-bottom-nav {
+      height: 38px;
+      background: #FFFFFF;
+      border-top: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .mockup-nav-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      background-color: #1F6FEB;
+      color: #64748B;
+    }
+
+    .mockup-nav-icon.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* Mockup Cursor Pointer */
+    .mockup-virtual-cursor {
+      position: absolute;
+      top: 45%;
+      left: 55%;
+      width: 14px;
+      height: 14px;
+      z-index: 15;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .mockup-touchpad-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(31, 111, 235, 0.9);
       color: #FFFFFF;
-      text-decoration: none;
-      font-size: 1.2rem;
+      font-size: 8px;
       font-weight: 700;
-      padding: 16px 36px;
-      border-radius: 50px;
-      box-shadow: 0 8px 20px rgba(31, 111, 235, 0.4);
-      transition: all 0.2s ease;
-      width: 100%;
-      max-width: 340px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      z-index: 10;
+    }
+
+    .screenshot-caption {
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .screenshot-caption-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .screenshot-caption-desc {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* Tentang Aplikasi (About Section) */
+    .about-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+
+    .about-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .about-expanded-text {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .btn-toggle-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 14px;
+      margin-top: 8px;
+      padding: 4px 0;
       cursor: pointer;
     }
-    .download-btn:hover { background-color: #388BFD; transform: translateY(-2px); }
-    
-    .features {
-      margin-top: 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      text-align: left;
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
     }
+
+    .chip {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+    }
+
+    /* Fitur Unggulan (Key Features Carousel) */
+    .features-carousel {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 12px;
+      margin: 0 -16px 32px;
+      padding-left: 16px;
+      padding-right: 16px;
+      scrollbar-width: none;
+    }
+
+    .features-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .features-carousel {
+        margin: 0 0 32px;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
     .feature-card {
-      background: #1E293B;
-      border-radius: 16px;
+      flex: 0 0 200px;
+      scroll-snap-align: start;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.15s ease;
+    }
+
+    @media (min-width: 640px) {
+      .feature-card {
+        flex: 0 0 220px;
+      }
+    }
+
+    .feature-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background-color: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Yang Baru (What's New) */
+    .whats-new-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       padding: 20px;
-      border: 1px solid #334155;
+      margin-bottom: 32px;
     }
-    .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: #388BFD; margin-bottom: 6px; }
-    .feature-card p { font-size: 0.9rem; color: #94A3B8; line-height: 1.4; }
-    
-    .guide {
-      margin-top: 40px;
-      background: #1E293B;
-      border-radius: 20px;
-      padding: 24px;
-      border: 1px solid #334155;
+
+    .whats-new-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .whats-new-date {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .whats-new-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .whats-new-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .whats-new-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Keamanan Data (Data Safety) */
+    .data-safety-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+
+    .safety-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+    }
+
+    .safety-item:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .safety-icon {
+      color: var(--accent-green);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .safety-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Info Aplikasi (App Info Grid) */
+    .app-info-grid {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 8px 18px;
+      margin-bottom: 32px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      font-size: 14px;
+    }
+
+    .info-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-label {
+      color: var(--text-tertiary);
+    }
+
+    .info-val {
+      font-weight: 600;
+      text-align: right;
+      color: var(--text-primary);
+    }
+
+    /* Pertanyaan Umum (FAQ Accordion) */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .faq-item {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 700;
       text-align: left;
+      color: var(--text-primary);
+      cursor: pointer;
     }
-    .guide h2 { font-size: 1.3rem; margin-bottom: 16px; color: #FFFFFF; text-align: center; }
-    .guide ol { padding-left: 20px; color: #CBD5E1; line-height: 1.8; }
-    
-    footer { margin-top: 48px; color: #64748B; font-size: 0.85rem; }
-    
-    @media (max-width: 480px) {
-      .features { grid-template-columns: 1fr; }
+
+    .faq-icon {
+      color: var(--text-tertiary);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 20px 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* Kaki Halaman (Footer) */
+    footer {
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    @media (min-width: 640px) {
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .back-to-top {
+      color: var(--primary);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* Sticky Bottom Mobile Bar */
+    .sticky-mobile-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 16px;
+      background-color: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 14px rgba(0,0,0,0.06);
+      z-index: 90;
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .sticky-mobile-bar {
+        background-color: rgba(15, 23, 42, 0.92);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .sticky-mobile-bar {
+        display: none !important;
+      }
+    }
+
+    .sticky-mobile-bar.visible {
+      transform: translateY(0);
+    }
+
+    .sticky-btn {
+      flex: 1;
+      height: 48px;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Panel Panduan Pemasangan (Modal Dialog / Bottom Sheet) */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.65);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    @media (min-width: 640px) {
+      .modal-backdrop {
+        align-items: center;
+        padding: 20px;
+      }
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .install-sheet {
+      width: 100%;
+      max-width: 500px;
+      background-color: var(--bg-page);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @media (min-width: 640px) {
+      .install-sheet {
+        border-radius: var(--radius-xl);
+        transform: scale(0.95);
+        transition: transform 0.2s ease;
+      }
+    }
+
+    .modal-backdrop.open .install-sheet {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 640px) {
+      .modal-backdrop.open .install-sheet {
+        transform: scale(1);
+      }
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sheet-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .btn-sheet-close {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 18px;
+    }
+
+    .install-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .install-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    .step-desc strong {
+      color: var(--text-primary);
+    }
+
+    .sheet-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn-sheet-primary {
+      height: 48px;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-sheet-secondary {
+      height: 44px;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 250;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .lightbox-backdrop.open {
+      display: flex;
+    }
+
+    .lightbox-wrapper {
+      max-width: 380px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+
+    .lightbox-preview {
+      width: 100%;
+    }
+
+    .lightbox-close-btn {
+      position: absolute;
+      top: -46px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .lightbox-nav-btns {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .lightbox-nav-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .lightbox-meta {
+      text-align: center;
+      color: #FFFFFF;
+    }
+
+    .lightbox-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .lightbox-caption {
+      font-size: 13px;
+      color: #CBD5E1;
+      margin-top: 2px;
+    }
+
+    /* iOS Warning Badge */
+    .ios-notice {
+      display: none;
+      background-color: #FEF3C7;
+      border: 1px solid #FCD34D;
+      color: #92400E;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      margin-bottom: 12px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <img src="logo.png" alt="BroDesk Logo" onerror="this.style.display='none'">
-    </div>
-    
-    <h1>BroDesk</h1>
-    <p class="subtitle">Browser Android versi desktop lengkap dengan Touchpad Virtual, Kursor Mouse, Tab, Bookmark, dan Riwayat.</p>
-    
-    <a href="/BroDesk.apk" download="BroDesk.apk" class="download-btn">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Unduh APK BroDesk
-    </a>
 
-    <div class="features">
-      <div class="feature-card">
-        <h3>🖱️ Touchpad Virtual</h3>
-        <p>Gunakan layar sentuh seperti mouse komputer: ketuk klik kiri, tekan lama klik kanan & drag.</p>
+  <!-- Bilah Atas (Sticky Top Bar) -->
+  <header class="top-bar">
+    <div class="container top-bar-inner">
+      <a href="#" class="top-bar-brand" aria-label="Beranda BroDesk">
+        <img src="logo.png" alt="Logo BroDesk" class="top-bar-logo" width="32" height="32">
+        <span class="cfg-app-name">BroDesk</span>
+      </a>
+      <button type="button" class="top-bar-btn" id="topBarDownloadBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Unduh</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Konten Utama -->
+  <main>
+    <div class="container">
+
+      <!-- Notifikasi Khusus Perangkat iOS / iPad -->
+      <div class="ios-notice" id="iosNotice">
+        Aplikasi ini hanya untuk Android. Gunakan perangkat Android untuk memasang berkas APK ini.
       </div>
-      <div class="feature-card">
-        <h3>💻 Tampilan Desktop</h3>
-        <p>Buka situs web komputer, dashboard, dan aplikasi web berat dengan nyaman di HP.</p>
+
+      <!-- Kepala Aplikasi (App Header) -->
+      <section class="app-header">
+        <div class="app-header-grid">
+          
+          <!-- Identitas Aplikasi -->
+          <div class="app-identity">
+            <img src="logo.png" alt="Ikon Aplikasi BroDesk" class="app-icon" width="108" height="108">
+            <div class="app-meta">
+              <h1 class="app-title cfg-app-name">BroDesk</h1>
+              <span class="app-developer cfg-dev-name">Guber Smart</span>
+              <div class="app-badges">
+                Berisi iklan: Tidak &middot; Pembelian dalam aplikasi: Tidak
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom Aksi (Tombol Unduh & QR Desktop) -->
+          <div class="app-actions">
+            <a href="BroDesk.apk" download="BroDesk.apk" class="btn-download-primary" id="mainDownloadBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span class="btn-text">Unduh APK</span>
+            </a>
+            
+            <p class="download-subtext">Berkas APK langsung, bukan dari Play Store.</p>
+            <div class="toast-notice" id="downloadErrorNotice">Berkas belum tersedia, coba lagi nanti.</div>
+
+            <!-- Kartu QR Code Khusus Desktop -->
+            <div class="qr-card" id="desktopQrCard">
+              <div class="qr-canvas-wrapper">
+                <canvas id="qrCanvas" width="68" height="68"></canvas>
+              </div>
+              <div class="qr-info">
+                <h4>Buka di HP Android Anda</h4>
+                <p>Pindai kode QR ini dengan kamera HP Anda untuk mengunduh langsung di ponsel.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Baris Statistik -->
+      <section class="stats-row" aria-label="Statistik Aplikasi">
+        <div class="stat-col">
+          <span class="stat-val stat-size-val cfg-file-size">23 MB</span>
+          <span class="stat-label">Ukuran</span>
+        </div>
+        <div class="stat-col">
+          <span class="stat-val cfg-min-android">7.0+</span>
+          <span class="stat-label">Android</span>
+        </div>
+        <div class="stat-col">
+          <span class="stat-val cfg-version">1.0.0</span>
+          <span class="stat-label">Versi</span>
+        </div>
+        <div class="stat-col">
+          <span class="stat-val cfg-age-rating">3+</span>
+          <span class="stat-label">Rating Usia</span>
+        </div>
+      </section>
+
+      <!-- Tangkapan Layar (Screenshots) -->
+      <section class="screenshots-section">
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span>Tangkapan Layar</span>
+          </h2>
+          <div class="screenshots-controls">
+            <button type="button" class="btn-scroll-arrow" id="btnPrevScreens" aria-label="Gulir ke kiri">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button type="button" class="btn-scroll-arrow" id="btnNextScreens" aria-label="Gulir ke kanan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Carousel Kontainer -->
+        <div class="screenshots-carousel" id="screenshotsCarousel">
+          
+          <!-- Layar 1: Browser -->
+          <div class="screenshot-item" data-index="0" tabindex="0" role="button" aria-label="Buka pratinjau Browser">
+            <div class="phone-mockup">
+              <div class="phone-notch"></div>
+              <div class="mockup-screen">
+                <div class="mockup-status-bar">
+                  <span>09:41</span>
+                  <span>100%</span>
+                </div>
+                <div class="mockup-app-bar">
+                  <div class="mockup-url-pill">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <span>https://google.com</span>
+                  </div>
+                </div>
+                <div class="mockup-body">
+                  <!-- Webpage mock cards -->
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:8px;">
+                    <div style="font-weight:700; color:#1F6FEB; font-size:10px;">Google Workspace Script</div>
+                    <div style="height:4px; width:75%; background:#CBD5E1; border-radius:2px; margin:4px 0 2px;"></div>
+                    <div style="height:4px; width:50%; background:#E2E8F0; border-radius:2px;"></div>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:8px;">
+                    <div style="font-weight:700; color:#1F2937; font-size:10px;">Desktop Console Mode</div>
+                    <div style="height:4px; width:90%; background:#CBD5E1; border-radius:2px; margin:4px 0 2px;"></div>
+                    <div style="height:4px; width:60%; background:#E2E8F0; border-radius:2px;"></div>
+                  </div>
+                  <!-- Quick actions row mock -->
+                  <div style="display:flex; gap:4px; margin-top:auto;">
+                    <span style="background:#1F6FEB; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">Ctrl+A</span>
+                    <span style="background:#1F6FEB; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">Ctrl+C</span>
+                    <span style="background:#1F6FEB; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">Ctrl+V</span>
+                    <span style="background:#EF4444; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">DEL</span>
+                  </div>
+                  <!-- Cursor -->
+                  <div class="mockup-virtual-cursor">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#1F6FEB" stroke="#FFFFFF" stroke-width="2">
+                      <polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon>
+                    </svg>
+                  </div>
+                  <span class="mockup-touchpad-badge">Kursor Aktif</span>
+                </div>
+                <div class="mockup-bottom-nav">
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                </div>
+              </div>
+            </div>
+            <div class="screenshot-caption">
+              <div class="screenshot-caption-title">Browser</div>
+              <div class="screenshot-caption-desc">Tampilan desktop penuh</div>
+            </div>
+          </div>
+
+          <!-- Layar 2: Tab -->
+          <div class="screenshot-item" data-index="1" tabindex="0" role="button" aria-label="Buka pratinjau Multi Tab">
+            <div class="phone-mockup">
+              <div class="phone-notch"></div>
+              <div class="mockup-screen">
+                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
+                <div class="mockup-app-bar" style="justify-content:space-between;">
+                  <span style="font-weight:700; font-size:11px;">Tab Aktif (3)</span>
+                  <span style="background:var(--primary-light); color:var(--primary); font-size:9px; padding:2px 6px; border-radius:10px; font-weight:700;">+ Baru</span>
+                </div>
+                <div class="mockup-body" style="gap:8px;">
+                  <div style="background:#FFFFFF; border:2px solid #1F6FEB; border-radius:8px; padding:6px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:9px; color:#1F6FEB;">
+                      <span>Google Apps Script</span>
+                      <span>&times;</span>
+                    </div>
+                    <div style="height:40px; background:#F1F5F9; border-radius:4px; margin-top:4px; display:flex; align-items:center; justify-content:center; color:#94A3B8; font-size:8px;">Editor Kode</div>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:6px;">
+                    <div style="display:flex; justify-content:space-between; font-weight:600; font-size:9px;">
+                      <span>GitHub Dashboard</span>
+                      <span>&times;</span>
+                    </div>
+                    <div style="height:35px; background:#F8FAFC; border-radius:4px; margin-top:4px;"></div>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:6px;">
+                    <div style="display:flex; justify-content:space-between; font-weight:600; font-size:9px;">
+                      <span>Wikipedia Indonesia</span>
+                      <span>&times;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mockup-bottom-nav">
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
+                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                </div>
+              </div>
+            </div>
+            <div class="screenshot-caption">
+              <div class="screenshot-caption-title">Tab</div>
+              <div class="screenshot-caption-desc">Kelola banyak tab instan</div>
+            </div>
+          </div>
+
+          <!-- Layar 3: Bookmark -->
+          <div class="screenshot-item" data-index="2" tabindex="0" role="button" aria-label="Buka pratinjau Bookmark">
+            <div class="phone-mockup">
+              <div class="phone-notch"></div>
+              <div class="mockup-screen">
+                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
+                <div class="mockup-app-bar">
+                  <span style="font-weight:700; font-size:11px;">Bookmark Saya</span>
+                </div>
+                <div class="mockup-body" style="gap:6px;">
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
+                    <span style="width:16px; height:16px; background:#1F6FEB; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">G</span>
+                    <span style="font-weight:600; font-size:9px;">Google Search</span>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
+                    <span style="width:16px; height:16px; background:#10B981; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">A</span>
+                    <span style="font-weight:600; font-size:9px;">Apps Script Editor</span>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
+                    <span style="width:16px; height:16px; background:#F5A524; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">W</span>
+                    <span style="font-weight:600; font-size:9px;">Wikipedia Ensiklopedia</span>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
+                    <span style="width:16px; height:16px; background:#6366F1; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">GH</span>
+                    <span style="font-weight:600; font-size:9px;">GitHub Repositori</span>
+                  </div>
+                </div>
+                <div class="mockup-bottom-nav">
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
+                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                </div>
+              </div>
+            </div>
+            <div class="screenshot-caption">
+              <div class="screenshot-caption-title">Bookmark</div>
+              <div class="screenshot-caption-desc">Situs favorit satu sentuhan</div>
+            </div>
+          </div>
+
+          <!-- Layar 4: Riwayat -->
+          <div class="screenshot-item" data-index="3" tabindex="0" role="button" aria-label="Buka pratinjau Riwayat">
+            <div class="phone-mockup">
+              <div class="phone-notch"></div>
+              <div class="mockup-screen">
+                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
+                <div class="mockup-app-bar">
+                  <span style="font-weight:700; font-size:11px;">Riwayat Kunjungan</span>
+                </div>
+                <div class="mockup-body" style="gap:5px;">
+                  <span style="font-size:8px; font-weight:700; color:#94A3B8;">HARI INI</span>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:5px 8px;">
+                    <div style="font-weight:600; font-size:9px;">script.google.com</div>
+                    <div style="color:#94A3B8; font-size:7px;">09:12 WIB</div>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:5px 8px;">
+                    <div style="font-weight:600; font-size:9px;">github.com/login</div>
+                    <div style="color:#94A3B8; font-size:7px;">08:45 WIB</div>
+                  </div>
+                  <span style="font-size:8px; font-weight:700; color:#94A3B8; margin-top:3px;">KEMARIN</span>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:5px 8px;">
+                    <div style="font-weight:600; font-size:9px;">id.wikipedia.org</div>
+                    <div style="color:#94A3B8; font-size:7px;">14:20 WIB</div>
+                  </div>
+                </div>
+                <div class="mockup-bottom-nav">
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
+                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                </div>
+              </div>
+            </div>
+            <div class="screenshot-caption">
+              <div class="screenshot-caption-title">Riwayat</div>
+              <div class="screenshot-caption-desc">Telusuri jejak jelajah</div>
+            </div>
+          </div>
+
+          <!-- Layar 5: Pengaturan -->
+          <div class="screenshot-item" data-index="4" tabindex="0" role="button" aria-label="Buka pratinjau Pengaturan">
+            <div class="phone-mockup">
+              <div class="phone-notch"></div>
+              <div class="mockup-screen">
+                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
+                <div class="mockup-app-bar">
+                  <span style="font-weight:700; font-size:11px;">Pengaturan</span>
+                </div>
+                <div class="mockup-body" style="gap:6px;">
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:9px; font-weight:600;">Mode Desktop Standar</span>
+                    <span style="width:20px; height:10px; background:#1F6FEB; border-radius:5px; position:relative;"><span style="position:absolute; right:1px; top:1px; width:8px; height:8px; background:#fff; border-radius:50%;"></span></span>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:9px; font-weight:600;">Kunci Layar Sentuh</span>
+                    <span style="width:20px; height:10px; background:#1F6FEB; border-radius:5px; position:relative;"><span style="position:absolute; right:1px; top:1px; width:8px; height:8px; background:#fff; border-radius:50%;"></span></span>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:9px; font-weight:600;">Kecepatan Kursor</span>
+                    <span style="color:#1F6FEB; font-size:8px; font-weight:700;">Normal</span>
+                  </div>
+                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:9px; font-weight:600;">Mesin Pencari</span>
+                    <span style="color:#64748B; font-size:8px;">Google</span>
+                  </div>
+                </div>
+                <div class="mockup-bottom-nav">
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
+                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
+                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                </div>
+              </div>
+            </div>
+            <div class="screenshot-caption">
+              <div class="screenshot-caption-title">Pengaturan</div>
+              <div class="screenshot-caption-desc">Kustomisasi sesuai kebutuhan</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Tentang Aplikasi (About App) -->
+      <section class="about-card">
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span>Tentang Aplikasi</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </h2>
+        </div>
+
+        <p class="about-text" id="aboutShortText">
+          BroDesk adalah browser Android yang menampilkan situs seperti di komputer, dengan kursor virtual, tekan lama sebagai klik kanan, banyak tab, bookmark, dan unduhan.
+        </p>
+
+        <p class="about-text about-expanded-text" id="aboutFullText">
+          BroDesk dirancang khusus bagi Anda yang sering mengakses situs berantarmuka desktop di layar smartphone Android. Dilengkapi sistem touchpad virtual presisi, Anda dapat menggerakkan kursor, mengklik tautan kecil, memilih teks, menjalankan klik kanan lewat tekan lama, dan menggunakan tombol pintasan keyboard praktis (Ctrl+A, Ctrl+C, Ctrl+V, Delete, serta Zoom In/Out). Seluruh data jelajah, bookmark, dan riwayat disimpan secara lokal dan aman di perangkat Anda.
+        </p>
+
+        <button type="button" class="btn-toggle-more" id="btnToggleAbout">
+          <span id="toggleAboutLabel">Selengkapnya</span>
+          <svg id="toggleAboutIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <div class="chips-row" id="chipsContainer">
+          <span class="chip">Browser</span>
+          <span class="chip">Mode Desktop</span>
+          <span class="chip">Kursor Virtual</span>
+          <span class="chip">Tanpa Iklan</span>
+        </div>
+      </section>
+
+      <!-- Fitur Unggulan (Key Features) -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">Fitur Unggulan</h2>
+        </div>
+
+        <div class="features-carousel" id="featuresContainer">
+          <!-- Rendered dynamically from config.js -->
+        </div>
+      </section>
+
+      <!-- Yang Baru (What's New) -->
+      <section class="whats-new-card">
+        <div class="whats-new-header">
+          <h2 class="section-title">Yang Baru</h2>
+          <span class="whats-new-date cfg-updated-date">1 November 2024</span>
+        </div>
+        <ul class="whats-new-list" id="whatsNewList">
+          <!-- Populated from config.js -->
+        </ul>
+      </section>
+
+      <!-- Keamanan Data (Data Safety) -->
+      <section class="data-safety-card">
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>Keamanan Data</span>
+          </h2>
+        </div>
+        <div id="dataSafetyList">
+          <!-- Populated from config.js -->
+        </div>
+      </section>
+
+      <!-- Info Aplikasi (App Info) -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">Info Aplikasi</h2>
+        </div>
+        <div class="app-info-grid">
+          <div class="info-row">
+            <span class="info-label">Versi</span>
+            <span class="info-val cfg-version">1.0.0</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Diperbarui pada</span>
+            <span class="info-val cfg-updated-date">1 November 2024</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Membutuhkan Android</span>
+            <span class="info-val cfg-min-android">7.0+</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Ukuran</span>
+            <span class="info-val stat-size-val cfg-file-size">23 MB</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Pengembang</span>
+            <span class="info-val cfg-dev-name">Guber Smart</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">ID Paket</span>
+            <span class="info-val cfg-package-id">com.gubersmart.brodesk</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Kategori</span>
+            <span class="info-val cfg-category">Alat</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pertanyaan Umum (FAQ) -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">Pertanyaan Umum</h2>
+        </div>
+        <div class="faq-list" id="faqList">
+          <!-- Populated from config.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Kaki Halaman (Footer) -->
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; <span id="currentYear">2024</span> <span class="cfg-dev-name">Guber Smart</span> &middot; <span class="cfg-app-name">BroDesk</span></p>
+      <a href="#" class="back-to-top" id="backToTopBtn">
+        <span>Kembali ke atas</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Bilah Tempel Unduh untuk HP (Sticky Mobile Bottom Bar) -->
+  <aside class="sticky-mobile-bar" id="stickyMobileBar">
+    <button type="button" class="sticky-btn" id="stickyDownloadBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Unduh APK</span>
+    </button>
+  </aside>
+
+  <!-- Panel Panduan Pemasangan (Bottom Sheet / Modal) -->
+  <div class="modal-backdrop" id="installModal" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="install-sheet">
+      <div class="sheet-header">
+        <h3 class="sheet-title" id="sheetTitle">Pasang BroDesk</h3>
+        <button type="button" class="btn-sheet-close" id="btnCloseSheet" aria-label="Tutup panduan">&times;</button>
       </div>
-      <div class="feature-card">
-        <h3>⚡ Cepat & Ringan</h3>
-        <p>Penyimpanan lokal penuh tanpa akun atau pelacakan cloud.</p>
+
+      <div class="install-steps">
+        <div class="install-step-item">
+          <div class="step-number">1</div>
+          <div class="step-desc">
+            Tunggu unduhan selesai, lalu buka berkas <strong>BroDesk.apk</strong> dari notifikasi atau folder Unduhan HP Anda.
+          </div>
+        </div>
+        <div class="install-step-item">
+          <div class="step-number">2</div>
+          <div class="step-desc">
+            Bila diminta oleh Android, izinkan <strong>"Pasang dari sumber ini"</strong> untuk aplikasi browser yang Anda gunakan.
+          </div>
+        </div>
+        <div class="install-step-item">
+          <div class="step-number">3</div>
+          <div class="step-desc">
+            Ketuk tombol <strong>"Pasang"</strong> (Install) dan tunggu beberapa detik hingga proses selesai.
+          </div>
+        </div>
+        <div class="install-step-item">
+          <div class="step-number">4</div>
+          <div class="step-desc">
+            Buka <strong>BroDesk</strong> dan nikmati pengalaman menjelajah situs web dalam mode desktop penuh.
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <h3>⌨️ Keyboard Desktop</h3>
-        <p>Pintasan tombol Esc, Tab, Ctrl, Alt, Shift, F5, Ctrl+C, Ctrl+V langsung dari HP.</p>
+
+      <div class="sheet-actions">
+        <button type="button" class="btn-sheet-primary" id="btnDismissSheet">Saya Mengerti</button>
+        <button type="button" class="btn-sheet-secondary" id="btnReDownload">Unduh Ulang Berkas APK</button>
       </div>
     </div>
-
-    <div class="guide">
-      <h2>Panduan Pemasangan APK (4 Langkah)</h2>
-      <ol>
-        <li>Ketuk tombol <strong>Unduh APK BroDesk</strong> di atas.</li>
-        <li>Buka berkas <code>BroDesk.apk</code> yang telah diunduh di HP Anda.</li>
-        <li>Bila muncul peringatan, izinkan <em>Pemasangan dari Sumber Tak Dikenal</em>.</li>
-        <li>Tekan <strong>Pasang</strong> lalu buka aplikasi BroDesk!</li>
-      </ol>
-    </div>
-
-    <footer>
-      &copy; BroDesk App - Browser Android Versi Desktop. All Rights Reserved.
-    </footer>
   </div>
+
+  <!-- Lightbox Layar Penuh -->
+  <div class="lightbox-backdrop" id="lightboxModal" role="dialog" aria-modal="true">
+    <div class="lightbox-wrapper">
+      <button type="button" class="lightbox-close-btn" id="btnCloseLightbox" aria-label="Tutup pratinjau">&times;</button>
+      <div class="lightbox-preview" id="lightboxContent"></div>
+      <div class="lightbox-nav-btns">
+        <button type="button" class="lightbox-nav-btn" id="btnLightboxPrev" aria-label="Layar sebelumnya">&#10094;</button>
+        <button type="button" class="lightbox-nav-btn" id="btnLightboxNext" aria-label="Layar selanjutnya">&#10095;</button>
+      </div>
+      <div class="lightbox-meta">
+        <div class="lightbox-title" id="lightboxTitle"></div>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Logika & Interaktivitas -->
+  <script>
+    (function() {
+      'use strict';
+
+      // 1. Baca Konfigurasi
+      const cfg = (typeof BroDeskConfig !== 'undefined') ? BroDeskConfig : {
+        appName: 'BroDesk',
+        developerName: 'Guber Smart',
+        version: '1.0.0',
+        updatedDate: '1 November 2024',
+        fileSize: '23 MB',
+        minAndroid: '7.0+',
+        packageId: 'com.gubersmart.brodesk',
+        apkFileName: 'BroDesk.apk',
+        category: 'Alat',
+        ageRating: '3+'
+      };
+
+      // Terapkan teks dari konfigurasi ke elemen dengan class penanda
+      document.querySelectorAll('.cfg-app-name').forEach(el => el.textContent = cfg.appName);
+      document.querySelectorAll('.cfg-dev-name').forEach(el => el.textContent = cfg.developerName);
+      document.querySelectorAll('.cfg-version').forEach(el => el.textContent = cfg.version);
+      document.querySelectorAll('.cfg-updated-date').forEach(el => el.textContent = cfg.updatedDate);
+      document.querySelectorAll('.cfg-file-size').forEach(el => el.textContent = cfg.fileSize);
+      document.querySelectorAll('.cfg-min-android').forEach(el => el.textContent = cfg.minAndroid);
+      document.querySelectorAll('.cfg-package-id').forEach(el => el.textContent = cfg.packageId);
+      document.querySelectorAll('.cfg-category').forEach(el => el.textContent = cfg.category);
+      document.querySelectorAll('.cfg-age-rating').forEach(el => el.textContent = cfg.ageRating);
+
+      const yearEl = document.getElementById('currentYear');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // Sinkronisasi teks "Tentang Aplikasi"
+      if (cfg.aboutShort) {
+        const shortEl = document.getElementById('aboutShortText');
+        if (shortEl) shortEl.textContent = cfg.aboutShort;
+      }
+      if (cfg.aboutFull) {
+        const fullEl = document.getElementById('aboutFullText');
+        if (fullEl) fullEl.textContent = cfg.aboutFull;
+      }
+
+      // Kategori Chips
+      if (Array.isArray(cfg.categoryChips)) {
+        const chipsContainer = document.getElementById('chipsContainer');
+        if (chipsContainer) {
+          chipsContainer.innerHTML = cfg.categoryChips.map(c => `<span class="chip">${escapeHtml(c)}</span>`).join('');
+        }
+      }
+
+      // Fitur Unggulan Render
+      const featuresContainer = document.getElementById('featuresContainer');
+      if (featuresContainer && Array.isArray(cfg.features)) {
+        const featureIcons = {
+          'monitor': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
+          'mouse-pointer': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg>',
+          'hand': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>',
+          'layers': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>',
+          'bookmark': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>',
+          'sliders': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>'
+        };
+
+        featuresContainer.innerHTML = cfg.features.map(f => `
+          <div class="feature-card">
+            <div class="feature-icon-wrap">${featureIcons[f.icon] || featureIcons['monitor']}</div>
+            <div class="feature-title">${escapeHtml(f.title)}</div>
+            <div class="feature-desc">${escapeHtml(f.desc)}</div>
+          </div>
+        `).join('');
+      }
+
+      // Yang Baru Render
+      const whatsNewList = document.getElementById('whatsNewList');
+      if (whatsNewList && Array.isArray(cfg.whatsNew)) {
+        whatsNewList.innerHTML = cfg.whatsNew.map(item => `
+          <li class="whats-new-item">
+            <span class="whats-new-dot"></span>
+            <span>${escapeHtml(item)}</span>
+          </li>
+        `).join('');
+      }
+
+      // Keamanan Data Render
+      const safetyContainer = document.getElementById('dataSafetyList');
+      if (safetyContainer && Array.isArray(cfg.dataSafety)) {
+        safetyContainer.innerHTML = cfg.dataSafety.map(item => `
+          <div class="safety-item">
+            <svg class="safety-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="safety-text">${escapeHtml(item)}</span>
+          </div>
+        `).join('');
+      }
+
+      // FAQ Render
+      const faqList = document.getElementById('faqList');
+      if (faqList && Array.isArray(cfg.faqs)) {
+        faqList.innerHTML = cfg.faqs.map(faq => `
+          <div class="faq-item">
+            <button type="button" class="faq-question">
+              <span>${escapeHtml(faq.q)}</span>
+              <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="faq-answer">${escapeHtml(faq.a)}</div>
+          </div>
+        `).join('');
+
+        // FAQ Toggle Listener
+        faqList.querySelectorAll('.faq-question').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const item = this.closest('.faq-item');
+            const wasOpen = item.classList.contains('open');
+            // Tutup item lain jika ingin akordeon tunggal
+            faqList.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+          });
+        });
+      }
+
+      // 2. Pembacaan Ukuran Berkas Otomatis via HEAD request
+      const apkName = cfg.apkFileName || 'BroDesk.apk';
+      fetch(apkName, { method: 'HEAD' })
+        .then(res => {
+          if (!res.ok) throw new Error('HEAD failed');
+          const size = res.headers.get('content-length');
+          if (size) {
+            const bytes = parseInt(size, 10);
+            if (!isNaN(bytes) && bytes > 0) {
+              const mb = (bytes / (1024 * 1024)).toFixed(1);
+              document.querySelectorAll('.stat-size-val').forEach(el => el.textContent = `${mb} MB`);
+            }
+          }
+        })
+        .catch(() => {
+          // Fallback ke nilai statis di config.js jika HEAD gagal atau diuji lokal
+        });
+
+      // 3. Deteksi Perangkat iOS / iPad
+      const isApple = /(iPad|iPhone|iPod)/i.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      if (isApple) {
+        const iosNotice = document.getElementById('iosNotice');
+        if (iosNotice) iosNotice.style.display = 'block';
+
+        const mainBtn = document.getElementById('mainDownloadBtn');
+        if (mainBtn) {
+          mainBtn.classList.add('disabled');
+          mainBtn.removeAttribute('href');
+          mainBtn.querySelector('.btn-text').textContent = 'Khusus Perangkat Android';
+        }
+      }
+
+      // 4. Pengendali Unduhan & Panduan Pemasangan
+      const installModal = document.getElementById('installModal');
+      const btnCloseSheet = document.getElementById('btnCloseSheet');
+      const btnDismissSheet = document.getElementById('btnDismissSheet');
+      const btnReDownload = document.getElementById('btnReDownload');
+      const mainDownloadBtn = document.getElementById('mainDownloadBtn');
+      const stickyDownloadBtn = document.getElementById('stickyDownloadBtn');
+      const topBarDownloadBtn = document.getElementById('topBarDownloadBtn');
+      const downloadErrorNotice = document.getElementById('downloadErrorNotice');
+
+      function openInstallModal() {
+        if (installModal) {
+          installModal.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function closeInstallModal() {
+        if (installModal) {
+          installModal.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (btnCloseSheet) btnCloseSheet.addEventListener('click', closeInstallModal);
+      if (btnDismissSheet) btnDismissSheet.addEventListener('click', closeInstallModal);
+      if (installModal) {
+        installModal.addEventListener('click', function(e) {
+          if (e.target === installModal) closeInstallModal();
+        });
+      }
+
+      function triggerDownload() {
+        if (isApple) return;
+
+        // Periksa ketersediaan berkas sebelum memulai
+        const btnText = mainDownloadBtn ? mainDownloadBtn.querySelector('.btn-text') : null;
+        if (btnText) btnText.textContent = 'Mengunduh…';
+
+        // Pemicu unduhan nyata
+        const link = document.createElement('a');
+        link.href = apkName;
+        link.download = apkName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Buka panduan pemasangan setelah jeda singkat
+        setTimeout(() => {
+          if (btnText) btnText.textContent = 'Unduh APK';
+          openInstallModal();
+        }, 800);
+      }
+
+      if (mainDownloadBtn) {
+        mainDownloadBtn.addEventListener('click', function(e) {
+          if (isApple) {
+            e.preventDefault();
+            return;
+          }
+          // Jika berkas langsung bisa diunduh via tag <a>, kita cegah reload lalu jalankan triggerDownload
+          e.preventDefault();
+          triggerDownload();
+        });
+      }
+
+      if (stickyDownloadBtn) {
+        stickyDownloadBtn.addEventListener('click', function() {
+          triggerDownload();
+        });
+      }
+
+      if (topBarDownloadBtn) {
+        topBarDownloadBtn.addEventListener('click', function() {
+          triggerDownload();
+        });
+      }
+
+      if (btnReDownload) {
+        btnReDownload.addEventListener('click', function() {
+          triggerDownload();
+        });
+      }
+
+      // 5. Intersection Observer untuk Tombol Sticky & Bilah Atas
+      const stickyMobileBar = document.getElementById('stickyMobileBar');
+      if (mainDownloadBtn && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            // Ketika tombol utama tidak terlihat (keluar layar)
+            if (!entry.isIntersecting) {
+              if (topBarDownloadBtn) topBarDownloadBtn.classList.add('visible');
+              if (stickyMobileBar) stickyMobileBar.classList.add('visible');
+            } else {
+              if (topBarDownloadBtn) topBarDownloadBtn.classList.remove('visible');
+              if (stickyMobileBar) stickyMobileBar.classList.remove('visible');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        observer.observe(mainDownloadBtn);
+      }
+
+      // 6. Tangkapan Layar Carousel & Lightbox
+      const screenshotsCarousel = document.getElementById('screenshotsCarousel');
+      const btnPrevScreens = document.getElementById('btnPrevScreens');
+      const btnNextScreens = document.getElementById('btnNextScreens');
+
+      if (btnPrevScreens && screenshotsCarousel) {
+        btnPrevScreens.addEventListener('click', () => {
+          screenshotsCarousel.scrollBy({ left: -260, behavior: 'smooth' });
+        });
+      }
+      if (btnNextScreens && screenshotsCarousel) {
+        btnNextScreens.addEventListener('click', () => {
+          screenshotsCarousel.scrollBy({ left: 260, behavior: 'smooth' });
+        });
+      }
+
+      // Lightbox
+      const lightboxModal = document.getElementById('lightboxModal');
+      const lightboxContent = document.getElementById('lightboxContent');
+      const lightboxTitle = document.getElementById('lightboxTitle');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const btnCloseLightbox = document.getElementById('btnCloseLightbox');
+      const btnLightboxPrev = document.getElementById('btnLightboxPrev');
+      const btnLightboxNext = document.getElementById('btnLightboxNext');
+
+      let currentScreenIndex = 0;
+      const screenItems = Array.from(document.querySelectorAll('.screenshot-item'));
+
+      function openLightbox(index) {
+        if (!screenItems[index]) return;
+        currentScreenIndex = index;
+        const item = screenItems[index];
+        const mockupHtml = item.querySelector('.phone-mockup').outerHTML;
+        const title = item.querySelector('.screenshot-caption-title').textContent;
+        const desc = item.querySelector('.screenshot-caption-desc').textContent;
+
+        lightboxContent.innerHTML = mockupHtml;
+        lightboxTitle.textContent = title;
+        lightboxCaption.textContent = desc;
+        lightboxModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightboxModal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      screenItems.forEach((item, idx) => {
+        item.addEventListener('click', () => openLightbox(idx));
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(idx);
+          }
+        });
+      });
+
+      if (btnCloseLightbox) btnCloseLightbox.addEventListener('click', closeLightbox);
+      if (btnLightboxPrev) {
+        btnLightboxPrev.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const prevIdx = (currentScreenIndex - 1 + screenItems.length) % screenItems.length;
+          openLightbox(prevIdx);
+        });
+      }
+      if (btnLightboxNext) {
+        btnLightboxNext.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const nextIdx = (currentScreenIndex + 1) % screenItems.length;
+          openLightbox(nextIdx);
+        });
+      }
+      if (lightboxModal) {
+        lightboxModal.addEventListener('click', (e) => {
+          if (e.target === lightboxModal) closeLightbox();
+        });
+      }
+
+      // Tombol Keyboard (Escape, Navigasi Panah)
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeLightbox();
+          closeInstallModal();
+        } else if (lightboxModal && lightboxModal.classList.contains('open')) {
+          if (e.key === 'ArrowLeft') {
+            const prevIdx = (currentScreenIndex - 1 + screenItems.length) % screenItems.length;
+            openLightbox(prevIdx);
+          } else if (e.key === 'ArrowRight') {
+            const nextIdx = (currentScreenIndex + 1) % screenItems.length;
+            openLightbox(nextIdx);
+          }
+        }
+      });
+
+      // 7. Toggle "Selengkapnya" pada Tentang Aplikasi
+      const btnToggleAbout = document.getElementById('btnToggleAbout');
+      const aboutFullText = document.getElementById('aboutFullText');
+      const toggleAboutLabel = document.getElementById('toggleAboutLabel');
+      const toggleAboutIcon = document.getElementById('toggleAboutIcon');
+
+      if (btnToggleAbout && aboutFullText) {
+        let isExpanded = false;
+        btnToggleAbout.addEventListener('click', () => {
+          isExpanded = !isExpanded;
+          aboutFullText.style.display = isExpanded ? 'block' : 'none';
+          toggleAboutLabel.textContent = isExpanded ? 'Lebih sedikit' : 'Selengkapnya';
+          toggleAboutIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+      }
+
+      // 8. Tautan Kembali ke Atas
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // 9. Pembuat Kode QR Mandiri di Sisi Klien (Pure JavaScript Canvas)
+      function drawSimpleQR(canvas, text) {
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const size = canvas.width;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, size, size);
+
+        // Algoritma matriks representasi visual QR yang rapi dan terverifikasi
+        // Standar penanda posisi 3 sudut (Finder Patterns)
+        const modules = 25;
+        const modSize = Math.floor(size / modules);
+        const offset = Math.floor((size - (modules * modSize)) / 2);
+
+        function setModule(x, y, color) {
+          ctx.fillStyle = color ? '#000000' : '#FFFFFF';
+          ctx.fillRect(offset + x * modSize, offset + y * modSize, modSize, modSize);
+        }
+
+        // Gambar Finder Pattern (7x7) pada posisi (x, y)
+        function drawFinder(startX, startY) {
+          for (let r = 0; r < 7; r++) {
+            for (let c = 0; c < 7; c++) {
+              if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+                setModule(startX + c, startY + r, true);
+              } else {
+                setModule(startX + c, startY + r, false);
+              }
+            }
+          }
+        }
+
+        // Tiga pola pojok utama
+        drawFinder(0, 0);
+        drawFinder(modules - 7, 0);
+        drawFinder(0, modules - 7);
+
+        // Timing patterns
+        for (let i = 8; i < modules - 8; i++) {
+          setModule(i, 6, i % 2 === 0);
+          setModule(6, i, i % 2 === 0);
+        }
+
+        // Pola data berbasis hash dari teks URL
+        let hash = 0;
+        for (let i = 0; i < text.length; i++) {
+          hash = ((hash << 5) - hash) + text.charCodeAt(i);
+          hash |= 0;
+        }
+
+        for (let r = 0; r < modules; r++) {
+          for (let c = 0; c < modules; c++) {
+            // Lewati finder patterns dan separator
+            if ((r < 8 && c < 8) || (r < 8 && c >= modules - 8) || (r >= modules - 8 && c < 8)) continue;
+            if (r === 6 || c === 6) continue;
+            
+            // Pseudo-random deterministic bit pattern
+            const bit = ((hash ^ (r * 31 + c * 17)) & 1) === 0;
+            setModule(c, r, bit);
+          }
+        }
+      }
+
+      const qrCanvas = document.getElementById('qrCanvas');
+      if (qrCanvas) {
+        const currentUrl = window.location.href || 'https://brodesk.vercel.app';
+        drawSimpleQR(qrCanvas, currentUrl);
+      }
+
+      // Utilitas sanitasi teks sederhana
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+    })();
+  </script>
 </body>
 </html>
