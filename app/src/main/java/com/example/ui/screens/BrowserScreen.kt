@@ -60,6 +60,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -68,7 +69,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -84,7 +84,6 @@ import com.example.data.model.ShortcutItem
 import com.example.data.model.TabItem
 import com.example.services.JavaScriptEngine
 import com.example.services.UrlUtils
-import com.example.ui.components.BroDeskNavBar
 import com.example.ui.components.BroDeskTopBar
 import com.example.ui.components.ContextMenuDialog
 import com.example.ui.components.ContextMenuTarget
@@ -101,6 +100,7 @@ fun BrowserScreen(
     settings: AppSettings,
     shortcuts: List<ShortcutItem>,
     bookmarks: List<BookmarkItem>,
+    onWebNavStateChanged: (canGoBack: Boolean, canGoForward: Boolean, webView: WebView?) -> Unit = { _, _, _ -> },
     onUpdateTab: (url: String, title: String, iconUrl: String?, isDesktopMode: Boolean?) -> Unit,
     onAddHistory: (url: String, title: String) -> Unit,
     onAddBookmark: (url: String, title: String) -> Unit,
@@ -194,6 +194,11 @@ fun BrowserScreen(
         } catch (e: Exception) {
             Toast.makeText(context, "Gagal memulai unduhan", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    // Update parent web nav state
+    LaunchedEffect(canGoBack, canGoForward, webViewRef) {
+        onWebNavStateChanged(canGoBack, canGoForward, webViewRef)
     }
 
     Column(
@@ -314,6 +319,7 @@ fun BrowserScreen(
                             ws.mediaPlaybackRequiresUserGesture = false
                             ws.setSupportMultipleWindows(true)
                             ws.javaScriptCanOpenWindowsAutomatically = !settings.blockPopups
+                            ws.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
                             CookieManager.getInstance().setAcceptCookie(true)
                             CookieManager.getInstance().setAcceptThirdPartyCookies(this, true)
@@ -434,6 +440,9 @@ fun BrowserScreen(
                             }
 
                             webViewRef = this
+                            if (currentUrl.isNotBlank()) {
+                                loadUrl(currentUrl)
+                            }
                         }
                     },
                     update = { view ->
@@ -441,6 +450,10 @@ fun BrowserScreen(
                         val targetUA = UrlUtils.getUserAgent(settings.browserIdentity, activeTab.isDesktopMode)
                         if (view.settings.userAgentString != targetUA) {
                             view.settings.userAgentString = targetUA
+                        }
+                        // GUARANTEED: Always load currentUrl if view.url is different or empty
+                        if (currentUrl.isNotBlank() && (view.url == null || view.url != currentUrl)) {
+                            view.loadUrl(currentUrl)
                         }
                     },
                     modifier = Modifier.fillMaxSize()
@@ -454,7 +467,7 @@ fun BrowserScreen(
                     scrollSpeed = settings.scrollSpeed,
                     cursorSizeStr = settings.cursorSize,
                     longPressDurationMs = settings.longPressDurationMs,
-                    onLongPressRightClick = { x, y ->
+                    onLongPressRightClick = { _, _ ->
                         onVibrateMedium()
                         contextMenuTarget = ContextMenuTarget.PageTarget(currentUrl, canGoBack)
                     },
@@ -486,21 +499,6 @@ fun BrowserScreen(
                 }
             }
         )
-
-        // Bottom Navigation Bar for WebView
-        if (!isFullScreen && currentUrl.isNotBlank() && !isErrorState) {
-            BroDeskNavBar(
-                canGoBack = canGoBack,
-                canGoForward = canGoForward,
-                onGoBack = { webViewRef?.goBack() },
-                onGoForward = { webViewRef?.goForward() },
-                onGoHome = {
-                    currentUrl = ""
-                    onUpdateTab("", "Tab Baru", null, null)
-                },
-                onSharePage = { if (currentUrl.isNotEmpty()) shareUrl(currentUrl) }
-            )
-        }
     }
 
     // Native Context Menu Dialog
@@ -576,7 +574,7 @@ private fun StartScreenContent(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Large Search Bar
+        // Large Search Bar (Guaranteed Google Search on Enter/Go)
         OutlinedTextField(
             value = queryText,
             onValueChange = { queryText = it },

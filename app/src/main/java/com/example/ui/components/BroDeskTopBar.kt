@@ -1,7 +1,5 @@
 package com.example.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DesktopWindows
 import androidx.compose.material.icons.filled.Download
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -89,7 +87,7 @@ fun BroDeskTopBar(
     Column {
         Surface(
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 4.dp,
+            tonalElevation = 3.dp,
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag("brodesk_top_bar")
@@ -100,27 +98,51 @@ fun BroDeskTopBar(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 6.dp)
             ) {
-                // Address Field with Lock/Search Icon
+                // Address Field with Lock/Search Icon & trailing buttons
                 OutlinedTextField(
                     value = urlText,
                     onValueChange = { urlText = it },
-                    placeholder = { Text("Ketik URL atau kata kunci", fontSize = 14.sp) },
+                    placeholder = { Text("Ketik URL atau kata kunci...", fontSize = 14.sp) },
                     singleLine = true,
                     leadingIcon = {
                         if (isEditing) {
-                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.primary)
+                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                         } else if (isHttps) {
-                            Icon(Icons.Default.Lock, contentDescription = "Aman (HTTPS)", tint = Color(0xFF10B981))
+                            Icon(Icons.Default.Lock, contentDescription = "Aman (HTTPS)", tint = Color(0xFF10B981), modifier = Modifier.size(20.dp))
                         } else if (isHttp) {
-                            Icon(Icons.Default.Warning, contentDescription = "Tidak Aman (HTTP)", tint = Color(0xFFF59E0B))
+                            Icon(Icons.Default.Warning, contentDescription = "Tidak Aman (HTTP)", tint = Color(0xFFF59E0B), modifier = Modifier.size(20.dp))
                         } else {
-                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Icon(Icons.Default.Search, contentDescription = "Cari", tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
                         }
                     },
                     trailingIcon = {
-                        if (isEditing && urlText.isNotEmpty()) {
-                            IconButton(onClick = { urlText = "" }, modifier = Modifier.testTag("clear_url_button")) {
-                                Icon(Icons.Default.Close, contentDescription = "Hapus teks")
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            if (isEditing && urlText.isNotEmpty()) {
+                                IconButton(onClick = { urlText = "" }, modifier = Modifier.size(32.dp).testTag("clear_url_button")) {
+                                    Icon(Icons.Default.Close, contentDescription = "Hapus teks", modifier = Modifier.size(18.dp))
+                                }
+                            }
+                            if (!isEditing && currentUrl.isNotEmpty()) {
+                                IconButton(
+                                    onClick = { if (isLoading) onStop() else onReload() },
+                                    modifier = Modifier.size(32.dp).testTag("reload_stop_button")
+                                ) {
+                                    if (isLoading) {
+                                        Icon(Icons.Default.Close, contentDescription = "Henti", modifier = Modifier.size(18.dp))
+                                    } else {
+                                        Icon(Icons.Default.Refresh, contentDescription = "Muat ulang", modifier = Modifier.size(18.dp))
+                                    }
+                                }
+                                IconButton(
+                                    onClick = onToggleBookmark,
+                                    modifier = Modifier.size(32.dp).testTag("bookmark_star_button")
+                                ) {
+                                    if (isBookmarked) {
+                                        Icon(Icons.Default.Star, contentDescription = "Hapus Bookmark", tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(18.dp))
+                                    } else {
+                                        Icon(Icons.Default.StarBorder, contentDescription = "Tambah Bookmark", modifier = Modifier.size(18.dp))
+                                    }
+                                }
                             }
                         }
                     },
@@ -134,48 +156,24 @@ fun BroDeskTopBar(
                     shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        unfocusedBorderColor = Color.Transparent,
                         focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
                     modifier = Modifier
                         .weight(1f)
-                        .height(50.dp)
+                        .height(48.dp)
                         .onFocusChanged { isEditing = it.isFocused }
                         .testTag("url_address_input")
                 )
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                // Reload or Stop
-                IconButton(
-                    onClick = { if (isLoading) onStop() else onReload() },
-                    modifier = Modifier.testTag("reload_stop_button")
-                ) {
-                    if (isLoading) {
-                        Icon(Icons.Default.Close, contentDescription = "Henti")
-                    } else {
-                        Icon(Icons.Default.Refresh, contentDescription = "Muat ulang")
-                    }
-                }
-
-                // Bookmark Star
-                IconButton(
-                    onClick = onToggleBookmark,
-                    modifier = Modifier.testTag("bookmark_star_button")
-                ) {
-                    if (isBookmarked) {
-                        Icon(Icons.Default.Star, contentDescription = "Hapus Bookmark", tint = MaterialTheme.colorScheme.secondary)
-                    } else {
-                        Icon(Icons.Default.StarBorder, contentDescription = "Tambah Bookmark")
-                    }
-                }
-
                 // 3-Dots Overflow Menu
                 Box {
                     IconButton(
                         onClick = { showMenu = true },
-                        modifier = Modifier.testTag("overflow_menu_button")
+                        modifier = Modifier.size(38.dp).testTag("overflow_menu_button")
                     ) {
                         Icon(Icons.Default.MoreVert, contentDescription = "Menu Utama")
                     }
@@ -187,7 +185,7 @@ fun BroDeskTopBar(
                     ) {
                         DropdownMenuItem(
                             text = { Text("Tab baru") },
-                            leadingIcon = { Icon(Icons.Default.Close, contentDescription = null) },
+                            leadingIcon = { Icon(Icons.Default.Add, contentDescription = null) },
                             onClick = {
                                 showMenu = false
                                 onNewTab()

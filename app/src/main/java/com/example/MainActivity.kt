@@ -1,6 +1,8 @@
 package com.example
 
+import android.content.Intent
 import android.os.Bundle
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -10,7 +12,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,21 +20,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.example.data.local.BroDeskRepository
 import com.example.services.VibrationService
-import com.example.ui.screens.BookmarkScreen
+import com.example.ui.components.BroDeskBottomBar
 import com.example.ui.screens.BrowserScreen
 import com.example.ui.screens.DownloadsScreen
-import com.example.ui.screens.HistoryScreen
 import com.example.ui.screens.SettingsScreen
 import com.example.ui.screens.TabScreen
-import com.example.ui.components.BroDeskBottomBar
 import com.example.ui.theme.BroDeskTheme
 
 class MainActivity : ComponentActivity() {
@@ -78,17 +75,33 @@ fun BroDeskApp(
     val settings by repository.settings.collectAsState()
     val downloads by repository.downloads.collectAsState()
 
-    var currentRoute by remember { mutableStateOf("browser") }
+    var currentRoute by remember { mutableStateOf("browser") } // "browser", "tab", "settings", "downloads"
     var lastBackPressTime by remember { mutableLongStateOf(0L) }
+
+    var canGoBackState by remember { mutableStateOf(false) }
+    var canGoForwardState by remember { mutableStateOf(false) }
+    var activeWebViewRef by remember { mutableStateOf<WebView?>(null) }
 
     val activeTab = tabs.find { it.id == activeTabId } ?: tabs.firstOrNull() ?: repository.createNewTab()?.let { id ->
         tabs.find { it.id == id }
     } ?: return
 
+    fun shareLink(url: String) {
+        if (url.isNotBlank()) {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, url)
+            }
+            context.startActivity(Intent.createChooser(intent, "Bagikan tautan"))
+        }
+    }
+
     // Handle Back Press cleanly
     BackHandler {
         if (currentRoute != "browser") {
             currentRoute = "browser"
+        } else if (canGoBackState && activeWebViewRef != null) {
+            activeWebViewRef?.goBack()
         } else {
             val now = System.currentTimeMillis()
             if (now - lastBackPressTime < 2000L) {
@@ -111,14 +124,22 @@ fun BroDeskApp(
                 if (currentRoute != "downloads") {
                     BroDeskBottomBar(
                         currentRoute = currentRoute,
+                        canGoBack = canGoBackState,
+                        canGoForward = canGoForwardState,
                         tabCount = tabs.size,
-                        onNavigate = { route -> currentRoute = route }
+                        onGoBack = { activeWebViewRef?.goBack() },
+                        onGoForward = { activeWebViewRef?.goForward() },
+                        onGoHome = {
+                            repository.updateTab(activeTab.id, "", "Tab Baru", null, null)
+                            currentRoute = "browser"
+                        },
+                        onOpenTabs = { currentRoute = "tab" },
+                        onSharePage = { shareLink(activeTab.url) },
+                        onOpenSettings = { currentRoute = "settings" }
                     )
                 }
             },
-            modifier = Modifier
-                .fillMaxSize()
-                .widthIn(max = 430.dp) // Centered 430px max container for mobile preview
+            modifier = Modifier.fillMaxSize()
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 when (currentRoute) {
@@ -128,6 +149,11 @@ fun BroDeskApp(
                             settings = settings,
                             shortcuts = shortcuts,
                             bookmarks = bookmarks,
+                            onWebNavStateChanged = { back, fwd, wv ->
+                                canGoBackState = back
+                                canGoForwardState = fwd
+                                activeWebViewRef = wv
+                            },
                             onUpdateTab = { url, title, iconUrl, isDesktopMode ->
                                 repository.updateTab(activeTab.id, url, title, iconUrl, isDesktopMode)
                             },
@@ -185,10 +211,12 @@ fun BroDeskApp(
                         )
                     }
 
-                    "bookmark" -> {
-                        BookmarkScreen(
+                    "settings" -> {
+                        SettingsScreen(
+                            settings = settings,
                             bookmarks = bookmarks,
                             folders = folders,
+                            history = history,
                             onOpenUrl = { url ->
                                 repository.updateTab(activeTab.id, url, url, null, null)
                                 currentRoute = "browser"
@@ -215,29 +243,13 @@ fun BroDeskApp(
                             },
                             onDeleteFolder = { id ->
                                 repository.deleteFolder(id)
-                            }
-                        )
-                    }
-
-                    "history" -> {
-                        HistoryScreen(
-                            history = history,
-                            onOpenUrl = { url ->
-                                repository.updateTab(activeTab.id, url, url, null, null)
-                                currentRoute = "browser"
                             },
                             onDeleteHistoryItem = { id ->
                                 repository.deleteHistoryItem(id)
                             },
                             onClearHistory = { range ->
                                 repository.clearHistory(range)
-                            }
-                        )
-                    }
-
-                    "settings" -> {
-                        SettingsScreen(
-                            settings = settings,
+                            },
                             onUpdateSettings = { newSettings ->
                                 repository.updateSettings(newSettings)
                             },
