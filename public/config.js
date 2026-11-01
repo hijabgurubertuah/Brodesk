@@ -15,117 +15,102 @@ const BroDeskConfig = {
   ageRating: "3+",
   containsAds: false,
   inAppPurchases: false,
-  aboutShort: "BroDesk adalah browser Android yang menampilkan situs seperti di komputer, dengan kursor virtual, tekan lama sebagai klik kanan, banyak tab, bookmark, dan unduhan.",
-  aboutFull: "BroDesk dirancang khusus bagi Anda yang sering mengakses situs berantarmuka desktop di layar smartphone Android. Dilengkapi sistem touchpad virtual presisi, Anda dapat menggerakkan kursor, mengklik tautan kecil, memilih teks, menjalankan klik kanan lewat tekan lama, dan menggunakan tombol pintasan keyboard praktis (Ctrl+A, Ctrl+C, Ctrl+V, Delete, serta Zoom In/Out). Seluruh data jelajah, bookmark, dan riwayat disimpan secara lokal dan aman di perangkat Anda.",
+  aboutShort: "BroDesk adalah browser Android berantarmuka desktop nyata dengan touchpad kursor presisi, klik kanan lewat tekan lama, multi-tab, dan pintasan cepat.",
+  aboutFull: "BroDesk dirancang khusus untuk kenyamanan mengakses situs desktop di ponsel Android. Dilengkapi touchpad virtual presisi, klik kanan instan, serta pintasan tombol Pilih Semua (Ctrl+A), Salin (Ctrl+C), Tempel (Ctrl+V), Hapus, dan Zoom In/Out. Seluruh data tersimpan aman secara lokal di perangkat Anda.",
   categoryChips: [
-    "Browser",
-    "Mode Desktop",
-    "Kursor Virtual",
-    "Tanpa Iklan"
+    { label: "Browser Desktop", color: "blue" },
+    { label: "Kursor Touchpad", color: "purple" },
+    { label: "Klik Kanan Instan", color: "emerald" },
+    { label: "Tanpa Iklan", color: "amber" }
   ],
   features: [
     {
       title: "Mode Desktop",
-      desc: "Tampilkan situs web dalam tata letak komputer desktop penuh",
-      icon: "monitor"
+      desc: "Tampilan PC penuh di HP",
+      icon: "monitor",
+      color: "#3B82F6"
     },
     {
-      title: "Kursor Virtual",
-      desc: "Touchpad sentuh dengan navigasi pointer yang presisi",
-      icon: "mouse-pointer"
+      title: "Kursor Touchpad",
+      desc: "Pointer presisi & klik responsif",
+      icon: "mouse-pointer",
+      color: "#8B5CF6"
     },
     {
       title: "Klik Kanan Instan",
-      desc: "Tekan lama pada kursor untuk memunculkan menu konteks situs",
-      icon: "hand"
+      desc: "Tekan lama untuk menu konteks",
+      icon: "hand",
+      color: "#EC4899"
     },
     {
-      title: "Banyak Tab",
-      desc: "Buka dan beralih antar situs web favorit dengan cepat",
-      icon: "layers"
+      title: "Multi Tab & Bookmark",
+      desc: "Beralih situs dengan cepat",
+      icon: "layers",
+      color: "#10B981"
     },
     {
-      title: "Bookmark & Riwayat",
-      desc: "Simpan alamat favorit dan telusuri jejak jelajah Anda",
-      icon: "bookmark"
-    },
-    {
-      title: "Pintasan Cepat",
-      desc: "Tombol Pilih Semua, Salin, Tempel, Hapus, dan Zoom In/Out",
-      icon: "sliders"
+      title: "Pintasan Keyboard",
+      desc: "Ctrl+A, C, V, Del, Zoom",
+      icon: "sliders",
+      color: "#F59E0B"
     }
   ],
   whatsNew: [
+    "Dukungan klik responsif pada menu klik kanan (context menu) dan tutup instan saat tap di luar menu",
     "Navigasi kursor virtual presisi dengan touchpad sentuh interaktif",
-    "Tombol pintasan cepat: Pilih Semua (Ctrl+A), Salin (Ctrl+C), Tempel (Ctrl+V), dan Hapus",
-    "Tombol pembesaran halaman instan (Zoom In & Zoom Out)",
+    "Tombol pintasan keyboard cepat: Ctrl+A, Ctrl+C, Ctrl+V, Delete, dan Zoom In/Out",
     "Kunci layar (Screen Lock) agar kursor bebas digerakkan tanpa menggeser halaman",
-    "Klik kanan instan lewat tahan lama (long-press)",
-    "Pencarian terintegrasi dan bilah alamat luas yang nyaman disentuh"
+    "Klik kanan instan lewat tahan lama (long-press)"
   ],
   dataSafety: [
     "Data disimpan di HP Anda tanpa pengumpulan informasi pribadi",
     "Tidak ada akun dan tidak ada pengiriman data ke server kami",
-    "Izin kamera, mikrofon, dan lokasi hanya diminta saat sebuah situs membutuhkannya"
+    "Izin hanya diminta saat situs tertentu membutuhkannya"
   ],
   screenshots: [
     {
       id: "screen-1",
       title: "Browser",
-      caption: "Tampilan desktop penuh dengan kursor virtual dan tombol aksi",
+      caption: "Mode desktop & kursor sentuh",
       src: "screens/layar-1.png",
       tag: "Layar Utama"
     },
     {
       id: "screen-2",
       title: "Tab",
-      caption: "Manajemen multi-tab modern dengan pratinjau halaman",
+      caption: "Kelola banyak tab cepat",
       src: "screens/layar-2.png",
       tag: "Multi Tab"
     },
     {
       id: "screen-3",
       title: "Bookmark",
-      caption: "Akses kilat ke situs kerja dan favorit Anda",
+      caption: "Situs favorit satu sentuhan",
       src: "screens/layar-3.png",
       tag: "Penanda"
-    },
-    {
-      id: "screen-4",
-      title: "Riwayat",
-      caption: "Daftar jejak jelajah tersusun rapi per waktu kunjungan",
-      src: "screens/layar-4.png",
-      tag: "Riwayat"
-    },
-    {
-      id: "screen-5",
-      title: "Pengaturan",
-      caption: "Kustomisasi kursor, mesin pencari, dan kenyamanan layar",
-      src: "screens/layar-5.png",
-      tag: "Preferensi"
     }
   ],
   faqs: [
     {
       q: "Mengapa muncul peringatan saat memasang?",
-      a: "Peringatan tersebut adalah mekanisme standar keamanan Android saat memasang aplikasi (.apk) langsung di luar Play Store. BroDesk 100% aman, bersih tanpa malware, dan tidak mengumpulkan data pribadi Anda. Anda cukup memilih 'Tetap pasang' atau izinkan 'Pasang dari sumber ini' pada browser Anda."
+      a: "Peringatan tersebut adalah standar keamanan Android untuk pemasangan berkas APK di luar Play Store. BroDesk 100% aman, bersih tanpa malware. Cukup pilih 'Tetap pasang' atau izinkan 'Pasang dari sumber ini'."
     },
     {
       q: "Apakah BroDesk gratis?",
-      a: "Ya, BroDesk 100% gratis untuk diunduh dan digunakan tanpa biaya langganan tersembunyi maupun iklan yang mengganggu."
+      a: "Ya, BroDesk 100% gratis digunakan tanpa langganan tersembunyi maupun iklan mengganggu."
     },
     {
       q: "Bagaimana cara memperbarui aplikasi?",
-      a: "Untuk memperbarui ke versi terbaru, cukup unduh berkas APK baru dari halaman ini dan pasang langsung di atas aplikasi lama. Semua bookmark, riwayat, dan tab Anda akan tetap utuh."
+      a: "Cukup unduh berkas APK terbaru dari halaman ini dan pasang di atas versi lama. Seluruh bookmark, tab, dan riwayat Anda tetap tersimpan utuh."
     },
     {
       q: "Di mana berkas hasil unduhan tersimpan?",
-      a: "Berkas BroDesk.apk akan tersimpan di folder 'Unduhan' (Download) pada memori internal HP Anda dan dapat dibuka melalui notifikasi unduhan atau aplikasi Pengelola Berkas (File Manager)."
+      a: "Berkas BroDesk.apk tersimpan di folder 'Unduhan' (Download) pada memori internal HP Anda."
     }
   ]
 };
 
-// Export untuk lingkungan Node jika diuji
+// Export untuk pengujian Node jika diperlukan
 if (typeof module !== "undefined" && module.exports) {
   module.exports = BroDeskConfig;
 }

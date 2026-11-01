@@ -19,11 +19,119 @@ object JavaScriptEngine {
         webView.evaluateJavascript(js, null)
     }
 
+    fun dispatchContextMenu(webView: WebView, clientX: Float, clientY: Float) {
+        val js = """
+            (function() {
+                var dpr = window.devicePixelRatio || 1;
+                var x = $clientX / dpr;
+                var y = $clientY / dpr;
+                var el = document.elementFromPoint(x, y) || document.activeElement || document.body;
+                if (!el) return;
+
+                var init = {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window,
+                    detail: 1,
+                    screenX: x,
+                    screenY: y,
+                    clientX: x,
+                    clientY: y,
+                    button: 2,
+                    buttons: 2
+                };
+
+                try { el.dispatchEvent(new PointerEvent('pointerdown', init)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('mousedown', init)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('contextmenu', init)); } catch(e){}
+            })();
+        """.trimIndent()
+        webView.evaluateJavascript(js, null)
+    }
+
+    fun dispatchMouseClick(webView: WebView, clientX: Float, clientY: Float) {
+        val js = """
+            (function() {
+                var dpr = window.devicePixelRatio || 1;
+                var x = $clientX / dpr;
+                var y = $clientY / dpr;
+                var el = document.elementFromPoint(x, y) || document.body;
+                if (!el) return;
+
+                // Check for open context menus or dropdowns (Monaco, web apps, standard menus)
+                var openMenus = document.querySelectorAll('.monaco-menu-container, .context-view, [role="menu"], .dropdown-menu');
+                var isInsideMenu = false;
+                if (openMenus && openMenus.length > 0) {
+                    for (var i = 0; i < openMenus.length; i++) {
+                        if (openMenus[i].contains(el)) {
+                            isInsideMenu = true;
+                            break;
+                        }
+                    }
+                }
+
+                // If a menu is open and tap is OUTSIDE the menu, immediately dismiss it
+                if (openMenus && openMenus.length > 0 && !isInsideMenu) {
+                    var dismissMdown = new MouseEvent('mousedown', {
+                        bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0, buttons: 1
+                    });
+                    document.body.dispatchEvent(dismissMdown);
+                    document.dispatchEvent(dismissMdown);
+
+                    var dismissClick = new MouseEvent('click', {
+                        bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0, buttons: 1
+                    });
+                    document.body.dispatchEvent(dismissClick);
+                    document.dispatchEvent(dismissClick);
+
+                    var escEvt = new KeyboardEvent('keydown', {
+                        key: 'Escape', code: 'Escape', keyCode: 27, which: 27, bubbles: true, cancelable: true
+                    });
+                    document.dispatchEvent(escEvt);
+                    return;
+                }
+
+                var init = {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window,
+                    detail: 1,
+                    screenX: x,
+                    screenY: y,
+                    clientX: x,
+                    clientY: y,
+                    button: 0,
+                    buttons: 1
+                };
+
+                try { el.dispatchEvent(new PointerEvent('pointerdown', init)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('mousedown', init)); } catch(e){}
+                try { el.dispatchEvent(new PointerEvent('pointerup', init)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('mouseup', init)); } catch(e){}
+                try { el.dispatchEvent(new MouseEvent('click', init)); } catch(e){}
+
+                if (typeof el.focus === 'function') {
+                    el.focus();
+                }
+
+                // Trigger click on closest clickable target (menuitem, button, link, action-item)
+                var clickable = el.closest('[role="menuitem"], .action-item, .action-label, button, a, input, select, textarea, [role="button"]');
+                if (clickable && typeof clickable.click === 'function') {
+                    clickable.click();
+                } else if (typeof el.click === 'function') {
+                    el.click();
+                }
+            })();
+        """.trimIndent()
+        webView.evaluateJavascript(js, null)
+    }
+
     fun dispatchMouseEvent(webView: WebView, eventType: String, clientX: Float, clientY: Float) {
         val js = """
             (function() {
-                var x = $clientX;
-                var y = $clientY;
+                var dpr = window.devicePixelRatio || 1;
+                var x = $clientX / dpr;
+                var y = $clientY / dpr;
                 var el = document.elementFromPoint(x, y) || document.body;
                 if (!el) return;
 
@@ -48,7 +156,10 @@ object JavaScriptEngine {
 
                 if ('$eventType' === 'click') {
                     if (typeof el.focus === 'function') el.focus();
-                    if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.getAttribute('role') === 'button') {
+                    var clickable = el.closest('[role="menuitem"], .action-item, a, button, [role="button"]');
+                    if (clickable && typeof clickable.click === 'function') {
+                        clickable.click();
+                    } else if (typeof el.click === 'function') {
                         el.click();
                     }
                 }

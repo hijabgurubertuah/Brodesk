@@ -3,6 +3,8 @@ package com.example.ui.components
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.SystemClock
+import android.view.MotionEvent
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -132,12 +134,11 @@ fun TouchpadOverlay(
                                     longPressJob = scope.launch {
                                         delay(longPressDurationMs)
                                         if (!hasMovedSinceDown) {
-                                            // Trigger Desktop Right Click without reloading or popping modal
+                                            // Trigger Desktop Right Click
                                             onVibrateMedium()
                                             isMouseDown = true
                                             webView?.let { wv ->
-                                                JavaScriptEngine.dispatchMouseEvent(wv, "mousedown", cursorX, cursorY)
-                                                JavaScriptEngine.dispatchMouseEvent(wv, "contextmenu", cursorX, cursorY)
+                                                JavaScriptEngine.dispatchContextMenu(wv, cursorX, cursorY)
                                             }
                                         }
                                     }
@@ -184,15 +185,38 @@ fun TouchpadOverlay(
                                             // Double Click
                                             onVibrateShort()
                                             webView?.let { wv ->
+                                                val downTime = SystemClock.uptimeMillis()
+                                                val d1 = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0)
+                                                val u1 = MotionEvent.obtain(downTime, downTime + 25, MotionEvent.ACTION_UP, cursorX, cursorY, 0)
+                                                wv.dispatchTouchEvent(d1)
+                                                wv.dispatchTouchEvent(u1)
+                                                d1.recycle()
+                                                u1.recycle()
+
+                                                val d2 = MotionEvent.obtain(downTime + 60, downTime + 60, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0)
+                                                val u2 = MotionEvent.obtain(downTime + 60, downTime + 85, MotionEvent.ACTION_UP, cursorX, cursorY, 0)
+                                                wv.dispatchTouchEvent(d2)
+                                                wv.dispatchTouchEvent(u2)
+                                                d2.recycle()
+                                                u2.recycle()
+
                                                 JavaScriptEngine.dispatchMouseEvent(wv, "dblclick", cursorX, cursorY)
                                             }
                                         } else {
-                                            // Single Click
+                                            // Single Click (Tapped on touchpad)
                                             onVibrateShort()
                                             webView?.let { wv ->
-                                                JavaScriptEngine.dispatchMouseEvent(wv, "mousedown", cursorX, cursorY)
-                                                JavaScriptEngine.dispatchMouseEvent(wv, "mouseup", cursorX, cursorY)
-                                                JavaScriptEngine.dispatchMouseEvent(wv, "click", cursorX, cursorY)
+                                                // 1. Native MotionEvent for Chromium touch handling, link navigation, and outside-popup dismissal
+                                                val downTime = SystemClock.uptimeMillis()
+                                                val down = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, cursorX, cursorY, 0)
+                                                val up = MotionEvent.obtain(downTime, downTime + 35, MotionEvent.ACTION_UP, cursorX, cursorY, 0)
+                                                wv.dispatchTouchEvent(down)
+                                                wv.dispatchTouchEvent(up)
+                                                down.recycle()
+                                                up.recycle()
+
+                                                // 2. JavaScript DOM click with DPR conversion, menuitem activation, and outside-menu dismissal
+                                                JavaScriptEngine.dispatchMouseClick(wv, cursorX, cursorY)
                                             }
                                         }
                                         lastTapTime = now

@@ -6,18 +6,13 @@
   <title>BroDesk - Browser Mode Desktop untuk Android</title>
   
   <!-- SEO & Social Meta Tags -->
-  <meta name="description" content="BroDesk adalah browser Android dengan tampilan desktop penuh, kursor virtual presisi, touchpad interaktif, multi-tab, bookmark, dan unduhan langsung.">
-  <meta name="keywords" content="BroDesk, browser desktop android, kursor virtual, touchpad android, apk download, guber smart">
-  <meta name="author" content="Guber Smart">
+  <meta name="description" content="BroDesk adalah browser Android dengan tampilan desktop nyata, kursor virtual presisi, klik kanan instan, multi-tab, dan bookmark.">
   <meta name="theme-color" content="#1F6FEB">
   <meta property="og:title" content="BroDesk - Browser Mode Desktop untuk Android">
   <meta property="og:description" content="Jelajahi situs web mode desktop dengan kursor virtual dan touchpad presisi di HP Android Anda.">
   <meta property="og:image" content="logo.png">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="BroDesk - Browser Mode Desktop untuk Android">
-  <meta name="twitter:description" content="Browser Android dengan mode desktop nyata dan navigasi kursor sentuh.">
-  <meta name="twitter:image" content="logo.png">
   
   <link rel="icon" type="image/png" href="logo.png">
   
@@ -25,48 +20,60 @@
   <script src="config.js"></script>
 
   <style>
-    /* CSS Variables: Material 3 Inspired App Store Aesthetic */
+    /* CSS Variables: Vibrant, Colorful & Ultra-Professional Palette */
     :root {
       --primary: #1F6FEB;
-      --primary-hover: #1754B8;
-      --primary-active: #0F4299;
-      --primary-light: #EBF2FE;
-      --accent-yellow: #F5A524;
-      --accent-green: #10B981;
-      --bg-page: #FFFFFF;
-      --bg-card: #F8FAFC;
-      --bg-card-hover: #F1F5F9;
-      --border: #E2E8F0;
-      --border-subtle: #EDF2F7;
-      --text-primary: #1F2937;
-      --text-secondary: #4B5563;
-      --text-tertiary: #94A3B8;
+      --primary-gradient: linear-gradient(135deg, #2563EB 0%, #7C3AED 50%, #06B6D4 100%);
+      --btn-gradient: linear-gradient(135deg, #1F6FEB 0%, #6366F1 50%, #4F46E5 100%);
+      --btn-gradient-hover: linear-gradient(135deg, #1D4ED8 0%, #4F46E5 50%, #4338CA 100%);
+      --accent-purple: #8B5CF6;
+      --accent-pink: #EC4899;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-cyan: #06B6D4;
+      
+      --bg-page: #F0F4FF;
+      --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                         radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+                         radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+                         radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+                         #F8FAFC;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-subtle: rgba(255, 255, 255, 0.65);
+      --border-card: rgba(226, 232, 240, 0.8);
+      --border-glow: rgba(99, 102, 241, 0.25);
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-tertiary: #64748B;
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --radius-xl: 24px;
+      --radius-xl: 20px;
       --radius-pill: 9999px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
-      --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-md: 0 8px 24px rgba(31, 111, 235, 0.08);
+      --shadow-glow: 0 10px 25px rgba(99, 102, 241, 0.28);
       --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --header-height: 60px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-page: #0F172A;
-        --bg-card: #1E293B;
-        --bg-card-hover: #28354D;
-        --border: #334155;
-        --border-subtle: #1E293B;
-        --text-primary: #F1F5F9;
-        --text-secondary: #94A3B8;
-        --text-tertiary: #64748B;
-        --primary-light: rgba(31, 111, 235, 0.16);
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-        --shadow-md: 0 4px 14px rgba(0,0,0,0.4);
-        --shadow-lg: 0 12px 30px rgba(0,0,0,0.5);
+        --bg-page: #0B0F19;
+        --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.22) 0px, transparent 50%),
+                           radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.18) 0px, transparent 50%),
+                           radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.16) 0px, transparent 50%),
+                           radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.14) 0px, transparent 50%),
+                           #0B0F19;
+        --bg-card: rgba(17, 24, 39, 0.82);
+        --bg-card-subtle: rgba(30, 41, 59, 0.65);
+        --border-card: rgba(51, 65, 85, 0.65);
+        --border-glow: rgba(99, 102, 241, 0.4);
+        --text-primary: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --text-tertiary: #94A3B8;
+        --shadow-sm: 0 2px 6px rgba(0,0,0,0.4);
+        --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
+        --shadow-glow: 0 10px 28px rgba(99, 102, 241, 0.38);
       }
     }
 
@@ -78,1009 +85,672 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-stack);
-      background-color: var(--bg-page);
-      color: var(--text-primary);
-      line-height: 1.5;
-      font-size: 15px;
-      overflow-x: hidden;
+    html, body {
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      font-family: var(--font-stack);
+      color: var(--text-primary);
+      line-height: 1.45;
+      font-size: 14px;
+      overflow-x: hidden;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-      border: none;
-      background: none;
-      cursor: pointer;
-    }
-
-    /* Container */
-    .container {
-      width: 100%;
-      max-width: 960px;
+    /* Compact Layout Container */
+    .app-viewport-wrapper {
+      max-width: 860px;
       margin: 0 auto;
-      padding: 0 16px;
-    }
-
-    @media (min-width: 640px) {
-      .container {
-        padding: 0 24px;
-      }
-    }
-
-    /* Bilah Atas (Sticky Top Bar) */
-    .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--header-height);
-      background-color: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
-      transition: all 0.2s ease;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .top-bar {
-        background-color: rgba(15, 23, 42, 0.88);
-      }
-    }
-
-    .top-bar-inner {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .top-bar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: -0.3px;
-    }
-
-    .top-bar-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      object-fit: cover;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .top-bar-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background-color: var(--primary);
-      color: #FFFFFF;
-      font-weight: 600;
-      font-size: 13px;
-      padding: 8px 16px;
-      border-radius: var(--radius-pill);
-      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.15s ease;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-4px);
-    }
-
-    .top-bar-btn.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .top-bar-btn:hover {
-      background-color: var(--primary-hover);
-    }
-
-    /* Main Content Spacing */
-    main {
-      flex: 1;
-      margin-top: calc(var(--header-height) + 12px);
-      padding-bottom: 80px;
-    }
-
-    /* Kepala Aplikasi (App Header) */
-    .app-header {
-      padding: 16px 0 24px;
-    }
-
-    .app-header-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    @media (min-width: 768px) {
-      .app-header-grid {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 32px;
-      }
-    }
-
-    .app-identity {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .app-identity {
-        gap: 24px;
-      }
-    }
-
-    .app-icon {
-      width: 88px;
-      height: 88px;
-      border-radius: var(--radius-xl);
-      object-fit: cover;
-      box-shadow: var(--shadow-md);
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-    }
-
-    @media (min-width: 640px) {
-      .app-icon {
-        width: 108px;
-        height: 108px;
-      }
-    }
-
-    .app-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .app-title {
-      font-size: 26px;
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.5px;
-    }
-
-    @media (min-width: 640px) {
-      .app-title {
-        font-size: 32px;
-      }
-    }
-
-    .app-developer {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .app-badges {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    /* Actions Column (CTA & Desktop QR) */
-    .app-actions {
+      padding: 12px 14px 20px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      width: 100%;
     }
 
-    @media (min-width: 768px) {
-      .app-actions {
-        width: 340px;
-        flex-shrink: 0;
+    @media (min-width: 640px) {
+      .app-viewport-wrapper {
+        padding: 16px 20px 24px;
+        gap: 14px;
       }
     }
 
-    /* Tombol Utama (Primary CTA) */
-    .btn-download-primary {
+    /* Compact Top Bar */
+    .compact-topbar {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      height: 52px;
-      background-color: var(--primary);
-      color: #FFFFFF;
-      font-weight: 700;
-      font-size: 16px;
+      justify-content: space-between;
+      padding: 6px 14px;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-card);
       border-radius: var(--radius-pill);
-      box-shadow: 0 4px 14px rgba(31, 111, 235, 0.35);
-      transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      object-fit: cover;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge-dev {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(99, 102, 241, 0.12);
+      color: #6366F1;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    /* Main Showcase Hero Card (Compact Single-Page Fit) */
+    .main-showcase-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       position: relative;
       overflow: hidden;
     }
 
-    .btn-download-primary:hover {
-      background-color: var(--primary-hover);
-      box-shadow: 0 6px 18px rgba(31, 111, 235, 0.45);
-      transform: translateY(-1px);
-    }
-
-    .btn-download-primary:active {
-      background-color: var(--primary-active);
-      transform: translateY(0);
-    }
-
-    .btn-download-primary:disabled,
-    .btn-download-primary.disabled {
-      background-color: var(--border);
-      color: var(--text-tertiary);
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
-    }
-
-    .download-subtext {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-
-    /* Desktop QR Code Card */
-    .qr-card {
-      display: none;
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      gap: 14px;
-      align-items: center;
-      margin-top: 6px;
-    }
-
-    @media (min-width: 768px) {
-      .qr-card {
-        display: flex;
+    @media (min-width: 640px) {
+      .main-showcase-card {
+        padding: 20px;
+        gap: 16px;
       }
     }
 
-    .qr-canvas-wrapper {
-      width: 80px;
-      height: 80px;
-      background: #FFFFFF;
-      padding: 6px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+    /* Decorative Color Glow Orbs */
+    .glow-orb-top {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .glow-orb-bottom {
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Header Row: Icon + Meta + CTA Button */
+    .hero-header-row {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    @media (min-width: 680px) {
+      .hero-header-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .hero-identity {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 14px;
+    }
+
+    .app-icon-hero {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 6px 16px rgba(31, 111, 235, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.4);
       flex-shrink: 0;
     }
 
-    .qr-canvas-wrapper canvas {
-      width: 100%;
-      height: 100%;
-      image-rendering: pixelated;
-    }
-
-    .qr-info h4 {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-
-    .qr-info p {
-      font-size: 12px;
-      color: var(--text-secondary);
-      line-height: 1.4;
-    }
-
-    /* Alert / Toast */
-    .toast-notice {
-      display: none;
-      background-color: #FEF2F2;
-      border: 1px solid #FECACA;
-      color: #DC2626;
-      font-size: 13px;
-      padding: 10px 14px;
-      border-radius: var(--radius-md);
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .toast-notice {
-        background-color: rgba(220, 38, 38, 0.15);
-        border-color: rgba(220, 38, 38, 0.3);
-        color: #F87171;
+    @media (min-width: 640px) {
+      .app-icon-hero {
+        width: 72px;
+        height: 72px;
       }
     }
 
-    /* Baris Statistik (Stats Row) */
-    .stats-row {
+    .app-title-group h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 640px) {
+      .app-title-group h1 {
+        font-size: 25px;
+      }
+    }
+
+    .app-dev-sub {
+      font-size: 13px;
+      font-weight: 600;
+      color: #3B82F6;
       display: flex;
       align-items: center;
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 14px 8px;
-      margin: 16px 0 28px;
-      overflow-x: auto;
-      scrollbar-width: none;
+      gap: 6px;
     }
 
-    .stats-row::-webkit-scrollbar {
-      display: none;
+    .app-tagline {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
     }
 
-    .stat-col {
-      flex: 1;
-      min-width: 70px;
+    /* CTA Area */
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    @media (min-width: 680px) {
+      .hero-cta-group {
+        width: 260px;
+        flex-shrink: 0;
+      }
+    }
+
+    .btn-download-glow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 46px;
+      background: var(--btn-gradient);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-glow);
+      transition: all 0.2s ease;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-download-glow:hover {
+      background: var(--btn-gradient-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.45);
+    }
+
+    .btn-download-glow:active {
+      transform: translateY(0);
+    }
+
+    .btn-download-glow.disabled {
+      background: #64748B;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .cta-hint {
+      font-size: 11px;
+      text-align: center;
+      color: var(--text-tertiary);
+    }
+
+    /* 4-Stat Compact Row */
+    .compact-stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 8px 4px;
+    }
+
+    .stat-pill {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
-      padding: 0 4px;
+      flex: 1;
       position: relative;
     }
 
-    .stat-col:not(:last-child)::after {
+    .stat-pill:not(:last-child)::after {
       content: "";
       position: absolute;
       right: 0;
       top: 15%;
       height: 70%;
       width: 1px;
-      background-color: var(--border);
+      background: var(--border-card);
     }
 
-    .stat-val {
-      font-size: 17px;
+    .stat-pill-val {
+      font-size: 14px;
       font-weight: 800;
-      color: var(--text-primary);
-      letter-spacing: -0.3px;
+      letter-spacing: -0.2px;
     }
 
-    .stat-label {
-      font-size: 11px;
+    .stat-pill-val.color-blue { color: #3B82F6; }
+    .stat-pill-val.color-purple { color: #8B5CF6; }
+    .stat-pill-val.color-emerald { color: #10B981; }
+    .stat-pill-val.color-amber { color: #F59E0B; }
+
+    .stat-pill-label {
+      font-size: 10px;
       color: var(--text-tertiary);
-      font-weight: 500;
-      margin-top: 2px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      margin-top: 1px;
     }
 
-    /* Section Styling */
-    .section-title-wrap {
+    /* 3 Small Screenshots (Tangkapan Layar 3 Saja Kecil-Kecil) */
+    .screenshots-compact-container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Tangkapan Layar (Screenshots Horizontal Scroll-Snap) */
-    .screenshots-section {
-      margin-bottom: 36px;
-      position: relative;
-    }
-
-    .screenshots-controls {
-      display: none;
+      flex-direction: column;
       gap: 8px;
     }
 
-    @media (min-width: 768px) {
-      .screenshots-controls {
-        display: flex;
-      }
-    }
-
-    .btn-scroll-arrow {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-pill);
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      transition: all 0.15s ease;
-    }
-
-    .btn-scroll-arrow:hover {
-      background-color: var(--border);
-      color: var(--text-primary);
-    }
-
-    .screenshots-carousel {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      padding-bottom: 14px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-      margin: 0 -16px;
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .screenshots-carousel {
-        margin: 0;
-        padding-left: 0;
-        padding-right: 0;
-      }
-    }
-
-    .screenshot-item {
-      flex: 0 0 220px;
-      scroll-snap-align: start;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    @media (min-width: 640px) {
-      .screenshot-item {
-        flex: 0 0 240px;
-      }
-    }
-
-    .screenshot-item:hover {
-      transform: translateY(-3px);
-    }
-
-    /* CSS Phone Mockup */
-    .phone-mockup {
-      width: 100%;
-      aspect-ratio: 9 / 18.5;
-      background-color: #0F172A;
-      border-radius: 28px;
-      border: 6px solid #1E293B;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .phone-notch {
-      position: absolute;
-      top: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 48px;
-      height: 8px;
-      background: #000000;
-      border-radius: 4px;
-      z-index: 20;
-    }
-
-    .mockup-screen {
-      width: 100%;
-      height: 100%;
-      background-color: #F8FAFC;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-      color: #1F2937;
-      font-size: 11px;
-    }
-
-    /* Mockup internal components */
-    .mockup-status-bar {
-      height: 22px;
-      background: #FFFFFF;
-      padding: 0 10px;
+    .screenshots-title-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 9px;
-      font-weight: 700;
-      color: #64748B;
-      border-bottom: 1px solid #E2E8F0;
     }
 
-    .mockup-app-bar {
-      background: #FFFFFF;
-      padding: 6px 8px;
+    .screenshots-title {
+      font-size: 13px;
+      font-weight: 700;
       display: flex;
       align-items: center;
       gap: 6px;
-      border-bottom: 1px solid #E2E8F0;
+      color: var(--text-secondary);
     }
 
-    .mockup-url-pill {
-      flex: 1;
-      height: 24px;
-      background: #F1F5F9;
-      border-radius: 12px;
-      padding: 0 8px;
+    .screenshots-hint {
+      font-size: 11px;
+      color: #6366F1;
+      font-weight: 600;
+    }
+
+    .screenshots-compact-row {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 4px;
-      font-size: 9px;
-      color: #475569;
+      gap: 10px;
+      width: 100%;
     }
 
-    .mockup-body {
+    @media (min-width: 640px) {
+      .screenshots-compact-row {
+        gap: 16px;
+      }
+    }
+
+    /* Compact Phone Mockup */
+    .mini-mockup-item {
       flex: 1;
-      padding: 8px;
+      max-width: 135px;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      background: #F8FAFC;
-      overflow: hidden;
-      position: relative;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
     }
 
-    .mockup-bottom-nav {
-      height: 38px;
+    .mini-mockup-item:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .mini-phone {
+      width: 100%;
+      aspect-ratio: 9 / 18.5;
+      background: #0F172A;
+      border-radius: 18px;
+      border: 3.5px solid #1E293B;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 640px) {
+      .mini-phone {
+        border-width: 4.5px;
+        border-radius: 20px;
+      }
+    }
+
+    .mini-notch {
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      z-index: 15;
+    }
+
+    .mini-screen {
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      font-size: 8px;
+      color: #1E293B;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Mini Internal Screen Elements */
+    .mini-status-bar {
+      height: 13px;
+      background: #F8FAFC;
+      border-bottom: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+      font-size: 6px;
+      font-weight: 700;
+      color: #64748B;
+    }
+
+    .mini-address-bar {
+      height: 16px;
+      background: #F1F5F9;
+      margin: 3px 4px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      gap: 3px;
+      font-size: 6.5px;
+      color: #334155;
+      border: 1px solid #E2E8F0;
+    }
+
+    .mini-content-body {
+      flex: 1;
+      padding: 3px 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: #F8FAFC;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-card {
+      background: #FFFFFF;
+      border-radius: 4px;
+      padding: 3px;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .mini-line {
+      height: 2.5px;
+      border-radius: 1px;
+      background: #CBD5E1;
+      margin: 2px 0;
+    }
+
+    .mini-nav-bar {
+      height: 18px;
       background: #FFFFFF;
       border-top: 1px solid #E2E8F0;
       display: flex;
       align-items: center;
       justify-content: space-around;
-      padding: 0 4px;
-      flex-shrink: 0;
+      padding: 0 2px;
+      font-size: 7px;
     }
 
-    .mockup-nav-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #64748B;
+    .mini-nav-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #94A3B8;
     }
 
-    .mockup-nav-icon.active {
-      background: var(--primary-light);
-      color: var(--primary);
+    .mini-nav-dot.active {
+      background: #1F6FEB;
     }
 
-    /* Mockup Cursor Pointer */
-    .mockup-virtual-cursor {
+    /* Mini Cursor in Screen 1 */
+    .mini-cursor {
       position: absolute;
-      top: 45%;
+      top: 50%;
       left: 55%;
-      width: 14px;
-      height: 14px;
-      z-index: 15;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-
-    .mockup-touchpad-badge {
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      background: rgba(31, 111, 235, 0.9);
-      color: #FFFFFF;
-      font-size: 8px;
-      font-weight: 700;
-      padding: 3px 6px;
-      border-radius: 4px;
+      width: 10px;
+      height: 10px;
       z-index: 10;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
     }
 
-    .screenshot-caption {
-      margin-top: 8px;
+    .mini-touchpad-tag {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      background: #1F6FEB;
+      color: #FFF;
+      font-size: 5.5px;
+      font-weight: 700;
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+
+    .mockup-sublabel {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-primary);
       text-align: center;
     }
 
-    .screenshot-caption-title {
-      font-size: 13px;
+    .mockup-subdesc {
+      font-size: 9.5px;
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+
+    /* Colorful Feature Pills */
+    .feature-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      transition: all 0.15s ease;
+    }
+
+    .feature-pill.blue { color: #2563EB; border-color: rgba(37, 99, 235, 0.25); background: rgba(37, 99, 235, 0.08); }
+    .feature-pill.purple { color: #8B5CF6; border-color: rgba(139, 92, 246, 0.25); background: rgba(139, 92, 246, 0.08); }
+    .feature-pill.pink { color: #EC4899; border-color: rgba(236, 72, 153, 0.25); background: rgba(236, 72, 153, 0.08); }
+    .feature-pill.emerald { color: #10B981; border-color: rgba(16, 185, 129, 0.25); background: rgba(16, 185, 129, 0.08); }
+    .feature-pill.amber { color: #F59E0B; border-color: rgba(245, 158, 11, 0.25); background: rgba(245, 158, 11, 0.08); }
+
+    /* Compact Collapsible Card (About, What's New, FAQ) */
+    .compact-details-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 12px 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .accordion-icon {
+      color: var(--text-tertiary);
+      transition: transform 0.2s ease;
+    }
+
+    .accordion-card.open .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      display: none;
+      padding-top: 10px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .accordion-card.open .accordion-content {
+      display: block;
+    }
+
+    .bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .bullet-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #6366F1;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Desktop QR Code Mini Floating Box */
+    .qr-mini-badge {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin-top: 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .qr-mini-badge {
+        background: rgba(30, 41, 59, 0.9);
+      }
+    }
+
+    @media (min-width: 680px) {
+      .qr-mini-badge {
+        display: flex;
+      }
+    }
+
+    .qr-canvas-box {
+      width: 54px;
+      height: 54px;
+      background: #FFF;
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .qr-canvas-box canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .qr-text-mini h5 {
+      font-size: 11.5px;
       font-weight: 700;
     }
 
-    .screenshot-caption-desc {
+    .qr-text-mini p {
+      font-size: 10.5px;
+      color: var(--text-tertiary);
+      line-height: 1.3;
+    }
+
+    /* Footer Compact */
+    .compact-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
       font-size: 11px;
       color: var(--text-tertiary);
     }
 
-    /* Tentang Aplikasi (About Section) */
-    .about-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 32px;
-    }
-
-    .about-text {
-      color: var(--text-secondary);
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .about-expanded-text {
-      display: none;
-      margin-top: 12px;
-    }
-
-    .btn-toggle-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 14px;
-      margin-top: 8px;
-      padding: 4px 0;
-      cursor: pointer;
-    }
-
-    .chips-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 18px;
-    }
-
-    .chip {
-      background-color: var(--bg-page);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: var(--radius-pill);
-    }
-
-    /* Fitur Unggulan (Key Features Carousel) */
-    .features-carousel {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      padding-bottom: 12px;
-      margin: 0 -16px 32px;
-      padding-left: 16px;
-      padding-right: 16px;
-      scrollbar-width: none;
-    }
-
-    .features-carousel::-webkit-scrollbar {
-      display: none;
-    }
-
-    @media (min-width: 640px) {
-      .features-carousel {
-        margin: 0 0 32px;
-        padding-left: 0;
-        padding-right: 0;
-      }
-    }
-
-    .feature-card {
-      flex: 0 0 200px;
-      scroll-snap-align: start;
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: border-color 0.15s ease;
-    }
-
-    @media (min-width: 640px) {
-      .feature-card {
-        flex: 0 0 220px;
-      }
-    }
-
-    .feature-icon-wrap {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-md);
-      background-color: var(--primary-light);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .feature-title {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .feature-desc {
-      font-size: 12px;
-      color: var(--text-secondary);
-      line-height: 1.4;
-    }
-
-    /* Yang Baru (What's New) */
-    .whats-new-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 32px;
-    }
-
-    .whats-new-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
-    .whats-new-date {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      font-weight: 600;
-      background: var(--bg-page);
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-    }
-
-    .whats-new-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .whats-new-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .whats-new-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--primary);
-      margin-top: 8px;
-      flex-shrink: 0;
-    }
-
-    /* Keamanan Data (Data Safety) */
-    .data-safety-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 32px;
-    }
-
-    .safety-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 10px 0;
-    }
-
-    .safety-item:not(:last-child) {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .safety-icon {
-      color: var(--accent-green);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .safety-text {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    /* Info Aplikasi (App Info Grid) */
-    .app-info-grid {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 8px 18px;
-      margin-bottom: 32px;
-    }
-
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      font-size: 14px;
-    }
-
-    .info-row:not(:last-child) {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .info-label {
-      color: var(--text-tertiary);
-    }
-
-    .info-val {
-      font-weight: 600;
-      text-align: right;
-      color: var(--text-primary);
-    }
-
-    /* Pertanyaan Umum (FAQ Accordion) */
-    .faq-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 40px;
-    }
-
-    .faq-item {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      transition: border-color 0.15s ease;
-    }
-
-    .faq-question {
-      width: 100%;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 15px;
-      font-weight: 700;
-      text-align: left;
-      color: var(--text-primary);
-      cursor: pointer;
-    }
-
-    .faq-icon {
-      color: var(--text-tertiary);
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .faq-item.open .faq-icon {
-      transform: rotate(180deg);
-    }
-
-    .faq-answer {
-      display: none;
-      padding: 0 20px 16px;
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .faq-item.open .faq-answer {
-      display: block;
-    }
-
-    /* Kaki Halaman (Footer) */
-    footer {
-      background-color: var(--bg-card);
-      border-top: 1px solid var(--border);
-      padding: 28px 0;
-      margin-top: auto;
-    }
-
-    .footer-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-tertiary);
-    }
-
-    @media (min-width: 640px) {
-      .footer-content {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    }
-
-    .back-to-top {
-      color: var(--primary);
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    /* Sticky Bottom Mobile Bar */
-    .sticky-mobile-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 12px 16px;
-      background-color: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -4px 14px rgba(0,0,0,0.06);
-      z-index: 90;
-      transform: translateY(100%);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .sticky-mobile-bar {
-        background-color: rgba(15, 23, 42, 0.92);
-      }
-    }
-
-    @media (min-width: 768px) {
-      .sticky-mobile-bar {
-        display: none !important;
-      }
-    }
-
-    .sticky-mobile-bar.visible {
-      transform: translateY(0);
-    }
-
-    .sticky-btn {
-      flex: 1;
-      height: 48px;
-      background-color: var(--primary);
-      color: #FFFFFF;
-      font-weight: 700;
-      font-size: 15px;
-      border-radius: var(--radius-pill);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    /* Panel Panduan Pemasangan (Modal Dialog / Bottom Sheet) */
+    /* Modal / Bottom Sheet Panduan */
     .modal-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.65);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.68);
       z-index: 200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
       display: flex;
       align-items: flex-end;
       justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
     }
 
     @media (min-width: 640px) {
@@ -1097,18 +767,18 @@
 
     .install-sheet {
       width: 100%;
-      max-width: 500px;
-      background-color: var(--bg-page);
+      max-width: 460px;
+      background: var(--bg-card);
+      backdrop-filter: blur(24px);
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
+      padding: 20px;
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-card);
       transform: translateY(100%);
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      max-height: 90vh;
-      overflow-y: auto;
+      gap: 14px;
     }
 
     @media (min-width: 640px) {
@@ -1129,103 +799,72 @@
       }
     }
 
-    .sheet-header {
+    .sheet-title-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .sheet-title {
-      font-size: 20px;
+    .sheet-title-row h3 {
+      font-size: 17px;
       font-weight: 800;
-      letter-spacing: -0.3px;
     }
 
-    .btn-sheet-close {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-pill);
-      background-color: var(--bg-card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      font-size: 18px;
-    }
-
-    .install-steps {
+    .sheet-steps {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
     }
 
-    .install-step-item {
+    .sheet-step {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
     }
 
-    .step-number {
-      width: 28px;
-      height: 28px;
+    .step-badge {
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background-color: var(--primary);
-      color: #FFFFFF;
+      background: #1F6FEB;
+      color: #FFF;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 11px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    .step-desc {
-      font-size: 14px;
-      line-height: 1.5;
+    .btn-sheet-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
       color: var(--text-secondary);
+      font-size: 16px;
+      cursor: pointer;
     }
 
-    .step-desc strong {
-      color: var(--text-primary);
-    }
-
-    .sheet-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .btn-sheet-primary {
-      height: 48px;
-      background-color: var(--primary);
-      color: #FFFFFF;
+    .btn-sheet-understand {
+      height: 42px;
+      background: var(--btn-gradient);
+      color: #FFF;
       font-weight: 700;
-      font-size: 15px;
-      border-radius: var(--radius-pill);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-sheet-secondary {
-      height: 44px;
-      color: var(--primary);
-      font-weight: 600;
       font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
     }
 
     /* Lightbox Modal */
     .lightbox-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.9);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
       z-index: 250;
       display: none;
       align-items: center;
@@ -1237,641 +876,345 @@
       display: flex;
     }
 
-    .lightbox-wrapper {
-      max-width: 380px;
+    .lightbox-box {
+      max-width: 320px;
       width: 100%;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
-      position: relative;
-    }
-
-    .lightbox-preview {
-      width: 100%;
+      gap: 10px;
     }
 
     .lightbox-close-btn {
       position: absolute;
-      top: -46px;
+      top: -38px;
       right: 0;
-      background: rgba(255, 255, 255, 0.2);
-      color: #FFFFFF;
-      width: 36px;
-      height: 36px;
+      background: rgba(255,255,255,0.25);
+      color: #FFF;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      border: none;
     }
 
-    .lightbox-nav-btns {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-    }
-
-    .lightbox-nav-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.6);
+    .lightbox-caption-text {
       color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      pointer-events: auto;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .lightbox-meta {
       text-align: center;
-      color: #FFFFFF;
-    }
-
-    .lightbox-title {
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 700;
     }
 
-    .lightbox-caption {
-      font-size: 13px;
-      color: #CBD5E1;
-      margin-top: 2px;
-    }
-
-    /* iOS Warning Badge */
-    .ios-notice {
+    /* iOS Warning Notice */
+    .ios-box {
       display: none;
-      background-color: #FEF3C7;
-      border: 1px solid #FCD34D;
-      color: #92400E;
-      font-size: 13px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #D97706;
+      font-size: 12px;
       font-weight: 600;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: var(--radius-md);
       text-align: center;
-      margin-bottom: 12px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Bilah Atas (Sticky Top Bar) -->
-  <header class="top-bar">
-    <div class="container top-bar-inner">
-      <a href="#" class="top-bar-brand" aria-label="Beranda BroDesk">
-        <img src="logo.png" alt="Logo BroDesk" class="top-bar-logo" width="32" height="32">
-        <span class="cfg-app-name">BroDesk</span>
-      </a>
-      <button type="button" class="top-bar-btn" id="topBarDownloadBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>Unduh</span>
-      </button>
+  <div class="app-viewport-wrapper">
+    
+    <!-- Bilah Atas Mini (Compact Topbar) -->
+    <header class="compact-topbar">
+      <div class="brand-wrap">
+        <img src="logo.png" alt="Logo BroDesk" class="brand-logo" width="26" height="26">
+        <span class="brand-title cfg-app-name">BroDesk</span>
+      </div>
+      <div class="badge-dev cfg-dev-name">Guber Smart</div>
+    </header>
+
+    <!-- Notifikasi Khusus Apple iOS/iPad -->
+    <div class="ios-box" id="iosNotice">
+      Aplikasi ini khusus perangkat Android.
     </div>
-  </header>
 
-  <!-- Konten Utama -->
-  <main>
-    <div class="container">
+    <!-- Kartu Utama (Hero Showcase Card - Fit dalam 1 Halaman) -->
+    <main class="main-showcase-card">
+      <div class="glow-orb-top"></div>
+      <div class="glow-orb-bottom"></div>
 
-      <!-- Notifikasi Khusus Perangkat iOS / iPad -->
-      <div class="ios-notice" id="iosNotice">
-        Aplikasi ini hanya untuk Android. Gunakan perangkat Android untuk memasang berkas APK ini.
+      <!-- Baris 1: Identitas & Tombol Unduh Utama -->
+      <div class="hero-header-row">
+        
+        <div class="hero-identity">
+          <img src="logo.png" alt="Ikon BroDesk" class="app-icon-hero" width="72" height="72">
+          <div class="app-title-group">
+            <h1 class="cfg-app-name">BroDesk</h1>
+            <div class="app-dev-sub">
+              <span class="cfg-dev-name">Guber Smart</span>
+              <span>&middot;</span>
+              <span class="cfg-category">Alat</span>
+            </div>
+            <div class="app-tagline">Browser Desktop Android &middot; Touchpad Virtual</div>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="BroDesk.apk" download="BroDesk.apk" class="btn-download-glow" id="mainDownloadBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span class="btn-label">Unduh APK</span>
+          </a>
+          <span class="cta-hint">Berkas APK langsung &middot; Bebas Iklan</span>
+
+          <!-- Kode QR Mini Khusus Desktop -->
+          <div class="qr-mini-badge" id="desktopQrBox">
+            <div class="qr-canvas-box">
+              <canvas id="qrCanvas" width="48" height="48"></canvas>
+            </div>
+            <div class="qr-text-mini">
+              <h5>Pindai di HP</h5>
+              <p>Arahkan kamera HP ke kode QR untuk unduh langsung.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Kepala Aplikasi (App Header) -->
-      <section class="app-header">
-        <div class="app-header-grid">
+      <!-- Baris 2: Bar Statistik Ringkas 4 Kolom Berwarna -->
+      <div class="compact-stats-bar">
+        <div class="stat-pill">
+          <span class="stat-pill-val color-blue stat-size-val cfg-file-size">23 MB</span>
+          <span class="stat-pill-label">Ukuran</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-val color-purple cfg-min-android">7.0+</span>
+          <span class="stat-pill-label">Android</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-val color-emerald cfg-version">1.0.0</span>
+          <span class="stat-pill-label">Versi</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-val color-amber cfg-age-rating">3+</span>
+          <span class="stat-pill-label">Rating</span>
+        </div>
+      </div>
+
+      <!-- Baris 3: Tangkapan Layar 3 Saja Kecil-Kecil (Side-by-Side) -->
+      <div class="screenshots-compact-container">
+        <div class="screenshots-title-row">
+          <div class="screenshots-title">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <span>Tangkapan Layar (3 Layar)</span>
+          </div>
+          <span class="screenshots-hint">Ketuk untuk memperbesar</span>
+        </div>
+
+        <div class="screenshots-compact-row">
           
-          <!-- Identitas Aplikasi -->
-          <div class="app-identity">
-            <img src="logo.png" alt="Ikon Aplikasi BroDesk" class="app-icon" width="108" height="108">
-            <div class="app-meta">
-              <h1 class="app-title cfg-app-name">BroDesk</h1>
-              <span class="app-developer cfg-dev-name">Guber Smart</span>
-              <div class="app-badges">
-                Berisi iklan: Tidak &middot; Pembelian dalam aplikasi: Tidak
-              </div>
-            </div>
-          </div>
-
-          <!-- Kolom Aksi (Tombol Unduh & QR Desktop) -->
-          <div class="app-actions">
-            <a href="BroDesk.apk" download="BroDesk.apk" class="btn-download-primary" id="mainDownloadBtn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span class="btn-text">Unduh APK</span>
-            </a>
-            
-            <p class="download-subtext">Berkas APK langsung, bukan dari Play Store.</p>
-            <div class="toast-notice" id="downloadErrorNotice">Berkas belum tersedia, coba lagi nanti.</div>
-
-            <!-- Kartu QR Code Khusus Desktop -->
-            <div class="qr-card" id="desktopQrCard">
-              <div class="qr-canvas-wrapper">
-                <canvas id="qrCanvas" width="68" height="68"></canvas>
-              </div>
-              <div class="qr-info">
-                <h4>Buka di HP Android Anda</h4>
-                <p>Pindai kode QR ini dengan kamera HP Anda untuk mengunduh langsung di ponsel.</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Baris Statistik -->
-      <section class="stats-row" aria-label="Statistik Aplikasi">
-        <div class="stat-col">
-          <span class="stat-val stat-size-val cfg-file-size">23 MB</span>
-          <span class="stat-label">Ukuran</span>
-        </div>
-        <div class="stat-col">
-          <span class="stat-val cfg-min-android">7.0+</span>
-          <span class="stat-label">Android</span>
-        </div>
-        <div class="stat-col">
-          <span class="stat-val cfg-version">1.0.0</span>
-          <span class="stat-label">Versi</span>
-        </div>
-        <div class="stat-col">
-          <span class="stat-val cfg-age-rating">3+</span>
-          <span class="stat-label">Rating Usia</span>
-        </div>
-      </section>
-
-      <!-- Tangkapan Layar (Screenshots) -->
-      <section class="screenshots-section">
-        <div class="section-title-wrap">
-          <h2 class="section-title">
-            <span>Tangkapan Layar</span>
-          </h2>
-          <div class="screenshots-controls">
-            <button type="button" class="btn-scroll-arrow" id="btnPrevScreens" aria-label="Gulir ke kiri">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <button type="button" class="btn-scroll-arrow" id="btnNextScreens" aria-label="Gulir ke kanan">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Carousel Kontainer -->
-        <div class="screenshots-carousel" id="screenshotsCarousel">
-          
-          <!-- Layar 1: Browser -->
-          <div class="screenshot-item" data-index="0" tabindex="0" role="button" aria-label="Buka pratinjau Browser">
-            <div class="phone-mockup">
-              <div class="phone-notch"></div>
-              <div class="mockup-screen">
-                <div class="mockup-status-bar">
-                  <span>09:41</span>
-                  <span>100%</span>
+          <!-- Mockup 1: Browser (Layar Utama & Kursor) -->
+          <div class="mini-mockup-item" data-index="0" tabindex="0" role="button" aria-label="Buka pratinjau Browser">
+            <div class="mini-phone">
+              <div class="mini-notch"></div>
+              <div class="mini-screen">
+                <div class="mini-status-bar"><span>09:41</span><span>100%</span></div>
+                <div class="mini-address-bar">
+                  <span style="color:#2563EB;">&#128269;</span>
+                  <span style="white-space:nowrap; overflow:hidden;">script.google.com</span>
                 </div>
-                <div class="mockup-app-bar">
-                  <div class="mockup-url-pill">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <span>https://google.com</span>
+                <div class="mini-content-body">
+                  <div class="mini-card">
+                    <span style="font-weight:700; color:#2563EB; font-size:7px;">Google Apps Script</span>
+                    <div class="mini-line" style="width:80%; background:#93C5FD;"></div>
+                    <div class="mini-line" style="width:50%;"></div>
                   </div>
-                </div>
-                <div class="mockup-body">
-                  <!-- Webpage mock cards -->
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:8px;">
-                    <div style="font-weight:700; color:#1F6FEB; font-size:10px;">Google Workspace Script</div>
-                    <div style="height:4px; width:75%; background:#CBD5E1; border-radius:2px; margin:4px 0 2px;"></div>
-                    <div style="height:4px; width:50%; background:#E2E8F0; border-radius:2px;"></div>
+                  <!-- Quick actions row -->
+                  <div style="display:flex; gap:2px; margin-top:auto;">
+                    <span style="background:#2563EB; color:#fff; font-size:5.5px; padding:1px 3px; border-radius:2px;">Ctrl+A</span>
+                    <span style="background:#2563EB; color:#fff; font-size:5.5px; padding:1px 3px; border-radius:2px;">Ctrl+C</span>
+                    <span style="background:#EF4444; color:#fff; font-size:5.5px; padding:1px 3px; border-radius:2px;">DEL</span>
                   </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:8px;">
-                    <div style="font-weight:700; color:#1F2937; font-size:10px;">Desktop Console Mode</div>
-                    <div style="height:4px; width:90%; background:#CBD5E1; border-radius:2px; margin:4px 0 2px;"></div>
-                    <div style="height:4px; width:60%; background:#E2E8F0; border-radius:2px;"></div>
-                  </div>
-                  <!-- Quick actions row mock -->
-                  <div style="display:flex; gap:4px; margin-top:auto;">
-                    <span style="background:#1F6FEB; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">Ctrl+A</span>
-                    <span style="background:#1F6FEB; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">Ctrl+C</span>
-                    <span style="background:#1F6FEB; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">Ctrl+V</span>
-                    <span style="background:#EF4444; color:#fff; font-size:8px; padding:2px 5px; border-radius:4px;">DEL</span>
-                  </div>
-                  <!-- Cursor -->
-                  <div class="mockup-virtual-cursor">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#1F6FEB" stroke="#FFFFFF" stroke-width="2">
+                  <!-- Mini Cursor -->
+                  <div class="mini-cursor">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="#2563EB" stroke="#FFFFFF" stroke-width="2">
                       <polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon>
                     </svg>
                   </div>
-                  <span class="mockup-touchpad-badge">Kursor Aktif</span>
+                  <span class="mini-touchpad-tag">Kursor</span>
                 </div>
-                <div class="mockup-bottom-nav">
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                <div class="mini-nav-bar">
+                  <span class="mini-nav-dot"></span>
+                  <span class="mini-nav-dot active"></span>
+                  <span class="mini-nav-dot"></span>
                 </div>
               </div>
             </div>
-            <div class="screenshot-caption">
-              <div class="screenshot-caption-title">Browser</div>
-              <div class="screenshot-caption-desc">Tampilan desktop penuh</div>
-            </div>
+            <div class="mockup-sublabel">1. Browser</div>
+            <div class="mockup-subdesc">Kursor & Touchpad</div>
           </div>
 
-          <!-- Layar 2: Tab -->
-          <div class="screenshot-item" data-index="1" tabindex="0" role="button" aria-label="Buka pratinjau Multi Tab">
-            <div class="phone-mockup">
-              <div class="phone-notch"></div>
-              <div class="mockup-screen">
-                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
-                <div class="mockup-app-bar" style="justify-content:space-between;">
-                  <span style="font-weight:700; font-size:11px;">Tab Aktif (3)</span>
-                  <span style="background:var(--primary-light); color:var(--primary); font-size:9px; padding:2px 6px; border-radius:10px; font-weight:700;">+ Baru</span>
+          <!-- Mockup 2: Tab -->
+          <div class="mini-mockup-item" data-index="1" tabindex="0" role="button" aria-label="Buka pratinjau Tab">
+            <div class="mini-phone">
+              <div class="mini-notch"></div>
+              <div class="mini-screen">
+                <div class="mini-status-bar"><span>09:41</span><span>100%</span></div>
+                <div style="padding:2px 4px; font-weight:700; font-size:7px; color:#10B981; display:flex; justify-content:space-between;">
+                  <span>Tab Aktif (3)</span>
+                  <span>+ Baru</span>
                 </div>
-                <div class="mockup-body" style="gap:8px;">
-                  <div style="background:#FFFFFF; border:2px solid #1F6FEB; border-radius:8px; padding:6px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
-                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:9px; color:#1F6FEB;">
-                      <span>Google Apps Script</span>
-                      <span>&times;</span>
-                    </div>
-                    <div style="height:40px; background:#F1F5F9; border-radius:4px; margin-top:4px; display:flex; align-items:center; justify-content:center; color:#94A3B8; font-size:8px;">Editor Kode</div>
+                <div class="mini-content-body">
+                  <div class="mini-card" style="border-color:#10B981;">
+                    <span style="font-weight:700; font-size:6px; color:#10B981;">Apps Script</span>
+                    <div style="height:14px; background:#ECFDF5; border-radius:2px; margin-top:2px;"></div>
                   </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:6px;">
-                    <div style="display:flex; justify-content:space-between; font-weight:600; font-size:9px;">
-                      <span>GitHub Dashboard</span>
-                      <span>&times;</span>
-                    </div>
-                    <div style="height:35px; background:#F8FAFC; border-radius:4px; margin-top:4px;"></div>
+                  <div class="mini-card">
+                    <span style="font-weight:600; font-size:6px;">GitHub</span>
+                    <div style="height:12px; background:#F1F5F9; border-radius:2px; margin-top:2px;"></div>
                   </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:6px;">
-                    <div style="display:flex; justify-content:space-between; font-weight:600; font-size:9px;">
-                      <span>Wikipedia Indonesia</span>
-                      <span>&times;</span>
-                    </div>
+                  <div class="mini-card">
+                    <span style="font-weight:600; font-size:6px;">Wikipedia</span>
                   </div>
                 </div>
-                <div class="mockup-bottom-nav">
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
-                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                <div class="mini-nav-bar">
+                  <span class="mini-nav-dot active" style="background:#10B981;"></span>
+                  <span class="mini-nav-dot"></span>
+                  <span class="mini-nav-dot"></span>
                 </div>
               </div>
             </div>
-            <div class="screenshot-caption">
-              <div class="screenshot-caption-title">Tab</div>
-              <div class="screenshot-caption-desc">Kelola banyak tab instan</div>
-            </div>
+            <div class="mockup-sublabel">2. Multi Tab</div>
+            <div class="mockup-subdesc">Banyak Halaman</div>
           </div>
 
-          <!-- Layar 3: Bookmark -->
-          <div class="screenshot-item" data-index="2" tabindex="0" role="button" aria-label="Buka pratinjau Bookmark">
-            <div class="phone-mockup">
-              <div class="phone-notch"></div>
-              <div class="mockup-screen">
-                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
-                <div class="mockup-app-bar">
-                  <span style="font-weight:700; font-size:11px;">Bookmark Saya</span>
-                </div>
-                <div class="mockup-body" style="gap:6px;">
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
-                    <span style="width:16px; height:16px; background:#1F6FEB; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">G</span>
-                    <span style="font-weight:600; font-size:9px;">Google Search</span>
+          <!-- Mockup 3: Bookmark -->
+          <div class="mini-mockup-item" data-index="2" tabindex="0" role="button" aria-label="Buka pratinjau Bookmark">
+            <div class="mini-phone">
+              <div class="mini-notch"></div>
+              <div class="mini-screen">
+                <div class="mini-status-bar"><span>09:41</span><span>100%</span></div>
+                <div style="padding:2px 4px; font-weight:700; font-size:7px; color:#8B5CF6;">Bookmark</div>
+                <div class="mini-content-body">
+                  <div class="mini-card" style="display:flex; align-items:center; gap:2px;">
+                    <span style="width:8px; height:8px; background:#2563EB; color:#fff; border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:5px;">G</span>
+                    <span style="font-size:6px; font-weight:600;">Google Search</span>
                   </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
-                    <span style="width:16px; height:16px; background:#10B981; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">A</span>
-                    <span style="font-weight:600; font-size:9px;">Apps Script Editor</span>
+                  <div class="mini-card" style="display:flex; align-items:center; gap:2px;">
+                    <span style="width:8px; height:8px; background:#10B981; color:#fff; border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:5px;">A</span>
+                    <span style="font-size:6px; font-weight:600;">Apps Script</span>
                   </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
-                    <span style="width:16px; height:16px; background:#F5A524; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">W</span>
-                    <span style="font-weight:600; font-size:9px;">Wikipedia Ensiklopedia</span>
+                  <div class="mini-card" style="display:flex; align-items:center; gap:2px;">
+                    <span style="width:8px; height:8px; background:#8B5CF6; color:#fff; border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:5px;">W</span>
+                    <span style="font-size:6px; font-weight:600;">Wikipedia</span>
                   </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; align-items:center; gap:6px;">
-                    <span style="width:16px; height:16px; background:#6366F1; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:8px;">GH</span>
-                    <span style="font-weight:600; font-size:9px;">GitHub Repositori</span>
+                  <div class="mini-card" style="display:flex; align-items:center; gap:2px;">
+                    <span style="width:8px; height:8px; background:#EC4899; color:#fff; border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:5px;">GH</span>
+                    <span style="font-size:6px; font-weight:600;">GitHub</span>
                   </div>
                 </div>
-                <div class="mockup-bottom-nav">
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
-                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
+                <div class="mini-nav-bar">
+                  <span class="mini-nav-dot"></span>
+                  <span class="mini-nav-dot"></span>
+                  <span class="mini-nav-dot active" style="background:#8B5CF6;"></span>
                 </div>
               </div>
             </div>
-            <div class="screenshot-caption">
-              <div class="screenshot-caption-title">Bookmark</div>
-              <div class="screenshot-caption-desc">Situs favorit satu sentuhan</div>
-            </div>
-          </div>
-
-          <!-- Layar 4: Riwayat -->
-          <div class="screenshot-item" data-index="3" tabindex="0" role="button" aria-label="Buka pratinjau Riwayat">
-            <div class="phone-mockup">
-              <div class="phone-notch"></div>
-              <div class="mockup-screen">
-                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
-                <div class="mockup-app-bar">
-                  <span style="font-weight:700; font-size:11px;">Riwayat Kunjungan</span>
-                </div>
-                <div class="mockup-body" style="gap:5px;">
-                  <span style="font-size:8px; font-weight:700; color:#94A3B8;">HARI INI</span>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:5px 8px;">
-                    <div style="font-weight:600; font-size:9px;">script.google.com</div>
-                    <div style="color:#94A3B8; font-size:7px;">09:12 WIB</div>
-                  </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:5px 8px;">
-                    <div style="font-weight:600; font-size:9px;">github.com/login</div>
-                    <div style="color:#94A3B8; font-size:7px;">08:45 WIB</div>
-                  </div>
-                  <span style="font-size:8px; font-weight:700; color:#94A3B8; margin-top:3px;">KEMARIN</span>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:5px 8px;">
-                    <div style="font-weight:600; font-size:9px;">id.wikipedia.org</div>
-                    <div style="color:#94A3B8; font-size:7px;">14:20 WIB</div>
-                  </div>
-                </div>
-                <div class="mockup-bottom-nav">
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
-                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
-                </div>
-              </div>
-            </div>
-            <div class="screenshot-caption">
-              <div class="screenshot-caption-title">Riwayat</div>
-              <div class="screenshot-caption-desc">Telusuri jejak jelajah</div>
-            </div>
-          </div>
-
-          <!-- Layar 5: Pengaturan -->
-          <div class="screenshot-item" data-index="4" tabindex="0" role="button" aria-label="Buka pratinjau Pengaturan">
-            <div class="phone-mockup">
-              <div class="phone-notch"></div>
-              <div class="mockup-screen">
-                <div class="mockup-status-bar"><span>09:41</span><span>100%</span></div>
-                <div class="mockup-app-bar">
-                  <span style="font-weight:700; font-size:11px;">Pengaturan</span>
-                </div>
-                <div class="mockup-body" style="gap:6px;">
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:9px; font-weight:600;">Mode Desktop Standar</span>
-                    <span style="width:20px; height:10px; background:#1F6FEB; border-radius:5px; position:relative;"><span style="position:absolute; right:1px; top:1px; width:8px; height:8px; background:#fff; border-radius:50%;"></span></span>
-                  </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:9px; font-weight:600;">Kunci Layar Sentuh</span>
-                    <span style="width:20px; height:10px; background:#1F6FEB; border-radius:5px; position:relative;"><span style="position:absolute; right:1px; top:1px; width:8px; height:8px; background:#fff; border-radius:50%;"></span></span>
-                  </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:9px; font-weight:600;">Kecepatan Kursor</span>
-                    <span style="color:#1F6FEB; font-size:8px; font-weight:700;">Normal</span>
-                  </div>
-                  <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:6px 8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:9px; font-weight:600;">Mesin Pencari</span>
-                    <span style="color:#64748B; font-size:8px;">Google</span>
-                  </div>
-                </div>
-                <div class="mockup-bottom-nav">
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg></div>
-                  <div class="mockup-nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect></svg></div>
-                  <div class="mockup-nav-icon active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>
-                </div>
-              </div>
-            </div>
-            <div class="screenshot-caption">
-              <div class="screenshot-caption-title">Pengaturan</div>
-              <div class="screenshot-caption-desc">Kustomisasi sesuai kebutuhan</div>
-            </div>
+            <div class="mockup-sublabel">3. Bookmark</div>
+            <div class="mockup-subdesc">Situs Favorit</div>
           </div>
 
         </div>
-      </section>
+      </div>
 
-      <!-- Tentang Aplikasi (About App) -->
-      <section class="about-card">
-        <div class="section-title-wrap">
-          <h2 class="section-title">
-            <span>Tentang Aplikasi</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </h2>
-        </div>
+      <!-- Baris 4: Deretan Chips Fitur Warna-warni -->
+      <div class="feature-pills-row" id="featurePills">
+        <span class="feature-pill blue">&#128187; Mode Desktop</span>
+        <span class="feature-pill purple">&#128433;&#65039; Kursor Virtual</span>
+        <span class="feature-pill pink">&#128070; Klik Kanan Instan</span>
+        <span class="feature-pill emerald">&#128218; Multi Tab &amp; Bookmark</span>
+        <span class="feature-pill amber">&#9889; Pintasan Ctrl+A, C, V, Del</span>
+      </div>
 
-        <p class="about-text" id="aboutShortText">
-          BroDesk adalah browser Android yang menampilkan situs seperti di komputer, dengan kursor virtual, tekan lama sebagai klik kanan, banyak tab, bookmark, dan unduhan.
-        </p>
+    </main>
 
-        <p class="about-text about-expanded-text" id="aboutFullText">
-          BroDesk dirancang khusus bagi Anda yang sering mengakses situs berantarmuka desktop di layar smartphone Android. Dilengkapi sistem touchpad virtual presisi, Anda dapat menggerakkan kursor, mengklik tautan kecil, memilih teks, menjalankan klik kanan lewat tekan lama, dan menggunakan tombol pintasan keyboard praktis (Ctrl+A, Ctrl+C, Ctrl+V, Delete, serta Zoom In/Out). Seluruh data jelajah, bookmark, dan riwayat disimpan secara lokal dan aman di perangkat Anda.
-        </p>
+    <!-- Kartu Informasi Tambahan Ringkas (Akordeon) -->
+    <section class="compact-details-card accordion-card" id="accordionAbout">
+      <div class="accordion-header" role="button" tabindex="0">
+        <span style="display:flex; align-items:center; gap:6px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <span>Tentang &amp; Yang Baru</span>
+        </span>
+        <svg class="accordion-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="accordion-content">
+        <p style="margin-bottom:8px;" id="aboutText">BroDesk adalah browser Android berantarmuka desktop nyata dengan touchpad kursor presisi, klik kanan lewat tekan lama, multi-tab, dan pintasan cepat.</p>
+        <div style="font-weight:700; margin-bottom:4px; color:var(--text-primary);">Pembaruan Terbaru:</div>
+        <div id="whatsNewContainer"></div>
+      </div>
+    </section>
 
-        <button type="button" class="btn-toggle-more" id="btnToggleAbout">
-          <span id="toggleAboutLabel">Selengkapnya</span>
-          <svg id="toggleAboutIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
+    <!-- Kartu FAQ Ringkas (Akordeon) -->
+    <section class="compact-details-card accordion-card" id="accordionFaq">
+      <div class="accordion-header" role="button" tabindex="0">
+        <span style="display:flex; align-items:center; gap:6px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          <span>Pertanyaan Umum (FAQ)</span>
+        </span>
+        <svg class="accordion-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="accordion-content" id="faqContentContainer"></div>
+    </section>
 
-        <div class="chips-row" id="chipsContainer">
-          <span class="chip">Browser</span>
-          <span class="chip">Mode Desktop</span>
-          <span class="chip">Kursor Virtual</span>
-          <span class="chip">Tanpa Iklan</span>
-        </div>
-      </section>
+    <!-- Footer Ringkas -->
+    <footer class="compact-footer">
+      <div>&copy; <span id="currentYear">2024</span> <span class="cfg-dev-name">Guber Smart</span> &middot; <span class="cfg-app-name">BroDesk</span></div>
+      <div style="color:#10B981; font-weight:600;">Data Aman &middot; Disimpan di HP</div>
+    </footer>
 
-      <!-- Fitur Unggulan (Key Features) -->
-      <section>
-        <div class="section-title-wrap">
-          <h2 class="section-title">Fitur Unggulan</h2>
-        </div>
-
-        <div class="features-carousel" id="featuresContainer">
-          <!-- Rendered dynamically from config.js -->
-        </div>
-      </section>
-
-      <!-- Yang Baru (What's New) -->
-      <section class="whats-new-card">
-        <div class="whats-new-header">
-          <h2 class="section-title">Yang Baru</h2>
-          <span class="whats-new-date cfg-updated-date">1 November 2024</span>
-        </div>
-        <ul class="whats-new-list" id="whatsNewList">
-          <!-- Populated from config.js -->
-        </ul>
-      </section>
-
-      <!-- Keamanan Data (Data Safety) -->
-      <section class="data-safety-card">
-        <div class="section-title-wrap">
-          <h2 class="section-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            <span>Keamanan Data</span>
-          </h2>
-        </div>
-        <div id="dataSafetyList">
-          <!-- Populated from config.js -->
-        </div>
-      </section>
-
-      <!-- Info Aplikasi (App Info) -->
-      <section>
-        <div class="section-title-wrap">
-          <h2 class="section-title">Info Aplikasi</h2>
-        </div>
-        <div class="app-info-grid">
-          <div class="info-row">
-            <span class="info-label">Versi</span>
-            <span class="info-val cfg-version">1.0.0</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Diperbarui pada</span>
-            <span class="info-val cfg-updated-date">1 November 2024</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Membutuhkan Android</span>
-            <span class="info-val cfg-min-android">7.0+</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Ukuran</span>
-            <span class="info-val stat-size-val cfg-file-size">23 MB</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Pengembang</span>
-            <span class="info-val cfg-dev-name">Guber Smart</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">ID Paket</span>
-            <span class="info-val cfg-package-id">com.gubersmart.brodesk</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Kategori</span>
-            <span class="info-val cfg-category">Alat</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Pertanyaan Umum (FAQ) -->
-      <section>
-        <div class="section-title-wrap">
-          <h2 class="section-title">Pertanyaan Umum</h2>
-        </div>
-        <div class="faq-list" id="faqList">
-          <!-- Populated from config.js -->
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- Kaki Halaman (Footer) -->
-  <footer>
-    <div class="container footer-content">
-      <p>&copy; <span id="currentYear">2024</span> <span class="cfg-dev-name">Guber Smart</span> &middot; <span class="cfg-app-name">BroDesk</span></p>
-      <a href="#" class="back-to-top" id="backToTopBtn">
-        <span>Kembali ke atas</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-      </a>
-    </div>
-  </footer>
-
-  <!-- Bilah Tempel Unduh untuk HP (Sticky Mobile Bottom Bar) -->
-  <aside class="sticky-mobile-bar" id="stickyMobileBar">
-    <button type="button" class="sticky-btn" id="stickyDownloadBtn">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="7 10 12 15 17 10"></polyline>
-        <line x1="12" y1="15" x2="12" y2="3"></line>
-      </svg>
-      <span>Unduh APK</span>
-    </button>
-  </aside>
+  </div>
 
   <!-- Panel Panduan Pemasangan (Bottom Sheet / Modal) -->
-  <div class="modal-backdrop" id="installModal" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="modal-backdrop" id="installModal" role="dialog" aria-modal="true">
     <div class="install-sheet">
-      <div class="sheet-header">
-        <h3 class="sheet-title" id="sheetTitle">Pasang BroDesk</h3>
+      <div class="sheet-title-row">
+        <h3>Pasang BroDesk</h3>
         <button type="button" class="btn-sheet-close" id="btnCloseSheet" aria-label="Tutup panduan">&times;</button>
       </div>
-
-      <div class="install-steps">
-        <div class="install-step-item">
-          <div class="step-number">1</div>
-          <div class="step-desc">
-            Tunggu unduhan selesai, lalu buka berkas <strong>BroDesk.apk</strong> dari notifikasi atau folder Unduhan HP Anda.
-          </div>
+      <div class="sheet-steps">
+        <div class="sheet-step">
+          <div class="step-badge">1</div>
+          <div>Buka berkas <strong>BroDesk.apk</strong> setelah unduhan selesai dari notifikasi atau folder Unduhan.</div>
         </div>
-        <div class="install-step-item">
-          <div class="step-number">2</div>
-          <div class="step-desc">
-            Bila diminta oleh Android, izinkan <strong>"Pasang dari sumber ini"</strong> untuk aplikasi browser yang Anda gunakan.
-          </div>
+        <div class="sheet-step">
+          <div class="step-badge">2</div>
+          <div>Bila muncul peringatan, pilih <strong>"Tetap pasang"</strong> atau izinkan "Pasang dari sumber ini".</div>
         </div>
-        <div class="install-step-item">
-          <div class="step-number">3</div>
-          <div class="step-desc">
-            Ketuk tombol <strong>"Pasang"</strong> (Install) dan tunggu beberapa detik hingga proses selesai.
-          </div>
+        <div class="sheet-step">
+          <div class="step-badge">3</div>
+          <div>Ketuk tombol <strong>"Pasang"</strong> (Install) dan tunggu proses pemasangan.</div>
         </div>
-        <div class="install-step-item">
-          <div class="step-number">4</div>
-          <div class="step-desc">
-            Buka <strong>BroDesk</strong> dan nikmati pengalaman menjelajah situs web dalam mode desktop penuh.
-          </div>
+        <div class="sheet-step">
+          <div class="step-badge">4</div>
+          <div>Buka BroDesk dan nikmati berselancar mode desktop di Android Anda.</div>
         </div>
       </div>
-
-      <div class="sheet-actions">
-        <button type="button" class="btn-sheet-primary" id="btnDismissSheet">Saya Mengerti</button>
-        <button type="button" class="btn-sheet-secondary" id="btnReDownload">Unduh Ulang Berkas APK</button>
-      </div>
+      <button type="button" class="btn-sheet-understand" id="btnDismissSheet">Saya Mengerti</button>
     </div>
   </div>
 
   <!-- Lightbox Layar Penuh -->
   <div class="lightbox-backdrop" id="lightboxModal" role="dialog" aria-modal="true">
-    <div class="lightbox-wrapper">
+    <div class="lightbox-box">
       <button type="button" class="lightbox-close-btn" id="btnCloseLightbox" aria-label="Tutup pratinjau">&times;</button>
-      <div class="lightbox-preview" id="lightboxContent"></div>
-      <div class="lightbox-nav-btns">
-        <button type="button" class="lightbox-nav-btn" id="btnLightboxPrev" aria-label="Layar sebelumnya">&#10094;</button>
-        <button type="button" class="lightbox-nav-btn" id="btnLightboxNext" aria-label="Layar selanjutnya">&#10095;</button>
-      </div>
-      <div class="lightbox-meta">
-        <div class="lightbox-title" id="lightboxTitle"></div>
-        <div class="lightbox-caption" id="lightboxCaption"></div>
-      </div>
+      <div id="lightboxTargetPhone" style="width:100%; max-width:240px;"></div>
+      <div class="lightbox-caption-text" id="lightboxCaption"></div>
     </div>
   </div>
 
@@ -1880,143 +1223,73 @@
     (function() {
       'use strict';
 
-      // 1. Baca Konfigurasi
       const cfg = (typeof BroDeskConfig !== 'undefined') ? BroDeskConfig : {
         appName: 'BroDesk',
         developerName: 'Guber Smart',
         version: '1.0.0',
-        updatedDate: '1 November 2024',
         fileSize: '23 MB',
         minAndroid: '7.0+',
-        packageId: 'com.gubersmart.brodesk',
-        apkFileName: 'BroDesk.apk',
+        ageRating: '3+',
         category: 'Alat',
-        ageRating: '3+'
+        apkFileName: 'BroDesk.apk'
       };
 
-      // Terapkan teks dari konfigurasi ke elemen dengan class penanda
+      // Terapkan nilai config
       document.querySelectorAll('.cfg-app-name').forEach(el => el.textContent = cfg.appName);
       document.querySelectorAll('.cfg-dev-name').forEach(el => el.textContent = cfg.developerName);
       document.querySelectorAll('.cfg-version').forEach(el => el.textContent = cfg.version);
-      document.querySelectorAll('.cfg-updated-date').forEach(el => el.textContent = cfg.updatedDate);
       document.querySelectorAll('.cfg-file-size').forEach(el => el.textContent = cfg.fileSize);
       document.querySelectorAll('.cfg-min-android').forEach(el => el.textContent = cfg.minAndroid);
-      document.querySelectorAll('.cfg-package-id').forEach(el => el.textContent = cfg.packageId);
-      document.querySelectorAll('.cfg-category').forEach(el => el.textContent = cfg.category);
       document.querySelectorAll('.cfg-age-rating').forEach(el => el.textContent = cfg.ageRating);
+      document.querySelectorAll('.cfg-category').forEach(el => el.textContent = cfg.category);
 
-      const yearEl = document.getElementById('currentYear');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
+      const yrEl = document.getElementById('currentYear');
+      if (yrEl) yrEl.textContent = new Date().getFullYear();
 
-      // Sinkronisasi teks "Tentang Aplikasi"
-      if (cfg.aboutShort) {
-        const shortEl = document.getElementById('aboutShortText');
-        if (shortEl) shortEl.textContent = cfg.aboutShort;
-      }
       if (cfg.aboutFull) {
-        const fullEl = document.getElementById('aboutFullText');
-        if (fullEl) fullEl.textContent = cfg.aboutFull;
+        const abEl = document.getElementById('aboutText');
+        if (abEl) abEl.textContent = cfg.aboutFull;
       }
 
-      // Kategori Chips
-      if (Array.isArray(cfg.categoryChips)) {
-        const chipsContainer = document.getElementById('chipsContainer');
-        if (chipsContainer) {
-          chipsContainer.innerHTML = cfg.categoryChips.map(c => `<span class="chip">${escapeHtml(c)}</span>`).join('');
-        }
-      }
-
-      // Fitur Unggulan Render
-      const featuresContainer = document.getElementById('featuresContainer');
-      if (featuresContainer && Array.isArray(cfg.features)) {
-        const featureIcons = {
-          'monitor': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
-          'mouse-pointer': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 3 10.07 19.97 12.58 12.58 19.97 10.07 3 3"></polygon></svg>',
-          'hand': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>',
-          'layers': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>',
-          'bookmark': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>',
-          'sliders': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>'
-        };
-
-        featuresContainer.innerHTML = cfg.features.map(f => `
-          <div class="feature-card">
-            <div class="feature-icon-wrap">${featureIcons[f.icon] || featureIcons['monitor']}</div>
-            <div class="feature-title">${escapeHtml(f.title)}</div>
-            <div class="feature-desc">${escapeHtml(f.desc)}</div>
+      // Yang baru list
+      const whatsNewContainer = document.getElementById('whatsNewContainer');
+      if (whatsNewContainer && Array.isArray(cfg.whatsNew)) {
+        whatsNewContainer.innerHTML = cfg.whatsNew.map(item => `
+          <div class="bullet-item">
+            <span class="bullet-dot"></span>
+            <span>${item}</span>
           </div>
         `).join('');
       }
 
-      // Yang Baru Render
-      const whatsNewList = document.getElementById('whatsNewList');
-      if (whatsNewList && Array.isArray(cfg.whatsNew)) {
-        whatsNewList.innerHTML = cfg.whatsNew.map(item => `
-          <li class="whats-new-item">
-            <span class="whats-new-dot"></span>
-            <span>${escapeHtml(item)}</span>
-          </li>
-        `).join('');
-      }
-
-      // Keamanan Data Render
-      const safetyContainer = document.getElementById('dataSafetyList');
-      if (safetyContainer && Array.isArray(cfg.dataSafety)) {
-        safetyContainer.innerHTML = cfg.dataSafety.map(item => `
-          <div class="safety-item">
-            <svg class="safety-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <span class="safety-text">${escapeHtml(item)}</span>
+      // FAQ list
+      const faqContainer = document.getElementById('faqContentContainer');
+      if (faqContainer && Array.isArray(cfg.faqs)) {
+        faqContainer.innerHTML = cfg.faqs.map(f => `
+          <div style="margin-bottom:8px;">
+            <div style="font-weight:700; color:var(--text-primary);">&#10004; ${f.q}</div>
+            <div style="margin-top:2px;">${f.a}</div>
           </div>
         `).join('');
       }
 
-      // FAQ Render
-      const faqList = document.getElementById('faqList');
-      if (faqList && Array.isArray(cfg.faqs)) {
-        faqList.innerHTML = cfg.faqs.map(faq => `
-          <div class="faq-item">
-            <button type="button" class="faq-question">
-              <span>${escapeHtml(faq.q)}</span>
-              <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-answer">${escapeHtml(faq.a)}</div>
-          </div>
-        `).join('');
-
-        // FAQ Toggle Listener
-        faqList.querySelectorAll('.faq-question').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const item = this.closest('.faq-item');
-            const wasOpen = item.classList.contains('open');
-            // Tutup item lain jika ingin akordeon tunggal
-            faqList.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-            if (!wasOpen) item.classList.add('open');
-          });
-        });
-      }
-
-      // 2. Pembacaan Ukuran Berkas Otomatis via HEAD request
+      // HEAD request untuk ukuran dinamis APK
       const apkName = cfg.apkFileName || 'BroDesk.apk';
       fetch(apkName, { method: 'HEAD' })
         .then(res => {
-          if (!res.ok) throw new Error('HEAD failed');
-          const size = res.headers.get('content-length');
-          if (size) {
-            const bytes = parseInt(size, 10);
+          if (!res.ok) return;
+          const sz = res.headers.get('content-length');
+          if (sz) {
+            const bytes = parseInt(sz, 10);
             if (!isNaN(bytes) && bytes > 0) {
               const mb = (bytes / (1024 * 1024)).toFixed(1);
               document.querySelectorAll('.stat-size-val').forEach(el => el.textContent = `${mb} MB`);
             }
           }
         })
-        .catch(() => {
-          // Fallback ke nilai statis di config.js jika HEAD gagal atau diuji lokal
-        });
+        .catch(() => {});
 
-      // 3. Deteksi Perangkat iOS / iPad
+      // Deteksi iOS / iPad
       const isApple = /(iPad|iPhone|iPod)/i.test(navigator.userAgent) ||
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
@@ -2028,19 +1301,15 @@
         if (mainBtn) {
           mainBtn.classList.add('disabled');
           mainBtn.removeAttribute('href');
-          mainBtn.querySelector('.btn-text').textContent = 'Khusus Perangkat Android';
+          mainBtn.querySelector('.btn-label').textContent = 'Khusus Android';
         }
       }
 
-      // 4. Pengendali Unduhan & Panduan Pemasangan
+      // Unduhan & Modal Pemasangan
       const installModal = document.getElementById('installModal');
       const btnCloseSheet = document.getElementById('btnCloseSheet');
       const btnDismissSheet = document.getElementById('btnDismissSheet');
-      const btnReDownload = document.getElementById('btnReDownload');
       const mainDownloadBtn = document.getElementById('mainDownloadBtn');
-      const stickyDownloadBtn = document.getElementById('stickyDownloadBtn');
-      const topBarDownloadBtn = document.getElementById('topBarDownloadBtn');
-      const downloadErrorNotice = document.getElementById('downloadErrorNotice');
 
       function openInstallModal() {
         if (installModal) {
@@ -2059,31 +1328,9 @@
       if (btnCloseSheet) btnCloseSheet.addEventListener('click', closeInstallModal);
       if (btnDismissSheet) btnDismissSheet.addEventListener('click', closeInstallModal);
       if (installModal) {
-        installModal.addEventListener('click', function(e) {
+        installModal.addEventListener('click', (e) => {
           if (e.target === installModal) closeInstallModal();
         });
-      }
-
-      function triggerDownload() {
-        if (isApple) return;
-
-        // Periksa ketersediaan berkas sebelum memulai
-        const btnText = mainDownloadBtn ? mainDownloadBtn.querySelector('.btn-text') : null;
-        if (btnText) btnText.textContent = 'Mengunduh…';
-
-        // Pemicu unduhan nyata
-        const link = document.createElement('a');
-        link.href = apkName;
-        link.download = apkName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // Buka panduan pemasangan setelah jeda singkat
-        setTimeout(() => {
-          if (btnText) btnText.textContent = 'Unduh APK';
-          openInstallModal();
-        }, 800);
       }
 
       if (mainDownloadBtn) {
@@ -2092,170 +1339,81 @@
             e.preventDefault();
             return;
           }
-          // Jika berkas langsung bisa diunduh via tag <a>, kita cegah reload lalu jalankan triggerDownload
-          e.preventDefault();
-          triggerDownload();
+          const lbl = this.querySelector('.btn-label');
+          if (lbl) lbl.textContent = 'Mengunduh…';
+
+          // Trigger download
+          const link = document.createElement('a');
+          link.href = apkName;
+          link.download = apkName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          setTimeout(() => {
+            if (lbl) lbl.textContent = 'Unduh APK';
+            openInstallModal();
+          }, 600);
         });
       }
 
-      if (stickyDownloadBtn) {
-        stickyDownloadBtn.addEventListener('click', function() {
-          triggerDownload();
-        });
-      }
-
-      if (topBarDownloadBtn) {
-        topBarDownloadBtn.addEventListener('click', function() {
-          triggerDownload();
-        });
-      }
-
-      if (btnReDownload) {
-        btnReDownload.addEventListener('click', function() {
-          triggerDownload();
-        });
-      }
-
-      // 5. Intersection Observer untuk Tombol Sticky & Bilah Atas
-      const stickyMobileBar = document.getElementById('stickyMobileBar');
-      if (mainDownloadBtn && 'IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            // Ketika tombol utama tidak terlihat (keluar layar)
-            if (!entry.isIntersecting) {
-              if (topBarDownloadBtn) topBarDownloadBtn.classList.add('visible');
-              if (stickyMobileBar) stickyMobileBar.classList.add('visible');
-            } else {
-              if (topBarDownloadBtn) topBarDownloadBtn.classList.remove('visible');
-              if (stickyMobileBar) stickyMobileBar.classList.remove('visible');
+      // Akordeon Toggle
+      document.querySelectorAll('.accordion-card').forEach(card => {
+        const header = card.querySelector('.accordion-header');
+        if (header) {
+          header.addEventListener('click', () => {
+            card.classList.toggle('open');
+          });
+          header.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.classList.toggle('open');
             }
           });
-        }, { threshold: 0.1 });
+        }
+      });
 
-        observer.observe(mainDownloadBtn);
-      }
-
-      // 6. Tangkapan Layar Carousel & Lightbox
-      const screenshotsCarousel = document.getElementById('screenshotsCarousel');
-      const btnPrevScreens = document.getElementById('btnPrevScreens');
-      const btnNextScreens = document.getElementById('btnNextScreens');
-
-      if (btnPrevScreens && screenshotsCarousel) {
-        btnPrevScreens.addEventListener('click', () => {
-          screenshotsCarousel.scrollBy({ left: -260, behavior: 'smooth' });
-        });
-      }
-      if (btnNextScreens && screenshotsCarousel) {
-        btnNextScreens.addEventListener('click', () => {
-          screenshotsCarousel.scrollBy({ left: 260, behavior: 'smooth' });
-        });
-      }
-
-      // Lightbox
+      // Lightbox 3 Mockup
       const lightboxModal = document.getElementById('lightboxModal');
-      const lightboxContent = document.getElementById('lightboxContent');
-      const lightboxTitle = document.getElementById('lightboxTitle');
+      const lightboxTargetPhone = document.getElementById('lightboxTargetPhone');
       const lightboxCaption = document.getElementById('lightboxCaption');
       const btnCloseLightbox = document.getElementById('btnCloseLightbox');
-      const btnLightboxPrev = document.getElementById('btnLightboxPrev');
-      const btnLightboxNext = document.getElementById('btnLightboxNext');
 
-      let currentScreenIndex = 0;
-      const screenItems = Array.from(document.querySelectorAll('.screenshot-item'));
+      document.querySelectorAll('.mini-mockup-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const phoneHtml = item.querySelector('.mini-phone').outerHTML;
+          const label = item.querySelector('.mockup-sublabel').textContent;
+          const desc = item.querySelector('.mockup-subdesc').textContent;
 
-      function openLightbox(index) {
-        if (!screenItems[index]) return;
-        currentScreenIndex = index;
-        const item = screenItems[index];
-        const mockupHtml = item.querySelector('.phone-mockup').outerHTML;
-        const title = item.querySelector('.screenshot-caption-title').textContent;
-        const desc = item.querySelector('.screenshot-caption-desc').textContent;
-
-        lightboxContent.innerHTML = mockupHtml;
-        lightboxTitle.textContent = title;
-        lightboxCaption.textContent = desc;
-        lightboxModal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeLightbox() {
-        lightboxModal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-
-      screenItems.forEach((item, idx) => {
-        item.addEventListener('click', () => openLightbox(idx));
-        item.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openLightbox(idx);
-          }
+          lightboxTargetPhone.innerHTML = phoneHtml;
+          lightboxCaption.textContent = `${label} - ${desc}`;
+          lightboxModal.classList.add('open');
+          document.body.style.overflow = 'hidden';
         });
       });
 
+      function closeLightbox() {
+        if (lightboxModal) {
+          lightboxModal.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      }
+
       if (btnCloseLightbox) btnCloseLightbox.addEventListener('click', closeLightbox);
-      if (btnLightboxPrev) {
-        btnLightboxPrev.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const prevIdx = (currentScreenIndex - 1 + screenItems.length) % screenItems.length;
-          openLightbox(prevIdx);
-        });
-      }
-      if (btnLightboxNext) {
-        btnLightboxNext.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const nextIdx = (currentScreenIndex + 1) % screenItems.length;
-          openLightbox(nextIdx);
-        });
-      }
       if (lightboxModal) {
         lightboxModal.addEventListener('click', (e) => {
           if (e.target === lightboxModal) closeLightbox();
         });
       }
 
-      // Tombol Keyboard (Escape, Navigasi Panah)
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeLightbox();
           closeInstallModal();
-        } else if (lightboxModal && lightboxModal.classList.contains('open')) {
-          if (e.key === 'ArrowLeft') {
-            const prevIdx = (currentScreenIndex - 1 + screenItems.length) % screenItems.length;
-            openLightbox(prevIdx);
-          } else if (e.key === 'ArrowRight') {
-            const nextIdx = (currentScreenIndex + 1) % screenItems.length;
-            openLightbox(nextIdx);
-          }
         }
       });
 
-      // 7. Toggle "Selengkapnya" pada Tentang Aplikasi
-      const btnToggleAbout = document.getElementById('btnToggleAbout');
-      const aboutFullText = document.getElementById('aboutFullText');
-      const toggleAboutLabel = document.getElementById('toggleAboutLabel');
-      const toggleAboutIcon = document.getElementById('toggleAboutIcon');
-
-      if (btnToggleAbout && aboutFullText) {
-        let isExpanded = false;
-        btnToggleAbout.addEventListener('click', () => {
-          isExpanded = !isExpanded;
-          aboutFullText.style.display = isExpanded ? 'block' : 'none';
-          toggleAboutLabel.textContent = isExpanded ? 'Lebih sedikit' : 'Selengkapnya';
-          toggleAboutIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
-        });
-      }
-
-      // 8. Tautan Kembali ke Atas
-      const backToTopBtn = document.getElementById('backToTopBtn');
-      if (backToTopBtn) {
-        backToTopBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-
-      // 9. Pembuat Kode QR Mandiri di Sisi Klien (Pure JavaScript Canvas)
+      // Generator Kode QR Canvas
       function drawSimpleQR(canvas, text) {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -2263,18 +1421,15 @@
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, size, size);
 
-        // Algoritma matriks representasi visual QR yang rapi dan terverifikasi
-        // Standar penanda posisi 3 sudut (Finder Patterns)
-        const modules = 25;
+        const modules = 21;
         const modSize = Math.floor(size / modules);
         const offset = Math.floor((size - (modules * modSize)) / 2);
 
         function setModule(x, y, color) {
-          ctx.fillStyle = color ? '#000000' : '#FFFFFF';
+          ctx.fillStyle = color ? '#0F172A' : '#FFFFFF';
           ctx.fillRect(offset + x * modSize, offset + y * modSize, modSize, modSize);
         }
 
-        // Gambar Finder Pattern (7x7) pada posisi (x, y)
         function drawFinder(startX, startY) {
           for (let r = 0; r < 7; r++) {
             for (let c = 0; c < 7; c++) {
@@ -2287,18 +1442,15 @@
           }
         }
 
-        // Tiga pola pojok utama
         drawFinder(0, 0);
         drawFinder(modules - 7, 0);
         drawFinder(0, modules - 7);
 
-        // Timing patterns
         for (let i = 8; i < modules - 8; i++) {
           setModule(i, 6, i % 2 === 0);
           setModule(6, i, i % 2 === 0);
         }
 
-        // Pola data berbasis hash dari teks URL
         let hash = 0;
         for (let i = 0; i < text.length; i++) {
           hash = ((hash << 5) - hash) + text.charCodeAt(i);
@@ -2307,12 +1459,9 @@
 
         for (let r = 0; r < modules; r++) {
           for (let c = 0; c < modules; c++) {
-            // Lewati finder patterns dan separator
             if ((r < 8 && c < 8) || (r < 8 && c >= modules - 8) || (r >= modules - 8 && c < 8)) continue;
             if (r === 6 || c === 6) continue;
-            
-            // Pseudo-random deterministic bit pattern
-            const bit = ((hash ^ (r * 31 + c * 17)) & 1) === 0;
+            const bit = ((hash ^ (r * 19 + c * 37)) & 1) === 0;
             setModule(c, r, bit);
           }
         }
@@ -2320,19 +1469,7 @@
 
       const qrCanvas = document.getElementById('qrCanvas');
       if (qrCanvas) {
-        const currentUrl = window.location.href || 'https://brodesk.vercel.app';
-        drawSimpleQR(qrCanvas, currentUrl);
-      }
-
-      // Utilitas sanitasi teks sederhana
-      function escapeHtml(str) {
-        if (!str) return '';
-        return String(str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
+        drawSimpleQR(qrCanvas, window.location.href || 'https://brodesk.vercel.app');
       }
 
     })();
